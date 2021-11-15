@@ -1,0 +1,4 @@
+- git:
+    local-name: roswww
+    uri: https://github.com/tork-a/roswww.git
+    version: develop

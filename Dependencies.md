@@ -7,9 +7,9 @@ by **vcstool**
 ```shell
 sudo apt install python-vcstool
 cd ~/catkin_ws
-vcs import src < src/nhk2021_ilias/nhk2021_launcher/nhk2021_launcher.rosinstall
-vcs import src < src/nhk2021_ilias/nhk2021_simulator/nhk2021_simulator.rosinstall
-vcs import src < src/nhk2021_ilias/nhk2021_webgui/nhk2021_webgui.rosinstall
+vcs import src < src/nhk2022_ilias/nhk2022_launcher/nhk2022_launcher.rosinstall
+vcs import src < src/nhk2022_ilias/nhk2022_simulator/nhk2022_simulator.rosinstall
+vcs import src < src/nhk2022_ilias/nhk2022_webgui/nhk2022_webgui.rosinstall
 ```
 
 or
@@ -31,18 +31,18 @@ git clone https://github.com/tork-a/roswww.git
 ```shell
 cd ~/catkin_ws/src
 rosdep install -i --from-paths roswww
-rosdep install -i --from-paths nhk2021_ilias/bezier_path_planning_pursuit
-rosdep install -i --from-paths nhk2021_ilias/joy_commander
-rosdep install -i --from-paths nhk2021_ilias/nhk2021_launcher
-rosdep install -i --from-paths nhk2021_ilias/nhk2021_simulator
-rosdep install -i --from-paths nhk2021_ilias/nhk2021_webgui
+rosdep install -i --from-paths nhk2022_ilias/bezier_path_planning_pursuit
+rosdep install -i --from-paths nhk2022_ilias/joy_commander
+rosdep install -i --from-paths nhk2022_ilias/nhk2022_launcher
+rosdep install -i --from-paths nhk2022_ilias/nhk2022_simulator
+rosdep install -i --from-paths nhk2022_ilias/nhk2022_webgui
 ```
 
-3. Give permission to task_selector.py (in nhk2021_launcher pkg)
+3. Give permission to task_selector.py (in nhk2022_launcher pkg)
 
 ```shell
-cd ~/catkin_ws/src/nhk2021_ilias
-chmod +x ./nhk2021_launcher/scripts/task_selector.py
+cd ~/catkin_ws/src/nhk2022_ilias
+chmod +x ./nhk2022_launcher/scripts/task_selector.py
 ```
 
 4. Build
@@ -71,8 +71,8 @@ sudo apt -get installできないものに関しては愚直にgit cloneする�
 ```shell
 sudo apt install python-vcstool
 cd ~/catkin_ws
-vcs import src < src/nhk2021_ilias/nhk2021_launcher/nhk2021_launcher.rosinstall
-vcs import src < src/nhk2021_ilias/nhk2021_webgui/nhk2021_webgui.rosinstall
+vcs import src < src/nhk2022_ilias/nhk2022_launcher/nhk2022_launcher.rosinstall
+vcs import src < src/nhk2022_ilias/nhk2022_webgui/nhk2022_webgui.rosinstall
 ```
 
 
@@ -94,7 +94,7 @@ vcs import src < src/nhk2021_ilias/nhk2021_webgui/nhk2021_webgui.rosinstall
 
   
 
-## nhk2021_launcher
+## nhk2022_launcher
 
 - 足回り
 
@@ -148,7 +148,7 @@ vcs import src < src/nhk2021_ilias/nhk2021_webgui/nhk2021_webgui.rosinstall
 
   
 
-## nhk2021_simulator
+## nhk2022_simulator
 
 - gazebo_ros
 
@@ -176,7 +176,7 @@ vcs import src < src/nhk2021_ilias/nhk2021_webgui/nhk2021_webgui.rosinstall
 
   
 
-## nhk2021_webgui
+## nhk2022_webgui
 
 - roswww
 

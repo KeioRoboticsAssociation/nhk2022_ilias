@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "#############################################"
-echo "#### Installing nhk2021_ilias repository ####"
+echo "#### Installing nhk2022_ilias repository ####"
 echo "#############################################"
 
 ## Resolve dependencies (from git repository)

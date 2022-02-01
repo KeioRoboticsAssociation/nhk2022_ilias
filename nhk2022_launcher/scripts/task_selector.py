@@ -1,10 +1,10 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 import rospy
 
 # Brings in the SimpleActionClient
 import actionlib
-#import bezier_path_planning_pursuit.msg
+import bezier_path_planning_pursuit.msg
 from sensor_msgs.msg import Joy
 from std_msgs.msg import Int32
 from std_msgs.msg import Bool
@@ -15,7 +15,7 @@ class Task_Selector():
         self.pathmode_ = 0
         self.direction_ = 1
         self.send_goal = False
-#        self.client = actionlib.SimpleActionClient('/bezier_path_planning_pursuit', bezier_path_planning_pursuit.msg.PursuitPathAction)
+        self.client = actionlib.SimpleActionClient('/bezier_path_planning_pursuit', bezier_path_planning_pursuit.msg.PursuitPathAction)
         self.joy_sub = rospy.Subscriber("joy", Joy, self.Joycallback)
         self.pathmode_pub = rospy.Publisher('/task_selector/joy_pathmode', Int32, queue_size=1)
         self.teleopflag_pub = rospy.Publisher('/task_selector/teleop_mode', Bool, queue_size=1)
@@ -30,7 +30,7 @@ class Task_Selector():
         self.teleopflag_pub.publish(teleop_mode)
 
         # Creates a goal to send to the action server.
-#        goal = bezier_path_planning_pursuit.msg.PursuitPathGoal(pathmode=self.pathmode_, direction=self.direction_)
+        goal = bezier_path_planning_pursuit.msg.PursuitPathGoal(pathmode=self.pathmode_, direction=self.direction_)
 
         # Sends the goal to the action server.
         self.client.send_goal(goal)

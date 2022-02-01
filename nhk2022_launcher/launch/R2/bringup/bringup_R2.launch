@@ -1,12 +1,13 @@
 <launch>
   <!--simulation or real-->
-  <arg name="mode" default="real"/>
+  <arg name="mode" default="simulator"/>
+
+  <!-- joy input -->
+  <arg name="dev" default="/dev/bus/usb/001/006"/>
 
   <!--path_planning_node-->
   <arg name="control_frequency" default="50" />
   <arg name="base_frame_id" default="base_footprint" />
-  <arg name="RB_recovery_mode" />
-  <!-- RB_recovery_mode was used in 2021 to control 1 unit by 2MD --> 
 
   <group if="$(eval mode=='simulation')">
     <!-- controller -->
@@ -72,13 +73,15 @@
   </group>
 
   <!-- arrow table and thrower driver-->
-  <include file="$(find arrow_table_commander)/launch/arrow_table_commander.launch">
+  <!-- <include file="$(find arrow_table_commander)/launch/arrow_table_commander.launch">
     <arg name="control_frequency" value="$(arg control_frequency)" />
     <arg name="base_frame_id" value="$(arg base_frame_id)" />
-  </include>
+  </include> -->
 
   <!-- Joy controller -->
-  <node pkg="joy" type="joy_node" name="joy_node"/>
+  <node pkg="joy" type="joy_node" name="joy_node">
+    <param name="dev" value="$(arg dev)"/>
+   </node> 
 
   <node pkg="joy_commander" type="joy_commander" name="joy_commander" output="screen">
     <param name="control_frequency" value="$(arg control_frequency)"/>

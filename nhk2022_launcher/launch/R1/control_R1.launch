@@ -83,7 +83,7 @@
   </group>
 
   <!-- task_selector -->
-  <node pkg="nhk2022_launcher" type="task_selector.py" name="task_selector"/>
+  <node pkg="nhk2022_launcher" type="task_selector.py" name="task_selector" output="screen"/>
 
   <!-- WebGUI -->
   <!-- <include file="$(find nhk2022_webgui)/launch/server.launch">

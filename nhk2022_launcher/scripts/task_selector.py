@@ -39,28 +39,29 @@ class Task_Selector():
         self.client.wait_for_result()
         '''
     def Joycallback(self, msg):
-        if msg.buttons[10] == 1:
-            print("teleop_mode")
+        if msg.buttons[10] == 1: #button stick left
+            rospy.loginfo("teleop_mode")
             self.client.cancel_goal()
             teleop_mode = Bool()
             teleop_mode.data = True
             self.teleopflag_pub.publish(teleop_mode)
-        elif msg.buttons[5] == 1:
-            print("pathmode")
+        elif msg.buttons[5] == 1: #RB
+            rospy.loginfo("pathmode+1")
             self.pathmode_ += 1
-        elif msg.buttons[4] == 1:
+        elif msg.buttons[4] == 1: #LB
+            rospy.loginfo("pathmode-1")
             if self.pathmode_ > 0:
                 self.pathmode_ -= 1
-        elif msg.buttons[2] == 1:
-            print("direction forward")
+        elif msg.buttons[2] == 1: #B
+            rospy.loginfo("direction forward")
             self.direction_ = 1
             self.sendgoal()
-        elif msg.buttons[1] == 1:
-            print("direction back")
+        elif msg.buttons[1] == 1: #A
+            rospy.loginfo("direction back")
             self.direction_ = 0
             self.sendgoal()
-        elif msg.buttons[8] == 1:
-            print("emergency switch")
+        elif msg.buttons[8] == 1: #back
+            rospy.loginfo("emergency switch")
             self.client.cancel_goal()
             teleop_mode = Bool()
             teleop_mode.data = True
@@ -78,10 +79,10 @@ if __name__ == '__main__':
         # Initializes a rospy node so that the SimpleActionClient can
         # publish and subscribe over ROS.
         rospy.init_node('task_selector')
-        print("create task_selector")
+        rospy.loginfo("waiting for task input")
 
         task_selector = Task_Selector()
         rospy.spin()
 
     except rospy.ROSInterruptException:
-        print("program interrupted before completion")
+        rospy.logerr("program interrupted before completion")

@@ -86,8 +86,8 @@
   <node pkg="nhk2022_launcher" type="task_selector.py" name="task_selector"/>
 
   <!-- WebGUI -->
-  <include file="$(find nhk2022_webgui)/launch/server.launch">
+  <!-- <include file="$(find nhk2022_webgui)/launch/server.launch">
     <arg name="name" value="roswww_R1"/>
-  </include>
+  </include> -->
 
 </launch>

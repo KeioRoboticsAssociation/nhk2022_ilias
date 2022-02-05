@@ -3,7 +3,7 @@
   <arg name="mode" default="simulator"/>
 
   <!-- joy input -->
-  <arg name="dev" default="/dev/bus/usb/001/006"/>
+  <arg name="dev" default="/dev/input/js0"/>
 
   <!--path_planning_node-->
   <arg name="control_frequency" default="50" />

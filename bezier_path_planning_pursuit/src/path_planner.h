@@ -2,6 +2,7 @@
 #define PATH_PLANNER_H
 
 #include "path_planning.h"
+#include "Matrix/matrix.h"
 
 #include <ros/ros.h>
 #include <boost/filesystem.hpp>
@@ -19,12 +20,31 @@
 #include <actionlib/server/simple_action_server.h>          // action Library Header File
 #include <bezier_path_planning_pursuit/PursuitPathAction.h> // PursuitPathAction Action File Header
 
+extern std::string node_name;
 using namespace bezier_path_planning_pursuit;
 
 class Path_Planner
 {
 public:
-    Path_Planner(ros::NodeHandle &nh, const int &loop_rate, const bool &use_tf, const std::string &data_path, const float &max_accel, const float &max_vel, const float &corner_speed_rate, const std::string &global_frame_id, const std::string &base_frame_id, const float &initial_vel, const float &xy_goal_tolerance, const float &yaw_goal_tolerance, const std::string &angle_source, const float &max_vel_theta, const float &acc_lim_theta, const float &fix_angle_gain, const int &LINE_NUMBER, const float &path_granularity);
+    Path_Planner(
+        ros::NodeHandle &nh, 
+        const int &loop_rate, 
+        const bool &use_tf, 
+        const std::string &data_path, 
+        const float &max_accel, 
+        const float &max_vel, 
+        const float &corner_speed_rate, 
+        const std::string &global_frame_id, 
+        const std::string &base_frame_id, 
+        const float &initial_vel,
+        const float &xy_goal_tolerance, 
+        const float &yaw_goal_tolerance, 
+        const std::string &angle_source, 
+        const float &max_vel_theta, 
+        const float &acc_lim_theta, 
+        const float &fix_angle_gain, 
+        const int &LINE_NUMBER, 
+        const float &path_granularity);
     ~Path_Planner()
     {
         delete[] path;
@@ -100,6 +120,7 @@ private:
     bool reachedxyGoal();
     void terminate(const float &target_angle);
     void publishMsg(const float &vx, const float &vy, const float &omega);
+    
 };
 
 #endif

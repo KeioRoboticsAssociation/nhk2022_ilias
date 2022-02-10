@@ -1,8 +1,25 @@
 #include "path_planner.h"
 
+using namespace bezier_path_planning_pursuit;
 std::string node_name = "bezier_path_planning_pursuit";
 
-using namespace bezier_path_planning_pursuit;
+std::size_t file_count_boost(const boost::filesystem::path &root)
+{
+    namespace fs = boost::filesystem;
+    if (!fs::exists(root) || !fs::is_directory(root))
+        return 0;
+
+    std::size_t result = 0;
+    fs::directory_iterator last;
+    for (fs::directory_iterator pos(root); pos != last; ++pos)
+    {
+        ++result;
+        if (fs::is_directory(*pos))
+            result += file_count_boost(pos->path());
+    }
+
+    return result;
+}
 
 int main(int argc, char **argv)
 {

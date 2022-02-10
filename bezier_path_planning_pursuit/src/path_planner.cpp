@@ -1,12 +1,25 @@
 #include "path_planner.h"
 
 
-Path_Planner::Path_Planner(ros::NodeHandle &nh, const int &loop_rate, const bool &use_tf,
-                           const std::string &data_path, const float &max_accel, const float &max_vel,
-                           const float &corner_speed_rate, const std::string &global_frame_id, const std::string &base_frame_id,
-                           const float &initial_vel, const float &xy_goal_tolerance, const float &yaw_goal_tolerance,
-                           const std::string &angle_source, const float &max_vel_theta, const float &acc_lim_theta, 
-                           const float &fix_angle_gain, const int &LINE_NUMBER, const float &path_granularity)
+Path_Planner::Path_Planner(
+    ros::NodeHandle &nh, 
+    const int &loop_rate, 
+    const bool &use_tf,
+    const std::string &data_path,
+    const float &max_accel,
+    const float &max_vel,
+    const float &corner_speed_rate,
+    const std::string &global_frame_id, 
+    const std::string &base_frame_id,
+    const float &initial_vel, 
+    const float &xy_goal_tolerance, 
+    const float &yaw_goal_tolerance,
+    const std::string &angle_source, 
+    const float &max_vel_theta, 
+    const float &acc_lim_theta, 
+    const float &fix_angle_gain, 
+    const int &LINE_NUMBER, 
+    const float &path_granularity)
     : nh_(nh), loop_rate_(loop_rate), use_tf_(use_tf), data_path_(data_path),
       max_accel_(max_accel), max_vel_(max_vel), corner_speed_rate_(corner_speed_rate),
       global_frame_id_(global_frame_id), base_frame_id_(base_frame_id), initial_vel_(initial_vel),
@@ -367,22 +380,4 @@ void Path_Planner::executeCB(const PursuitPathGoalConstPtr &goal) // if use acti
             as_.setSucceeded(result_);
         }
     }
-}
-
-std::size_t file_count_boost(const boost::filesystem::path &root)
-{
-    namespace fs = boost::filesystem;
-    if (!fs::exists(root) || !fs::is_directory(root))
-        return 0;
-
-    std::size_t result = 0;
-    fs::directory_iterator last;
-    for (fs::directory_iterator pos(root); pos != last; ++pos)
-    {
-        ++result;
-        if (fs::is_directory(*pos))
-            result += file_count_boost(pos->path());
-    }
-
-    return result;
 }

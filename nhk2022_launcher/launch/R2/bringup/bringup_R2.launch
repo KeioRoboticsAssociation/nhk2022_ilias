@@ -35,13 +35,13 @@
 
   <group if="$(eval mode=='real')">
     <!-- ################ statis tf settings ################ -->
-    <param name="robot_description" textfile="$(find nhk2022_launcher)/urdf/DR.urdf" />
+    <param name="robot_description" textfile="$(find nhk2022_launcher)/urdf/R2.urdf" />
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
     
     <!-- sensors and mbed devices -->
-    <include file="$(find nhk2022_launcher)/launch/DR/bringup/sensor_activate_DR.launch"/>
+    <include file="$(find nhk2022_launcher)/launch/DR/bringup/sensor_activate_R2.launch"/>
 
-    <include file="$(find nhk2022_launcher)/launch/DR/bringup/activate_wheel_DR.launch"/>
+    <include file="$(find nhk2022_launcher)/launch/DR/bringup/activate_wheel_R2.launch"/>
 
     <include file="$(find nhk2022_launcher)/launch/DR/bringup/activate_baffle_over_driver.launch"/>
 

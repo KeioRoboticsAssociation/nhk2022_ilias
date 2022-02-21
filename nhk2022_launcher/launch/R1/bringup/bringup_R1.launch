@@ -42,9 +42,9 @@
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
     
     <!-- sensors and mbed devices -->
-    <include file="$(find nhk2022_launcher)/launch/TR/bringup/sensor_activate_TR.launch"/>
+    <include file="$(find nhk2022_launcher)/launch/R1/bringup/sensor_activate_TR.launch"/>
 
-    <include file="$(find nhk2022_launcher)/launch/TR/bringup/activate_wheel_TR.launch">
+    <include file="$(find nhk2022_launcher)/launch/R1/bringup/activate_wheel_TR.launch">
       <arg name="RB_recovery_mode" value="$(arg RB_recovery_mode)" />
     </include>
 

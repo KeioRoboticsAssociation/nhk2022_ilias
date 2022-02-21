@@ -1,6 +1,6 @@
 <launch>
   <!--simulation or real-->
-  <arg name="mode" default="simulation"/>
+  <arg name="mode" default="real"/>
   
   <arg name="control_frequency" default="50" />
   <arg name="base_frame_id" default="base_footprint" />

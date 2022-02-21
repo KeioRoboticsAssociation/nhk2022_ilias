@@ -1,0 +1,23 @@
+<launch>
+    <node pkg="swerve_wheelctrl" type="swerve_wheelctrl" name="swerve_wheelctrl" output="screen">
+      <param name="control_frequency" value="50"/>
+      <param name="lost_time_threshold" value="500"/>
+      <param name="body_width" value="0.440"/>
+      <param name="initial_table_angle" value="0"/>
+      <param name="gazebo_mode" value="false"/>
+    </node>
+
+    <include file="$(find nhk2022_launcher)/launch/R1/bringup/activate_wheel_R1.launch"/>
+
+    <node pkg="joy" type="joy_node" name="joy_node"/> 
+
+    <node pkg="joy_commander" type="joy_commander" name="joy_commander" output="screen">
+        <param name="control_frequency" value="50"/>
+        <param name = "acc_lim_xy" value = "2.0" />
+        <param name = "max_vel_xy" value = "6.0" />
+        <param name = "acc_lim_theta" value = "1.57" />
+        <param name = "max_vel_theta" value = "0.785" />
+        <remap from = "teleopflag" to = "/task_selector/teleop_mode"/>
+    </node>
+</launch>
+

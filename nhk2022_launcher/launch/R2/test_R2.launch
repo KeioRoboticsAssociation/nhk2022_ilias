@@ -1,5 +1,5 @@
 <launch>
-    <node pkg="swerve_wheelctrl" type="swerve_wheelctrl" name="swerve_wheelctrl" output="screen">
+    <node pkg="omni_wheelctrl" type="omni_wheelctrl" name="omni_wheelctrl" output="screen">
       <param name="control_frequency" value="50"/>
       <param name="lost_time_threshold" value="500"/>
       <param name="body_width" value="0.440"/>

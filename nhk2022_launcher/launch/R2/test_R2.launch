@@ -3,7 +3,6 @@
       <param name="control_frequency" value="50"/>
       <param name="lost_time_threshold" value="500"/>
       <param name="body_width" value="0.440"/>
-      <param name="initial_table_angle" value="0"/>
       <param name="gazebo_mode" value="false"/>
     </node>
 

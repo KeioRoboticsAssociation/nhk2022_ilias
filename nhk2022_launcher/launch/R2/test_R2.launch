@@ -18,4 +18,12 @@
         <param name = "max_vel_theta" value = "0.785" />
         <remap from = "teleopflag" to = "/task_selector/teleop_mode"/>
     </node>
+
+  <!-- task_selector -->
+  <node pkg="nhk2022_launcher" type="task_selector.py" name="task_selector"/>
+
+  <!-- WebGUI -->
+    <!-- <include file="$(find nhk2022_webgui)/launch/server.launch">
+      <arg name="name" value="roswww_R2"/>
+    </include> -->
 </launch>

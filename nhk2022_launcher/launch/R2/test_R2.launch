@@ -8,14 +8,14 @@
   </node>
 
   <include file="$(find nhk2022_launcher)/launch/R2/bringup/activate_wheel_R2.launch"/>
-  <!-- <include file="$(find nhk2022_launcher)/launch/R2/bringup/accessories_driver.launch"/> -->
+  <include file="$(find nhk2022_launcher)/launch/R2/bringup/accessories_driver.launch"/>
 
   <node pkg="joy" type="joy_node" name="joy_node"/> 
 
   <node pkg="joy_commander" type="joy_commander" name="joy_commander" output="screen">
       <param name="control_frequency" value="50"/>
-      <param name = "acc_lim_xy" value = "1.0" />
-      <param name = "max_vel_xy" value = "2.0" />
+      <param name = "acc_lim_xy" value = "0.5" />
+      <param name = "max_vel_xy" value = "1.0" />
       <param name = "acc_lim_theta" value = "1.57" />
       <param name = "max_vel_theta" value = "3.14" />
       <remap from = "teleopflag" to = "/task_selector/teleop_mode"/>
@@ -23,6 +23,8 @@
 
   <!-- task_selector -->
   <node pkg="nhk2022_launcher" type="task_selector.py" name="task_selector"/>
+  <node pkg="nhk2022_launcher" type="accessories_controler.py" name="accessories_conttoler"/>
+  
 
   <!-- WebGUI -->
     <!-- <include file="$(find nhk2022_webgui)/launch/server.launch">

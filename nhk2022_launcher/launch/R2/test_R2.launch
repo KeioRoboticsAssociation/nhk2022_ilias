@@ -14,7 +14,7 @@
 
   <node pkg="joy_commander" type="joy_commander" name="joy_commander" output="screen">
       <param name="control_frequency" value="50"/>
-      <param name = "acc_lim_xy" value = "0.5" />
+      <param name = "acc_lim_xy" value = "1000.0" />
       <param name = "max_vel_xy" value = "1.0" />
       <param name = "acc_lim_theta" value = "1.57" />
       <param name = "max_vel_theta" value = "3.14" />

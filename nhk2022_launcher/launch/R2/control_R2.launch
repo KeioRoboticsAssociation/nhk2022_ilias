@@ -38,7 +38,7 @@
     <arg name="control_frequency" value="$(arg control_frequency)" />
     <arg name="use_tf" value="true" />
     <arg name="angle_source" value="imu" />
-    <arg name="csv_path" value="$(find nhk2022_launcher)/config/waypoints/DR" />
+    <arg name="csv_path" value="$(find nhk2022_launcher)/config/waypoints/R2" />
     <arg name="acc_lim_xy" value="$(arg acc_lim_xy)" />
     <arg name="max_vel_xy" value="$(arg max_vel_xy)" /><!--3.0-->
     <arg name="acc_lim_theta" value="$(arg acc_lim_theta)" />

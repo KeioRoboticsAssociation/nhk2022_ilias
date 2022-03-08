@@ -1,5 +1,4 @@
 <launch>
-
   <node pkg="omni_wheelctrl" type="omni_wheelctrl" name="omni_wheelctrl" output="screen">
     <param name="control_frequency" value="50"/>
     <param name="lost_time_threshold" value="500"/>
@@ -7,14 +6,15 @@
     <param name="gazebo_mode" value="false"/>
   </node>
 
+  <!-- hardware boot -->
   <include file="$(find nhk2022_launcher)/launch/R2/bringup/activate_wheel_R2.launch"/>
-  <include file="$(find nhk2022_launcher)/launch/R2/bringup/accessories_driver.launch"/>
+  <include file="$(find nhk2022_launcher)/launch/R2/bringup/accesories_driver_R2.launch"/>
 
   <node pkg="joy" type="joy_node" name="joy_node"/> 
 
   <node pkg="joy_commander" type="joy_commander" name="joy_commander" output="screen">
       <param name="control_frequency" value="50"/>
-      <param name = "acc_lim_xy" value = "1000.0" />
+      <param name = "acc_lim_xy" value = "1.0" />
       <param name = "max_vel_xy" value = "1.0" />
       <param name = "acc_lim_theta" value = "1.57" />
       <param name = "max_vel_theta" value = "3.14" />
@@ -22,9 +22,7 @@
   </node>
 
   <!-- task_selector -->
-  <node pkg="nhk2022_launcher" type="task_selector.py" name="task_selector"/>
-  <node pkg="nhk2022_launcher" type="accessories_controler.py" name="accessories_conttoler"/>
-  
+  <node pkg="nhk2022_launcher" type="task_selector.py" name="task_selector"/>  
 
   <!-- WebGUI -->
     <!-- <include file="$(find nhk2022_webgui)/launch/server.launch">

@@ -19,13 +19,7 @@
         <param name = "port" value = "/dev/serial/by-id/usb-STMicroelectronics_STM32_STLink_066FFF515055657867244552-if02"/>
         <remap from = "/Serial_sub_float" to = "/table_controler_commands" />
     </node> -->
-
-    <!-- kabu unit mbed serial -->
-    <!-- 066BFF333535554157133731 -->
-<!-- 446 0667FF303435554157104017 -->
-<!--  066FFF303435554157121318-->
-
+    
   <!-- accessories controler -->
   <node pkg="nhk2022_launcher" type="accessories_controler.py" name="accessories_controler"/>
-
 </launch>

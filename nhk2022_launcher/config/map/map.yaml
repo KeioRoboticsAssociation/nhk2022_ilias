@@ -1,6 +1,6 @@
 image: nhkmap_2022.png
 resolution: 0.05
-origin: [2.000000, 7.500000, 0.000000] #ロボットの初期位置にした
+origin: [-2.000000, -7.500000, 0.000000] #ロボットの初期位置にした
 negate: 0
 occupied_thresh: 0.65
 free_thresh: 0.196

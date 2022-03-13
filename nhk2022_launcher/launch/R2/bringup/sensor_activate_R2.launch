@@ -6,13 +6,6 @@
     <param name="publish_tf" value="false"/>
     <param name="mode" value="imu" />
   </node>
-  <!-- <node name="rplidarNode"  pkg="rplidar_ros"  type="rplidarNode" output="screen">
-    <param name="serial_port"   type="string" value="/dev/ttyUSB1"/>
-    <param name="serial_baudrate"     type="int"    value="256000" />
-    <param name="frame_id"            type="string" value="laser"/>
-    <param name="inverted"            type="bool"   value="false"/>
-    <param name="angle_compensate"    type="bool"   value="true"/>
-  </node> -->
 
   <!--LiDAR-->
   <!--RPlidar-->
@@ -24,7 +17,7 @@
     <param name="angle_compensate"    type="bool"   value="true"/> -->
     
   <!-- sick -->
-  <!-- <include file="$(find sick_scan)/launch/sick_tim_5xx.launch" /> -->
+  <include file="$(find sick_scan)/launch/sick_tim_5xx.launch" />
 
   <!-- inverted_laser -->
   <!-- git clone https://github.com/timkambic/invert_laser.git -->

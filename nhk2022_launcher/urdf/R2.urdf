@@ -2,7 +2,9 @@
 
   <link name="bno055" />
 
-  <link name="laser" />
+  <link name="laser1" />
+
+  <link name="laser2" />
 
   <link name="base_footprint" />
 
@@ -12,11 +14,17 @@
     <origin xyz="0.0 0.0 0.0" rpy="0 -0 0" />
   </joint>
 
-  <joint name="laser_link_joint" type="fixed">
+  <joint name="laser1_link_joint" type="fixed">
     <parent link="base_footprint" />
-    <child link="laser" />
+    <child link="laser1" />
     <origin xyz="0.16 0.16 0.0" rpy="0 -0 0" />
   </joint>
+
+  <joint name="laser2_link_joint" type="fixed">
+    <parent link="base_footprint" />
+    <child link="laser2" />
+    <origin xyz="0.16 0.16 0.0" rpy="0 -0 0" />
+  </joint> 
 
 
 </robot>

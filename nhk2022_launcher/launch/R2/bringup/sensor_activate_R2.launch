@@ -17,7 +17,9 @@
     <param name="angle_compensate"    type="bool"   value="true"/> -->
     
   <!-- sick -->
-  <include file="$(find sick_scan)/launch/sick_tim_5xx.launch" />
+  <include file="$(find sick_scan)/launch/sick_tim_5xx.launch" >
+    <arg name="frame_id" value="laser1" /> 
+  </include>
 
   <!-- inverted_laser -->
   <!-- git clone https://github.com/timkambic/invert_laser.git -->

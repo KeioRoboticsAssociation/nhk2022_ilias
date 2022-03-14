@@ -38,14 +38,13 @@
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
     <param name="robot_description" textfile="$(find nhk2022_launcher)/urdf/R2.urdf" />
     
-    <!-- sensors and mbed devices -->
+    <!-- hardware boot -->
     <!-- <include file="$(find nhk2022_launcher)/launch/R2/bringup/sensor_activate_R2.launch"/> -->
 
     <include file="$(find nhk2022_launcher)/launch/R2/bringup/activate_wheel_R2.launch"/>
 
     <!-- <include file="$(find nhk2022_launcher)/launch/R2/bringup/accessories_driver.launch"/> -->
 
-    <!-- controller -->
     <node pkg="omni_wheelctrl" type="omni_wheelctrl" name="omni_wheelctrl" output="screen">
       <param name="control_frequency" value="$(arg control_frequency)"/>
       <param name="base_frame_id" value="$(arg base_frame_id)"/>

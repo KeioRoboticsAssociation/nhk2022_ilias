@@ -3,8 +3,14 @@
   <arg name="mode" default="real"/>
   <arg name="control_frequency" default="50" />
   <arg name="base_frame_id" default="base_footprint" />
-  <arg name="localization_method" default="odom" />
-  
+
+  <!-- wheel controler -->
+  <node pkg="omni_wheelctrl" type="omni_wheelctrl" name="omni_wheelctrl" output="screen">
+    <param name="control_frequency" value="50"/>
+    <param name="lost_time_threshold" value="500"/>
+    <param name="body_width" value="0.440"/>
+    <param name="gazebo_mode" value="false"/>
+  </node>
 
   <!-- bringup -->
   <include file="$(find nhk2022_launcher)/launch/R2/bringup/bringup_R2.launch">
@@ -47,20 +53,12 @@
   </group>
   
   <group if="$(eval localization_method=='odom')">
-    <node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="0 0 0 0 0 0 map odom 1" />
+    <node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="5.450 11.500 0 -1.570796 0 0 map odom 1" />
   </group>
 
   <!-- task_selector -->
   <node pkg="nhk2022_launcher" type="task_selector.py" name="task_selector"/>
 
-  <!-- SLAM -->
-  <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" clear_params="true">
-    <rosparam command="load" file="$(find nav_lecture)/config/gmapping.yaml" />
-    <remap from="scan" to="front_laser/scan" />
-    <param name="base_frame" value="$(arg base_frame_id)" />
-    <param name="odom_frame" value="odom" />
-    <param name="map_frame"  value="map" />
-  </node>
 
   <!-- WebGUI -->
     <!-- <include file="$(find nhk2022_webgui)/launch/server.launch">

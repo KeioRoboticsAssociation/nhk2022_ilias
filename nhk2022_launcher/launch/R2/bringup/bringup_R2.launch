@@ -39,8 +39,7 @@
     <param name="robot_description" textfile="$(find nhk2022_launcher)/urdf/R2.urdf" />
     
     <!-- hardware boot -->
-    <!-- <include file="$(find nhk2022_launcher)/launch/R2/bringup/sensor_activate_R2.launch"/> -->
-
+    <include file="$(find nhk2022_launcher)/launch/R2/bringup/sensor_activate_R2.launch"/>
     <include file="$(find nhk2022_launcher)/launch/R2/bringup/activate_wheel_R2.launch"/>
 
     <!-- <include file="$(find nhk2022_launcher)/launch/R2/bringup/accessories_driver.launch"/> -->

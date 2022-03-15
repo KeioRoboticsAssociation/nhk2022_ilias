@@ -16,7 +16,7 @@
 
   <!-- laser filter config -->
   <arg name="use_laser_filter" default="false"/>
-  <arg name="laser_filter_file" default="laser_filter_DR.yaml"/>  
+  <arg name="laser_filter_file" default="laser_filter_R2.yaml"/>  
 
   <!-- ekf config -->
   <arg name="use_ekf_localization" default="false"/>
@@ -27,7 +27,7 @@
   <arg name="localization_method" default="amcl"/>
 
   <!-- bringup -->
-  <include file="$(find nhk2022_launcher)/launch/DR/bringup/bringup_DR.launch">
+  <include file="$(find nhk2022_launcher)/launch/R2/bringup/bringup_R2.launch">
     <arg name="mode" value="$(arg mode)" />
     <arg name="control_frequency" value="$(arg control_frequency)" />
     <arg name="base_frame_id" value="$(arg base_frame_id)" />
@@ -38,7 +38,7 @@
     <arg name="control_frequency" value="$(arg control_frequency)" />
     <arg name="use_tf" value="true" />
     <arg name="angle_source" value="imu" />
-    <arg name="csv_path" value="$(find nhk2022_launcher)/config/waypoints/DR" />
+    <arg name="csv_path" value="$(find nhk2022_launcher)/config/waypoints/R2" />
     <arg name="acc_lim_xy" value="$(arg acc_lim_xy)" />
     <arg name="max_vel_xy" value="$(arg max_vel_xy)" /><!--3.0-->
     <arg name="acc_lim_theta" value="$(arg acc_lim_theta)" />
@@ -77,6 +77,7 @@
       <arg name="initial_pose_a" value="-1.570796"/>
     </include>
   </group>
+  
   <group if="$(eval localization_method=='odom')">
     <node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="5.450 11.500 0 -1.570796 0 0 map odom 1" />
   </group>
@@ -86,7 +87,7 @@
 
   <!-- WebGUI -->
   <include file="$(find nhk2022_webgui)/launch/server.launch">
-    <arg name="name" value="roswww_DR"/>
+    <arg name="name" value="roswww_R2"/>
   </include>
 
 </launch>

@@ -16,15 +16,15 @@
 <xacro:property name="b_d" value="0.05"/>
 
 <link name="wheel_${rl}_round_table">
-   <visual>
-　　<geometry>
-　　　<box size="${b_d} ${b_w} ${b_h}" />
-     </geometry>
+  <visual>
+    <geometry>
+      <box size="${b_d} ${b_w} ${b_h}" />
+    </geometry>
   </visual>
-   <collision>
-　　<geometry>
-　　　<box size="${b_d*0.95} ${b_w*0.95} ${b_h*0.95}" />
-     </geometry>
+  <collision>
+    <geometry>
+      <box size="${b_d*0.95} ${b_w*0.95} ${b_h*0.95}" />
+    </geometry>
   </collision>
   <inertial>
      <origin xyz="0 0 0" rpy="0 0 0" />
@@ -36,26 +36,27 @@
 </link>
 
 <link name="wheel_${rl}">
-<visual>
-  <geometry>
-     <cylinder length="${wheel_height}" radius="${wheel_radius}" />
-  </geometry>
-</visual>
-   <collision>
-　　<geometry>
-　　　<cylinder radius="${wheel_radius}" length="${wheel_height}" />
-     </geometry>
+  <visual>
+    <geometry>
+      <cylinder length="${wheel_height}" radius="${wheel_radius}" />
+    </geometry>
+  </visual>
+  <collision>
+    <geometry>
+      <cylinder radius="${wheel_radius}" length="${wheel_height}" />
+    </geometry> 
   </collision>
   <inertial>
-     <origin xyz="0 0 0" rpy="0 0 0" />
-     <mass value="${wheel_mass}" />
-    <inertia ixx="${wheel_mass*(3*wheel_radius*wheel_radius+wheel_height*wheel_height)/12}" 
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="${wheel_mass}" />
+      <inertia ixx="${wheel_mass*(3*wheel_radius*wheel_radius+wheel_height*wheel_height)/12}" 
         ixy="0"  ixz="0"
         iyx="0"  iyy="${wheel_mass*(3*wheel_radius*wheel_radius+wheel_height*wheel_height)/12}" 
-         iyz="0"
-         izx="0"  izy="0"  izz="${wheel_mass*(wheel_radius*wheel_radius)/2}" />
+        iyz="0"
+        izx="0"  izy="0"  izz="${wheel_mass*(wheel_radius*wheel_radius)/2}" />
   </inertial>
 </link>
+
 <joint name="wheel_${rl}_joint" type="continuous">
   <parent link="wheel_${rl}_round_table" />
   <child link="wheel_${rl}" />

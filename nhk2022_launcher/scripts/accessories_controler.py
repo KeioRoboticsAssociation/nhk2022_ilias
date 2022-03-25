@@ -4,13 +4,14 @@
 import rospy
 
 from sensor_msgs.msg import Joy
+from rogi_link_msgs.msg import RogiLink
 # from std_msgs.msg import Bool
 from std_msgs.msg import Float32MultiArray
 
 class Accessories_Controller():
     def __init__(self):
         self.joy_sub = rospy.Subscriber("joy", Joy, self.Joycallback)
-        self.accessories_controler_pub= rospy.Publisher('/accessories_controler_commands', Float32MultiArray ,queue_size=1)
+        self.serial_pub= rospy.Publisher('/serial_pub', Float32MultiArray ,queue_size=1)
         # self.elevator_controler_pub= rospy.Publisher('/elevator_controler_commands', Float32MultiArray ,queue_size=1)
         # self.table_controler_pub= rospy.Publisher('/table_controler_commands', Float32MultiArray ,queue_size=1)
         self.ball_catcher_vertical_flag=False

@@ -20,7 +20,6 @@ const char MZSV_1 = 0x10;//First Servo Motor in the Magazine
 const char MZSV_2 = 0x11;//Second Servo Motor in the Magazine
 const char MZSV_3 = 0x12;//Third Servo Motor in the Magazine 
 
-
 class Throw_Ball_Commander
 {
     public:
@@ -43,10 +42,36 @@ class Throw_Ball_Commander
     
 
     //Publishers for real
-    ros::Publisher pub_ctrl;
-    
+    ros::Publisher pub_aim;//publisher for aiming target
+    ros::Publisher pub_fire;//publisher for shot and charge
 
     //Subscrivers
     ros::Subscriber sub_target;
+    ros::Subscriber sub_cmd;
 
+    //Configurations;
+    int loop_rate;
+    float neck_length;
+    int lost_time_threshold;
+    bool gazebo_mode;
+
+    //variables;
+    float omega;
+    float target_x;
+    float target_y;
+
+    //flags
+    bool emergency_stop_flag;
+    bool fire_flag;
+
+    // Timers
+    std::chrono::system_clock::time_point last_sub_vel_time;
+
+
+    //Methods
+    void init_drivers();
+    void init_variables();
+    
+    void reset();
+    void update();
 }

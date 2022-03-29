@@ -11,8 +11,8 @@
   </include>
 
   <!-- WebGUI -->
-  <include file="$(find nhk2022_webgui)/launch/server.launch">
+  <!-- <include file="$(find nhk2022_webgui)/launch/server.launch">
     <arg name="name" value="roswww_R2"/>
-  </include>
+  </include> -->
   
 </launch>

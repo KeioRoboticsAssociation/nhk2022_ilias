@@ -24,6 +24,6 @@
   </group>    -->
 
   <!-- mbed serial -->
-  <node pkg="serial_ros" name="rogi_link" type="rogi_link_node" output="screen" respawn="true"/>
+  <!-- <node pkg="serial_ros" name="rogi_link" type="rogi_link_node" output="screen" respawn="true"/> -->
 
 </launch>

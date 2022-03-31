@@ -39,8 +39,12 @@
     <param name="robot_description" textfile="$(find nhk2022_launcher)/urdf/R2.urdf" />
     
     <!-- hardware boot -->
-    <include file="$(find nhk2022_launcher)/launch/R2/bringup/sensor_activate_R2.launch"/>
-    <include file="$(find nhk2022_launcher)/launch/R2/bringup/activate_wheel_R2.launch"/>
+    <!-- <include file="$(find nhk2022_launcher)/launch/R2/bringup/sensor_activate_R2.launch"/> -->
+    <!-- <include file="$(find nhk2022_launcher)/launch/R2/bringup/activate_wheel_R2.launch"/> -->
+    <node pkg="serial_ros" name="rogi_link" type="rogi_link_node" output="screen" respawn="true">
+      <param name="control_frequency" value="$(arg control_frequency)"/>
+      <param name="port" value="/dev/ttyUSB1"/>
+    </node>
 
     <!-- <include file="$(find nhk2022_launcher)/launch/R2/bringup/accessories_driver.launch"/> -->
 
@@ -52,12 +56,19 @@
       <param name="gazebo_mode" value="false"/>
     </node>
 
-    <node pkg="omni_odom_publisher" type="omni_odom_publisher" name="omni_odom_publisher" output="screen">
+    <!-- <node pkg="omni_odom_publisher" type="omni_odom_publisher" name="omni_odom_publisher" output="screen">
       <param name="control_frequency" value="$(arg control_frequency)"/>
       <param name="base_frame_id" value="$(arg base_frame_id)"/>
       <param name="body_width" value="0.440"/>
       <param name="body_height" value="0.440"/>
-    </node>
+    </node> -->
+
+    <!-- <node pkg="measure_wheel_odom_publisher" type="measure_wheel_odom_publisher" name="measure_wheel_odom_publisher" output="screen">
+      <param name="control_frequency" value="$(arg control_frequency)"/>
+      <param name="base_frame_id" value="$(arg base_frame_id)"/>
+      <param name="c_w_distance" value="0.16">
+    </node> -->
+
 
   </group>
 

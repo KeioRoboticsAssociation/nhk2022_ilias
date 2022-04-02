@@ -1,7 +1,7 @@
 <launch>
   <!-- params -->
   <arg name="mode" default="real"/>
-  <arg name="control_frequency" default="50" />
+  <arg name="control_frequency" default="10" />
   <arg name="base_frame_id" default="base_footprint" />
 
   <include file="$(find nhk2022_launcher)/launch/R2/bringup/bringup_R2.launch">

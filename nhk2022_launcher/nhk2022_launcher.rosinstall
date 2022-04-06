@@ -11,6 +11,10 @@
     uri: https://github.com/KeioRoboticsAssociation/wheelctrl_ros.git
     version: main
 - git:
-    local-name: serial_test
-    uri: https://github.com/moden3/serial_test.git
+    local-name: serial_ros
+    uri: https://github.com/KeioRoboticsAssociation/serial_ros.git
+    version: master
+- git:
+    local-name: rogi_link_msgs
+    uri: https://github.com/KeioRoboticsAssociation/rogi_link_msgs.git
     version: master

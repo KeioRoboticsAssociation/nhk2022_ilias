@@ -22,6 +22,7 @@ git clone https://github.com/KeioRoboticsAssociation/wheelctrl.git
 git clone https://github.com/anhquanvgu/bno055_usb_stick.git
 git clone https://github.com/yoshito-n-students/bno055_usb_stick_msgs.git
 git clone https://github.com/KeioRoboticsAssociation/serial_ros.git
+git clone https://github.com/KeioRoboticsAssociation/rogi_link_msgs.git
 git clone https://github.com/pal-robotics/realsense_gazebo_plugin.git
 git clone https://github.com/tork-a/roswww.git
 ```

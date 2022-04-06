@@ -11,6 +11,9 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
+  geometry_msgs
+  tf
+  rogi_link_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -204,3 +207,8 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+
+
+add_executable(throw_ball_commander src/main.cpp)
+target_link_libraries(throw_ball_commander ${catkin_LIBRARIES})
+add_dependencies(throw_ball_commander ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})

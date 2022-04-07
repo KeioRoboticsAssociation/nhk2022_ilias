@@ -13,11 +13,9 @@ Throw_Ball_Commander::Throw_Ball_Commander(ros::NodeHandle &_nh,int &_loop_rate,
     ROS_INFO_STREAM("motor_click: " << motor_click);
     ROS_INFO_STREAM("luck_click: " << luck_click);
 
-    init_variables();
     sub_target = nh.subscribe("/target",1,&Throw_Ball_Commander::target_sub_callback,this);
     sub_shot = nh.subscribe("/shot",1,&Throw_Ball_Commander::shot_flag_callback,this);
-    sub_emergency_stop = nh.subscribe("/emergency_stop_flag", 1,
-                                &Throw_Ball_Commander::emergency_stop_callback, this);
+    sub_emergency_stop = nh.subscribe("/emergency_stop_flag", 1, &Throw_Ball_Commander::emergency_stop_callback, this);
     last_sub_vel_time = std::chrono::system_clock::now();
 
     update();
@@ -26,12 +24,39 @@ Throw_Ball_Commander::Throw_Ball_Commander(ros::NodeHandle &_nh,int &_loop_rate,
 //initializers
 void Throw_Ball_Commander::init_drivers()
 {
+    rogi_link_msgs::RogiLink init_msg;
 
+    init_msg.id = LRMD << 6 | 0x02;
+    init_msg.data[0] = 1;
+    pub_ctrl.publish(init_msg);
+
+    init_msg.id = RRMD << 6 | 0x02;
+    init_msg.data[0] = 1;
+    pub_ctrl.publish(init_msg);
+
+    init_msg.id = NKUD << 6 | 0x02;
+    init_msg.data[0] = 1;
+    pub_ctrl.publish(init_msg);
+
+    init_msg.id = NKRL << 6 | 0x02;
+    init_msg.data[0] = 1;
+    pub_ctrl.publish(init_msg);
+
+    init_msg.id = MZSV << 6 | 0x02;
+    init_msg.data[0] = 1;
+    pub_ctrl.publish(init_msg);
 }
 
 void Throw_Ball_Commander::init_variables()
 {
-
+    target_x = 0;
+    target_y = 0;
+    target_distance = 0;
+    target_theta = 0;
+    
+    emergency_stop_flag = false;
+    connection_flag = false;
+    fire_flag = false;
 }
 
 //publishers
@@ -48,19 +73,33 @@ void Throw_Ball_Commander::shot_commander()
 //subscribers
 void Throw_Ball_Commander::target_sub_callback(const geometry_msgs::Twist::ConstPtr &cmd_vel)
 {
-    
+    target_x = 0;
+    target_y = 0;
+    target_distance = 0;
+    target_theta = 0;
+
+    emergency_stop_flag = !emergency_stop_flag;
 }
 
 void Throw_Ball_Commander::shot_flag_callback(const std_msgs::Bool::ConstPtr &msg)
 {
-
+    fire_flag = msg->data;
 }
 
 void Throw_Ball_Commander::emergency_stop_callback(const std_msgs::Empty::ConstPtr &msg)
 {
+    target_x = 0;
+    target_y = 0;
+    target_distance = 0;
+    target_theta = 0;
 
+    emergency_stop_flag = !emergency_stop_flag;
 }
 
+void Throw_Ball_Commander::ConnectionFlagCallback(const std_msgs::Bool::ConstPtr &msg)
+{
+    connection_flag= msg->data;
+}
 //caliculators
 void Throw_Ball_Commander::convert_theta_to_click()
 {
@@ -69,14 +108,53 @@ void Throw_Ball_Commander::convert_theta_to_click()
 
 void Throw_Ball_Commander::cal_aimming()
 {
+    
+}
 
+bool Throw_Ball_Commander::isSubscribed() {
+    auto current_time = std::chrono::system_clock::now();
+    const auto vel_elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(
+                             current_time - last_sub_vel_time).count();
+
+    if (vel_elapsed < lost_time_threshold) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 void Throw_Ball_Commander::reset()
 {
+    ROS_ERROR_ONCE("throw_ball_commander: unable to subscribe topics. Reset variables...");
 
+    target_x = 0;
+    target_y = 0;
+    target_distance = 0;
+    target_theta = 0;
 }
+
 void Throw_Ball_Commander::update()
 {
-    
+    ros::Rate r(loop_rate);
+
+    while(ros::ok() && connection_flag==false){
+        ROS_WARN_ONCE("waiting for serial connection");
+        ros::spinOnce();
+        r.sleep();
+    }
+
+    ROS_INFO("serial connected");
+    init_drivers();
+    init_variables();
+
+    while(ros::ok())
+    {
+        if(isSubscribed())
+        {
+
+        }else
+        {
+            reset();
+        }
+    }
 }

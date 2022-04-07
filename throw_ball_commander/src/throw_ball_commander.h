@@ -15,14 +15,11 @@
 
 
 // Hard IDs
-const char RRMD = 0x0a;//Right Roller
-const char LRMD = 0x0b;//Left Roller
-const char NKUD = 0x0c;//Neck Motor Up-Down
-const char NKRL = 0x0d;//Neck Motor Right-Left
-const char MZSV_1 = 0x10;//First Servo Motor in the Magazine
-const char MZSV_2 = 0x11;//Second Servo Motor in the Magazine
-const char MZSV_3 = 0x12;//Third Servo Motor in the Magazine 
-
+const char RRMD = 0x07;//Right Roller
+const char LRMD = 0x06;//Left Roller
+const char NKUD = 0x0F;//Neck Motor Up-Down
+const char NKRL = 0x10;//Neck Motor Right-Left
+const char MZSV = 0x0E;//First Servo Motor in the Magazine 
 
 class Throw_Ball_Commander
 {
@@ -39,9 +36,7 @@ class Throw_Ball_Commander
     //Publishers for gazebo    
 
     //Publishers for real
-    ros::Publisher pub_aim;//publisher for aiming target
-    ros::Publisher pub_roll;//publisher for roller
-    ros::Publisher pub_fire;//publisher for shot and charge
+    ros::Publisher pub_ctrl;//publisher for aiming target
 
     //Subscrivers
     ros::Subscriber sub_target;
@@ -82,10 +77,12 @@ class Throw_Ball_Commander
     void target_sub_callback(const geometry_msgs::Twist::ConstPtr &cmd_vel);
     void shot_flag_callback(const std_msgs::Bool::ConstPtr &msg);
     void emergency_stop_callback(const std_msgs::Empty::ConstPtr &msg);
+    void ConnectionFlagCallback(const std_msgs::Bool::ConstPtr &msg);
     //caliculators
     void convert_theta_to_click();
     void cal_aimming();
 
+    bool isSubscribed();
     void reset();
     void update();
 };

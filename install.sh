@@ -49,11 +49,10 @@ chmod +x ./bezier_path_planning_pursuit/action/PursuitPath.action
 
 ## install pyrealsense2
 sudo apt install python3-pip
-pip3 install pyrealsense2
+# pip install pyrealsense2
 
 ## Build
-echo "4/4 catkin_make"
-cd ../../
-catkin_make
+echo "4/4 catkin build"
+catkin build
 
 echo "Installing finished successfully."

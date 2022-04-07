@@ -8,8 +8,11 @@
 #include <std_msgs/Float32MultiArray.h>
 #include <std_msgs/Float64.h>
 #include <std_msgs/Empty.h>
+#include <std_msgs/Bool.h>
 #include <geometry_msgs/Twist.h>
-#include "rogi_link_msgs/RogiLink.h"
+//#include "rogi_link_msgs/RogiLink.h"
+#include <math.h>
+
 
 // Hard IDs
 const char RRMD = 0x0a;//Right Roller
@@ -25,7 +28,7 @@ class Throw_Ball_Commander
 {
     public:
     //Constructor & Destructor
-    Throw_Ball_Commander(ros::Nodehandle &_nh,int &_loop_rate, int &_lost_time_threshold
+    Throw_Ball_Commander(ros::NodeHandle &_nh,int &_loop_rate, int &_lost_time_threshold,
                         float &_neck_length, float & _rise_rate,float &_motor_click, float &_luck_click);
     ~Throw_Ball_Commander(){};
     
@@ -42,7 +45,7 @@ class Throw_Ball_Commander
     //Subscrivers
     ros::Subscriber sub_target;
     ros::Subscriber sub_shot;
-
+    ros::Subscriber sub_emergency_stop;
     //Configurations;
     int loop_rate;
     int lost_time_threshold;
@@ -75,12 +78,13 @@ class Throw_Ball_Commander
     void aim_commander();
     void shot_commander();
     //subscribers
-    void target_sub_callback();
-    void shot_flag_callback();
+    void target_sub_callback(const geometry_msgs::Twist::ConstPtr &cmd_vel);
+    void shot_flag_callback(const std_msgs::Bool::ConstPtr &msg);
+    void emergency_stop_callback(const std_msgs::Empty::ConstPtr &msg);
     //caliculators
-    void convert_theta_t0_click();
+    void convert_theta_to_click();
     void cal_aimming();
 
     void reset();
     void update();
-}
+};

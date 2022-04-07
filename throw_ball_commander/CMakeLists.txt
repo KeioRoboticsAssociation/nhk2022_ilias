@@ -121,6 +121,7 @@ catkin_package(
 include_directories(
 # include
   ${catkin_INCLUDE_DIRS}
+  rogi_link_msgs
 )
 
 ## Declare a C++ library

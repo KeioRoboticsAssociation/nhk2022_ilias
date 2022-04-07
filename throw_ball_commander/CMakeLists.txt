@@ -210,6 +210,6 @@ include_directories(
 # catkin_add_nosetests(test)
 
 
-add_executable(throw_ball_commander src/main.cpp)
+add_executable(throw_ball_commander src/main.cpp src/throw_ball_commander.cpp)
 target_link_libraries(throw_ball_commander ${catkin_LIBRARIES})
 add_dependencies(throw_ball_commander ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})

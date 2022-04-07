@@ -16,7 +16,11 @@ Throw_Ball_Commander::Throw_Ball_Commander(ros::NodeHandle &_nh,int &_loop_rate,
     init_variables();
     sub_target = nh.subscribe("/target",1,&Throw_Ball_Commander::target_sub_callback,this);
     sub_shot = nh.subscribe("/shot",1,&Throw_Ball_Commander::shot_flag_callback,this);
+    sub_emergency_stop = nh.subscribe("/emergency_stop_flag", 1,
+                                &Throw_Ball_Commander::emergency_stop_callback, this);
     last_sub_vel_time = std::chrono::system_clock::now();
+
+    update();
 }
 
 //initializers

@@ -10,7 +10,7 @@
 #include <std_msgs/Empty.h>
 #include <std_msgs/Bool.h>
 #include <geometry_msgs/Twist.h>
-//#include "rogi_link_msgs/RogiLink.h"
+#include "rogi_link_msgs/RogiLink.h"
 #include <math.h>
 
 
@@ -40,6 +40,7 @@ class Throw_Ball_Commander
 
     //Publishers for real
     ros::Publisher pub_aim;//publisher for aiming target
+    ros::Publisher pub_roll;//publisher for roller
     ros::Publisher pub_fire;//publisher for shot and charge
 
     //Subscrivers

@@ -73,12 +73,12 @@ void Throw_Ball_Commander::shot_commander()
 //subscribers
 void Throw_Ball_Commander::target_sub_callback(const geometry_msgs::Twist::ConstPtr &cmd_vel)
 {
-    target_x = 0;
-    target_y = 0;
+    target_x = cmd_vel->linear.x;
+    target_y = cmd_vel->linear.y;
+
     target_distance = 0;
     target_theta = 0;
 
-    emergency_stop_flag = !emergency_stop_flag;
 }
 
 void Throw_Ball_Commander::shot_flag_callback(const std_msgs::Bool::ConstPtr &msg)
@@ -90,8 +90,8 @@ void Throw_Ball_Commander::emergency_stop_callback(const std_msgs::Empty::ConstP
 {
     target_x = 0;
     target_y = 0;
-    target_distance = 0;
-    target_theta = 0;
+    target_distance = target_x * target_x + target_y * target_y;
+    target_theta = atan(target_y/target_x);
 
     emergency_stop_flag = !emergency_stop_flag;
 }

@@ -42,7 +42,7 @@
     <!-- <include file="$(find nhk2022_launcher)/launch/R2/bringup/sensor_activate_R2.launch"/> -->
     <!-- <include file="$(find nhk2022_launcher)/launch/R2/bringup/activate_wheel_R2.launch"/> -->
     <node pkg="serial_ros" name="rogi_link" type="rogi_link_node" output="screen" respawn="true">
-      <!-- <param name="control_frequency" value="$(arg control_frequency)"/> -->
+      <!-- <param name="looprate" value="$(arg  control_frequency)"/> -->
       <param name="control_frequency" value="200"/>
       <param name="port" value="/dev/ttyUSB0"/>
     </node>

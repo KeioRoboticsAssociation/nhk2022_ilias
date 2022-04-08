@@ -1,7 +1,15 @@
 <?xml version="1.0"?>
 <robot name="odm_robot" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:include filename="$(find nhk2022_simulator)/urdf/lidar.urdf.xacro" />
+  <xacro:include filename="$(find nhk2022_simulator)/urdf/imu.urdf.xacro" />
 
+  <xacro:property name="PI" value="3.1415926535897931"/>
+  <xacro:property name="b_m" value="5.58"/>
+  <xacro:property name="b_m2" value="${b_m/12}"/><!--for calculation of inertia-->
   <xacro:property name="b_w" value="0.60"/>
+  <xacro:property name="b_h" value="1.20"/>
+  <xacro:property name="b_d" value="0.60"/>
+  <xacro:property name="lidar_w" value="0.64"/>
 
   <material name="red">
     <color rgba="0.2 0 0 1"/>
@@ -15,24 +23,23 @@
     <origin xyz="0 0 0.05" rpy="0 0 0"/>
   </joint>
   <link name="body_link">
-   <inertial>
-     <origin xyz="0 0 0.5" rpy="0 0 0"/>
-     <mass value="1"/>
-     <inertia ixx="0.1"  ixy="0"  ixz="0" iyy="0.1" iyz="0" izz="0.1" />
-   </inertial>
-   <visual>
-     <origin xyz="0 0 0" rpy="0 0 0" />
-     <geometry>
-       <cylinder radius="0.1" length="0.1"/>
-     </geometry>
-     <material name="red" />
-   </visual>
-   <collision>
-     <origin xyz="0 0 0" rpy="0 0 0"/>
-     <geometry>
-       <cylinder radius="0.1" length="0.1"/>
-     </geometry>
-   </collision>
+    <visual>
+      <geometry>
+        <box size="${b_d} ${b_w} ${b_h}" />
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+          <box size="${b_d*0.95} ${b_w*0.95} ${b_h*0.95}" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="${b_m}" />
+      <inertia ixx="${b_m2*(b_h*b_h+b_w*b_w)}" ixy="0"    ixz="0"
+                iyx="0"   iyy="${b_m2*(b_h*b_h+b_d*b_d)}"  iyz="0"
+                izx="0"   izy="0"  izz="${b_m2*(b_w*b_w+b_d*b_d)}" />
+    </inertial>
   </link>
   <gazebo reference="body_link">
     <material>Gazebo/Red</material>
@@ -40,28 +47,28 @@
     <mu2 value="0.1" />
   </gazebo>
 
-  <joint name="head_joint" type="fixed">
+  <!-- <joint name="head_joint" type="fixed">
     <parent link="base_link"/>
     <child  link="head_link"/>
     <origin xyz="0.05 0 0.12" rpy="0 0 0"/>
   </joint>
   <link name="head_link">
-   <visual>
-     <origin xyz="0 0 0" rpy="0 0 0" />
-     <geometry>
-       <cylinder radius="0.03" length="0.04"/>
-     </geometry>
-     <material name="red" />
-   </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder radius="0.03" length="0.04"/>
+      </geometry>
+      <material name="red" />
+    </visual>
   </link>
   <gazebo reference="head_link">
     <material>Gazebo/Red</material>
-  </gazebo>
+  </gazebo> -->
 
-  <xacro:laser_macro prefix="lidar1" parent="base_footprint" xyz="${b_w}/2 ${b_w}/2 0.04" />
-  <xacro:laser_macro prefix="lidar2" parent="base_footprint" xyz="-${b_w}/2 -${b_w}/2 0.04" />
+  <xacro:laser_macro prefix="lidar1" parent="base_link" xyz="${lidar_w/2} ${lidar_w/2} 0.04" rpy="0 0 ${PI/4}" />
+  <xacro:laser_macro prefix="lidar2" parent="base_link" xyz="-${lidar_w/2} -${lidar_w/2} 0.04" rpy="0 0 -${3*PI/4}" />
 
-  <xacro:imu_macro prefix="imu" parent="base_footprint" xyz="0.0 0 0.10" />
+  <xacro:imu_macro prefix="imu" parent="base_link" xyz="0.0 0 0.10" />
 
 
   <gazebo>

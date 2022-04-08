@@ -8,7 +8,7 @@
 
   <group if="$(eval mode=='simulation')">
     <!-- controller -->
-    <node pkg="omni_wheelctrl" type="omni_wheelctrl" name="omni_wheelctrl" output="screen">
+    <!-- <node pkg="omni_wheelctrl" type="omni_wheelctrl" name="omni_wheelctrl" output="screen">
       <param name="control_frequency" value="$(arg control_frequency)"/>
       <param name="lost_time_threshold" value="500"/>
       <param name="body_width" value="0.440"/>
@@ -18,15 +18,15 @@
       <remap from="control_LF" to="/simple_omni/lf_joint_velocity_controller/command" />
       <remap from="control_LB" to="/simple_omni/lb_joint_velocity_controller/command" />
       <remap from="control_RB" to="/simple_omni/rb_joint_velocity_controller/command" />
-    </node>
+    </node> -->
       
-    <node pkg="omni_odom_publisher" type="omni_odom_publisher" name="omni_odom_publisher" output="screen">
+    <!-- <node pkg="omni_odom_publisher" type="omni_odom_publisher" name="omni_odom_publisher" output="screen">
       <param name="control_frequency" value="$(arg control_frequency)"/>
       <param name="base_frame_id" value="$(arg base_frame_id)"/>
       <param name="body_width" value="0.440"/>
       <param name="initial_table_angle" value="90"/>
       <param name="gazebo_mode" value="true"/>
-    </node>
+    </node> -->
   </group>
 
   <group if="$(eval mode=='real')">

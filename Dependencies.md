@@ -21,7 +21,8 @@ cd ~/catkin_ws/src
 git clone https://github.com/KeioRoboticsAssociation/wheelctrl.git
 git clone https://github.com/anhquanvgu/bno055_usb_stick.git
 git clone https://github.com/yoshito-n-students/bno055_usb_stick_msgs.git
-git clone https://github.com/moden3/serial_test.git
+git clone https://github.com/KeioRoboticsAssociation/serial_ros.git
+git clone https://github.com/KeioRoboticsAssociation/rogi_link_msgs.git
 git clone https://github.com/pal-robotics/realsense_gazebo_plugin.git
 git clone https://github.com/tork-a/roswww.git
 ```
@@ -88,8 +89,8 @@ vcs import src < src/nhk2022_ilias/nhk2022_webgui/nhk2022_webgui.rosinstall
 - joy, joystick_drivers
 
   ```shell
-  sudo apt-get install -y ros-melodic-joy
-  sudo apt-get install -y ros-melodic-joystick-drivers
+  sudo apt-get install -y ros-noetic-joy
+  sudo apt-get install -y ros-noetic-joystick-drivers
   ```
 
   
@@ -109,13 +110,13 @@ vcs import src < src/nhk2022_ilias/nhk2022_webgui/nhk2022_webgui.rosinstall
   - robot_localization
 
     ```shell
-    sudo apt-get install -y ros-melodic-robot-localization
+    sudo apt-get install -y ros-noetic-robot-localization
     ```
 
   - navigation (amcl, map_server)
 
     ```shell
-    sudo apt-get install -y ros-melodic-navigation
+    sudo apt-get install -y ros-noetic-navigation
     ```
 
   - bno055_usb_stick
@@ -128,22 +129,22 @@ vcs import src < src/nhk2022_ilias/nhk2022_webgui/nhk2022_webgui.rosinstall
   - laser_filters
 
     ```shell
-    sudo apt-get install -y ros-melodic-laser-filters
+    sudo apt-get install -y ros-noetic-laser-filters
     ```
 
 - ROS<->mbedのシリアル通信
 
-  - serial_test
+  - serial_ros
 
     ```shell
-    git clone https://github.com/moden3/serial_test.git
+    git clone https://github.com/KeioRoboticsAssociation/serial_ros.git
     ```
 
 - joy, joystick_drivers
 
   ```shell
-  sudo apt-get install ros-melodic-joy
-  sudo apt-get install ros-melodic-joystick-drivers
+  sudo apt-get install ros-noetic-joy
+  sudo apt-get install ros-noetic-joystick-drivers
   ```
 
   
@@ -153,25 +154,25 @@ vcs import src < src/nhk2022_ilias/nhk2022_webgui/nhk2022_webgui.rosinstall
 - gazebo_ros
 
   ```shell
-  sudo apt install ros-melodic-gazebo-ros
+  sudo apt install ros-noetic-gazebo-ros
   ```
 
 - gazebo_ros_control 
 
   ```shell
-  sudo apt install ros-melodic-gazebo-ros-control 
+  sudo apt install ros-noetic-gazebo-ros-control 
   ```
 
 - ros_control
 
   ```shell
-  sudo apt install ros-melodic-ros-control
+  sudo apt install ros-noetic-ros-control
   ```
 
 - ros_controllers 
 
   ```shell
-  sudo apt install ros-melodic-ros-controllers 
+  sudo apt install ros-noetic-ros-controllers 
   ```
 
   
@@ -191,7 +192,7 @@ vcs import src < src/nhk2022_ilias/nhk2022_webgui/nhk2022_webgui.rosinstall
 - rosbridge
 
   ```shell
-  sudo apt install ros-melodic-rosbridge
+  sudo apt install ros-noetic-rosbridge
   ```
 
   roswwwの依存関係を解決する際に自動でインストールされる
@@ -199,7 +200,7 @@ vcs import src < src/nhk2022_ilias/nhk2022_webgui/nhk2022_webgui.rosinstall
 - tf2_web_republisher
 
   ```shell
-  sudo apt install ros-melodic-tf2-web-republisher 
+  sudo apt install ros-noetic-tf2-web-republisher 
   ```
 
   

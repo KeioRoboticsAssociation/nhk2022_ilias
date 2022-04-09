@@ -7,7 +7,7 @@
     <!--wheel-->
     <group if="$(eval Left)">
       <node pkg="serial_test" name="mbed_Left" type="serial_test_node" output="screen" respawn="true">
-        <param name = "port" value = "/dev/serial/by-id/usb-STMicroelectronics_STM32_STLink_066EFF303032424257010822-if02"/>
+        <param name = "port" value = "/dev/serial/by-id/usb-STMicroelectronics_STM32_STLink_066CFF303032424257013528-if02"/>
         <param name = "looprate" value = "70"/>
         <remap from = "/Serial_sub_float" to = "/control_Left"/>
         <remap from = "/Serial_pub_float" to = "/data_Left" />
@@ -16,7 +16,7 @@
 
     <group if="$(eval Right)">
       <node pkg="serial_test" name="mbed_Right" type="serial_test_node" output="screen" respawn="true">
-        <param name = "port" value = "/dev/serial/by-id/usb-STMicroelectronics_STM32_STLink_066EFF495649657867251947-if02"/>
+        <param name = "port" value = "/dev/serial/by-id/usb-STMicroelectronics_STM32_STLink_066EFF303032424257010822-if02"/>
         <param name = "looprate" value = "70"/>
         <remap from = "/Serial_sub_float" to = "/control_Right"/>
         <remap from = "/Serial_pub_float" to = "/data_Right" />

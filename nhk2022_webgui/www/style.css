@@ -1,5 +1,5 @@
 body {
-    background: #eeeeee;
+    background: #272727;
 }
 
 .header{
@@ -14,7 +14,7 @@ body {
 .block {
     flex-basis: 48%;
     text-align: center;
-    background: #ffffff;
+    background: #808080;
     padding: 10px;
     border: 1px solid #cccccc;
     margin: 10px auto;

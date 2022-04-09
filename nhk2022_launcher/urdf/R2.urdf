@@ -2,21 +2,29 @@
 
   <link name="bno055" />
 
-  <link name="laser" />
+  <link name="laser1" />
+
+  <link name="laser2" />
 
   <link name="base_footprint" />
 
   <joint name="imu_link_joint" type="fixed">
     <parent link="base_footprint" />
     <child link="bno055" />
-    <origin xyz="0.0 0.0 0.0" rpy="0 -0 0" />
+    <origin xyz="0.0 0.0 0.0" rpy="0 -0 3.1415" />
   </joint>
 
-  <joint name="laser_link_joint" type="fixed">
+  <joint name="laser1_link_joint" type="fixed">
     <parent link="base_footprint" />
-    <child link="laser" />
-    <origin xyz="0.16 0.16 0.0" rpy="0 -0 0" />
+    <child link="laser1" />
+    <origin xyz="0.48 0.48 0.0" rpy="0 -0 0.785" />
   </joint>
+
+  <joint name="laser2_link_joint" type="fixed">
+    <parent link="base_footprint" />
+    <child link="laser2" />
+    <origin xyz="-0.48 -0.48 0.0" rpy="0 -0 -2.355" />
+  </joint> 
 
 
 </robot>

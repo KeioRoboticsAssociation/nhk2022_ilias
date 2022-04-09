@@ -55,8 +55,8 @@ void Throw_Ball_Commander::init_variables()
     target_theta = 0;
 
     roller_duty = 0;
-    neckUD_duty = 0;
-    neckRL_duty = 0;
+    neckUD_cmd = 0;
+    neckRL_cmd = 0;
 
     emergency_stop_flag = false;
     connection_flag = false;
@@ -66,6 +66,20 @@ void Throw_Ball_Commander::init_variables()
 // publishers
 void Throw_Ball_Commander::aim_commander()
 {
+    rogi_link_msgs::RogiLink aimer;
+    aimer.id = RRMD << 6 | 0x04;
+    *(float *)(&aimer.data[0]) = roller_duty;
+    pub_ctrl.publish(aimer);
+
+    aimer.id = LRMD << 6 | 0x04;
+    *(float *)(&aimer.data[0]) = roller_duty;
+    pub_ctrl.publish(aimer);
+
+    aimer.id = NKUD << 6 | 0x03;
+    *(float *)(&aimer.data[0]) = neckUD_cmd;
+
+    aimer.id = NKRL << 6 | 0x03;
+    *(float *)(&aimer.data[0]) = neckRL_cmd;
 }
 
 void Throw_Ball_Commander::shot_commander()
@@ -122,6 +136,9 @@ void Throw_Ball_Commander::converter()
 
 void Throw_Ball_Commander::cal_aimming()
 {
+    roller_duty = 5;
+    neckUD_cmd = neck_length * tan(0.5 * asin(target_distance * 9.8 / 900)) / rise_rate;
+    neckRL_cmd = target_theta * luck_click / motor_click;
 }
 
 bool Throw_Ball_Commander::isSubscribed()

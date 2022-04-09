@@ -64,8 +64,8 @@ private:
     float target_theta;
 
     float roller_duty;
-    float neckUD_duty;
-    float neckRL_duty;
+    float neckUD_cmd;
+    float neckRL_cmd;
 
     // flags
     bool emergency_stop_flag;

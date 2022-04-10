@@ -1,27 +1,48 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+  <div class="allContainer">
+    <iframe src="http://localhost:8001/rvizweb/" class="rvizweb"></iframe>
+    <div class="mock"></div>
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import HelloWorld from './components/HelloWorld.vue'
 
 export default defineComponent({
-  name: 'App',
-  components: {
-    HelloWorld
-  }
+  name: 'App'
 })
 </script>
 
 <style lang="scss">
+.rvizweb {
+  display: block;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  border: 0;
+
+  flex-grow: 2;
+}
+.mock {
+  flex-grow: 1;
+}
+.allContainer {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin: 0;
 }
 </style>

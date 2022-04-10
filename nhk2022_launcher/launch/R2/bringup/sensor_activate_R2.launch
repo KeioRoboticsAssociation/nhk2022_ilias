@@ -4,7 +4,7 @@
   <node pkg="bno055_usb_stick" type="bno055_usb_stick_node" name="bno055" output="screen">
     <param name="port" value = "/dev/BNO"/>
     <param name="publish_tf" value="false"/>
-    <param name="tf_frame_id" value="base_footprint"/>
+    <param name="tf_frame_id" value="base_link"/>
     <param name="publish_tf" value="bno055"/>
     <param name="mode" value="imu" />
   </node>

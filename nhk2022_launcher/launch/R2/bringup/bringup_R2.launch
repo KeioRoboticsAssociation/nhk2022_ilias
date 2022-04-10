@@ -71,7 +71,7 @@
   </group>
 
   <!-- Joy controller -->
-  <!-- <node pkg="joy" type="joy_node" name="joy_node"/> -->
+  <node pkg="joy" type="joy_node" name="joy_node"/>
 
   <node pkg="joy_commander" type="joy_commander" name="joy_commander" output="screen">
     <param name="control_frequency" value="$(arg control_frequency)"/>

@@ -1,9 +1,9 @@
 <robot name="lidar" xmlns:xacro="http://ros.org/wiki/xacro">
-  <xacro:macro name="laser_macro" params="parent prefix xyz">
+  <xacro:macro name="laser_macro" params="parent prefix xyz rpy">
     <joint name="${prefix}_joint" type="fixed">
       <parent link="${parent}"/>
       <child  link="${prefix}_link"/>
-      <origin xyz="${xyz}" rpy="0 0 0"/>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
     </joint>
     <link name="${prefix}_link">
       <visual>

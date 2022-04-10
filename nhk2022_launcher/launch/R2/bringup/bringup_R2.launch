@@ -8,23 +8,20 @@
 
   <group if="$(eval mode=='simulation')">
     <!-- controller -->
-    <!-- <node pkg="swerve_wheelctrl" type="swerve_wheelctrl" name="swerve_wheelctrl" output="screen">
+
+    <!-- <node pkg="omni_wheelctrl" type="omni_wheelctrl" name="omni_wheelctrl" output="screen">
       <param name="control_frequency" value="$(arg control_frequency)"/>
       <param name="lost_time_threshold" value="500"/>
       <param name="body_width" value="0.440"/>
       <param name="initial_table_angle" value="90"/>
       <param name="gazebo_mode" value="true"/>
-      <remap from="control_RF" to="/simple_swerve/rf_joint_velocity_controller/command" />
-      <remap from="control_LF" to="/simple_swerve/lf_joint_velocity_controller/command" />
-      <remap from="control_LB" to="/simple_swerve/lb_joint_velocity_controller/command" />
-      <remap from="control_RB" to="/simple_swerve/rb_joint_velocity_controller/command" />
-      <remap from="control_RF_angle" to="/simple_swerve/rf_joint_angular_controller/command" />
-      <remap from="control_LF_angle" to="/simple_swerve/lf_joint_angular_controller/command" />
-      <remap from="control_LB_angle" to="/simple_swerve/lb_joint_angular_controller/command" />
-      <remap from="control_RB_angle" to="/simple_swerve/rb_joint_angular_controller/command" />
-    </node>
+      <remap from="control_RF" to="/simple_omni/rf_joint_velocity_controller/command" />
+      <remap from="control_LF" to="/simple_omni/lf_joint_velocity_controller/command" />
+      <remap from="control_LB" to="/simple_omni/lb_joint_velocity_controller/command" />
+      <remap from="control_RB" to="/simple_omni/rb_joint_velocity_controller/command" />
+    </node> -->
       
-    <node pkg="swerve_odom_publisher" type="swerve_odom_publisher" name="swerve_odom_publisher" output="screen">
+    <!-- <node pkg="omni_odom_publisher" type="omni_odom_publisher" name="omni_odom_publisher" output="screen">
       <param name="control_frequency" value="$(arg control_frequency)"/>
       <param name="base_frame_id" value="$(arg base_frame_id)"/>
       <param name="body_width" value="0.440"/>
@@ -74,7 +71,7 @@
   </group>
 
   <!-- Joy controller -->
-  <node pkg="joy" type="joy_node" name="joy_node"/>
+  <!-- <node pkg="joy" type="joy_node" name="joy_node"/> -->
 
   <node pkg="joy_commander" type="joy_commander" name="joy_commander" output="screen">
     <param name="control_frequency" value="$(arg control_frequency)"/>

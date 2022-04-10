@@ -1,21 +1,24 @@
-# nhk2022_WebGUI
+# rogi_webgui
 
-## これは何
-
-下図のようにトピックをブラウザで可視化する
-
-![](https://i.imgur.com/xCHDBmp.png)
-
-
-
-## Launch
-
-```shell
-roslaunch nhk2022_webgui server.launch
+## Project setup
+```
+npm install
 ```
 
-上記コマンドを実行後、実行したパソコンで下記リンク先にアクセスするとWebGUIを表示できる。
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
 
-http://localhost:8085/nhk2022_webgui/WebGUI.html
+### Compiles and minifies for production
+```
+npm run build
+```
 
-また、実行したパソコンと同じネットワークに接続している端末では、上記リンクの**localhost**を実行PCのIPアドレスに置き換えたリンクにアクセスすることでWebGUIを表示できる。
+### Lints and fixes files
+```
+npm run lint
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).

@@ -22,7 +22,8 @@ class Throw_Ball_Commander
 {
     public:
     //constructors and destructors
-        Throw_Ball_Commander();
+        Throw_Ball_Commander(ros::NodeHandle &_nh,int &_loop_rate,int &_lost_time_threshold,
+        float &_limit_UD, float &_limit_RL, float &_rise_rate, float &_roll_rate);
         ~Throw_Ball_Commander(){};
 
     private:
@@ -57,11 +58,46 @@ class Throw_Ball_Commander
     //Timers
         std::chrono::system_clock::time_point last_sub_vel_time;
 
-    //flags
-        bool emergency_stop_flag;
-        bool connection_flag;
+    //Variables
+        float target_x;
+        float target_y;
+
+        float target_distance;
+        float target_theta;
+
         
-        
+
+        // Flags
+        bool emergency_stop_flag;//緊急停止
+        bool connection_flag;//接続確認
+
+        bool limit_ud_flag;//リミットスイッチ上下
+        bool limit_rl_flag;//リミットスイッチ左右
+        bool init_flag;//初期化処理か否かのフラグ
+
+        bool shot_flag;//射出フラグ
+        bool reload_flag;//リロードフラグ
+
+    //Methods
+        //initializers
+        void init_drivers();
+        void init_variables();
+
+        //callbacks
+        void emergence_callback(const std_msgs::Empty::ConstPtr &msg);
+        void connection_callback(const std_msgs::Bool::ConstPtr &msg);
+        void target_callback(const geometry_msgs::Twist::ConstPtr &cmd_vel);
+        void shot_callback(const std_msgs::Bool::ConstPtr &msg);
+        void bullet_callback(const std_msgs::Bool::ConstPtr &msg);
+        void limitUD_callback(const std_msgs::Float32MultiArray &msg);
+        void limitRL_callback(const std_msgs::Float32MultiArray &msg);
+
+        //others
+        bool isSubscribed(); 
+        void pubishMsg();
+        void cal_cmd();
+        void reset();
+        void update();
 };
 // #pragma once
 

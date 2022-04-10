@@ -1,3 +1,85 @@
+#include "throw_ball_commander.h"
+
+Throw_Ball_Commander::Throw_Ball_Commander(ros::NodeHandle &_nh, int &_loop_rate, int &_lost_time_threshold,
+                                           float &_limit_UD, float &_limit_RL, float &_rise_rate, float &_roll_rate)
+                                           :nh(_nh),loop_rate(_loop_rate),lost_time_threshold(_lost_time_threshold),
+                                           limit_UD(_limit_UD),limit_RL(_limit_RL),rise_rate(_rise_rate),roll_rate(_roll_rate)
+{
+
+}
+
+// initializers
+void Throw_Ball_Commander::init_drivers()
+{
+
+}
+
+void Throw_Ball_Commander::init_variables()
+{
+
+}
+
+// callbacks
+void Throw_Ball_Commander::emergence_callback(const std_msgs::Empty::ConstPtr &msg)
+{
+
+}
+
+void Throw_Ball_Commander::connection_callback(const std_msgs::Bool::ConstPtr &msg)
+{
+
+}
+
+void Throw_Ball_Commander::target_callback(const geometry_msgs::Twist::ConstPtr &cmd_vel)
+{
+
+}
+
+void Throw_Ball_Commander::shot_callback(const std_msgs::Bool::ConstPtr &msg)
+{
+
+}
+
+void Throw_Ball_Commander::bullet_callback(const std_msgs::Bool::ConstPtr &msg)
+{
+
+}
+
+void Throw_Ball_Commander::limitUD_callback(const std_msgs::Float32MultiArray &msg)
+{
+
+}
+
+void Throw_Ball_Commander::limitRL_callback(const std_msgs::Float32MultiArray &msg)
+{
+
+}
+
+// others
+bool Throw_Ball_Commander::isSubscribed()
+{
+
+}
+
+void Throw_Ball_Commander::pubishMsg()
+{
+
+}
+
+void Throw_Ball_Commander::cal_cmd()
+{
+
+}
+
+void Throw_Ball_Commander::reset()
+{
+
+}
+
+void Throw_Ball_Commander::update()
+{
+    
+}
 // #include "throw_ball_commander.h"
 
 // Throw_Ball_Commander::Throw_Ball_Commander(ros::NodeHandle &_nh, int &_loop_rate, int &_lost_time_threshold,
@@ -189,7 +271,7 @@
 //     {
 //         if (isSubscribed())
 //         {
-            
+
 //         }
 //         else
 //         {

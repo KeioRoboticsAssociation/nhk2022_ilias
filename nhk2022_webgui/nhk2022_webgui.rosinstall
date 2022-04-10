@@ -2,3 +2,8 @@
     local-name: roswww
     uri: https://github.com/tork-a/roswww.git
     version: develop
+
+- git:
+    local-name: rvizweb
+    uri: https://github.com/KeioRoboticsAssociation/rvizweb.git
+    version: master

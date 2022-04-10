@@ -20,7 +20,7 @@
 
   <!-- Spawn the robot -->
   <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
-        args="-urdf -model simple_omni -param robot_description -x -5.2 -y 0 -z 0 -R 0 -P 0 -Y 0 " />
+        args="-urdf -model simple_omni -param robot_description -x -5.2 -y 0 -z 0.02 -R 0 -P 0 -Y 0 " />
 
   <!-- coordination changer base footprint -->
   <node name="odom_tf_publisher" pkg="nhk2022_simulator" type="odom_tf_publisher" >

@@ -1,4 +1,4 @@
-image: nhkmap_2022.png
+image: nhkmap_2022_yagami.png
 resolution: 0.05
 
 origin: [-7.50000, -7.50000, 0.000000] #ロボットの初期位置にした 31*5

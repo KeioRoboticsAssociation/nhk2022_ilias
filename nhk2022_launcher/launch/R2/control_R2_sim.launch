@@ -79,7 +79,7 @@
   </group>
   
   <group if="$(eval localization_method=='odom')">
-    <node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="5.450 11.500 0 -1.570796 0 0 map odom 1" />
+    <node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="0 0 0 0 0 0 map odom 1" />
   </group>
 
   <!-- task_selector -->

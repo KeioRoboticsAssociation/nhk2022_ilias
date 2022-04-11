@@ -39,55 +39,38 @@ source install.sh
 
   ロボットを起動するlaunchファイルが入っているパッケージ
 
-- [nhk2021_simulator](https://github.com/KeioRoboticsAssociation/nhk2021_ilias/blob/main/nhk2021_simulator/README.md)
+- [nhk2022_simulator](https://github.com/KeioRoboticsAssociation/nhk2021_ilias/blob/main/nhk2021_simulator/README.md)
 
   Gazeboによるシミュレーターを構築するためのファイルが入っているパッケージ
 
-- [nhk2021_webgui](https://github.com/KeioRoboticsAssociation/nhk2021_ilias/blob/main/nhk2021_webgui/README.md)
+- [nhk2022_webgui](https://github.com/KeioRoboticsAssociation/nhk2021_ilias/blob/main/nhk2021_webgui/README.md)
 
   WebGUIを起動するためのファイルが入っているパッケージ
 
-- [pot_position_estimator](https://github.com/KeioRoboticsAssociation/nhk2021_ilias/blob/main/pot_position_estimator/README.md)
-
-  RGBDカメラ (Realsense D455) を用いてポットの位置を推定するパッケージ
 
 
 ## シミュレーターの簡単な遊び方
 
 1. フィールドとロボットモデルのリスポーン
 
-- TRの場合
 
   ```
-  roslaunch nhk2021_simulator swerve_simulation_TR.launch
-  ```
-
-- DRの場合
-
-  ```
-  roslaunch nhk2021_simulator swerve_simulation_DR.launch
+  roslaunch nhk2022_simulator simulation_R2.launch
   ```
 
 2. コントローラーの起動
 
-- TR
-
   ```shell
-  roslaunch nhk2021_launcher control_TR.launch
+  roslaunch nhk2022_launcher control_R2.launch
   ```
 
-- DR
-
-  ```shell
-  roslaunch nhk2021_launcher control_DR.launch
-  ```
 
   キーコンフィグ
 
   <img src="key_config.png" width="100%"/>
 
   
-3. WebGUIのリンクは[こちら](http://localhost:8085/nhk2021_webgui/WebGUI.html)
+3. WebGUIのリンクは[こちら](http://localhost:8085/nhk2022_webgui/WebGUI.html)
 
 
 ## Lisence

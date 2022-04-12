@@ -1,8 +1,8 @@
 <launch>
   <!-- params -->
   <arg name="mode" default="real"/>
-  <arg name="control_frequency" default="50" />
-  <arg name="base_frame_id" default="base_footprint" />
+  <arg name="control_frequency" default="30" />
+  <arg name="base_frame_id" default="base_link" />
 
   <include file="$(find nhk2022_launcher)/launch/R2/bringup/bringup_R2.launch">
     <arg name="mode" value="$(arg mode)" />
@@ -11,8 +11,8 @@
   </include>
 
   <!-- WebGUI -->
-  <include file="$(find nhk2022_webgui)/launch/server.launch">
+  <!-- <include file="$(find nhk2022_webgui)/launch/server.launch">
     <arg name="name" value="roswww_R2"/>
-  </include>
+  </include> -->
   
 </launch>

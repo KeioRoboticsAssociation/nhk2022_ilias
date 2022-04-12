@@ -4,7 +4,7 @@
 
   <!--path_planning_node-->
   <arg name="control_frequency" default="50" />
-  <arg name="base_frame_id" default="base_footprint" />
+  <arg name="base_frame_id" default="base_link" />
 
   <group if="$(eval mode=='simulation')">
     <!-- controller -->

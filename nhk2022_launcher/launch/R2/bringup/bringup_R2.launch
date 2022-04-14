@@ -1,85 +1,64 @@
 <launch>
-  <!--simulation or real-->
-  <arg name="mode" default="real"/>
+    <!--simulation or real-->
+    <arg name="mode" default="real"/>
 
-  <!--path_planning_node-->
-  <arg name="control_frequency" default="50" />
-  <arg name="base_frame_id" default="base_link" />
+    <!--path_planning_node-->
+    <arg name="control_frequency" default="50" />
+    <arg name="base_frame_id" default="base_link" />
 
-  <group if="$(eval mode=='simulation')">
-    <!-- controller -->
+    <group if="$(eval mode=='simulation')">
 
-    <!-- <node pkg="omni_wheelctrl" type="omni_wheelctrl" name="omni_wheelctrl" output="screen">
-      <param name="control_frequency" value="$(arg control_frequency)"/>
-      <param name="lost_time_threshold" value="500"/>
-      <param name="body_width" value="0.440"/>
-      <param name="initial_table_angle" value="90"/>
-      <param name="gazebo_mode" value="true"/>
-      <remap from="control_RF" to="/simple_omni/rf_joint_velocity_controller/command" />
-      <remap from="control_LF" to="/simple_omni/lf_joint_velocity_controller/command" />
-      <remap from="control_LB" to="/simple_omni/lb_joint_velocity_controller/command" />
-      <remap from="control_RB" to="/simple_omni/rb_joint_velocity_controller/command" />
-    </node> -->
-      
-    <!-- <node pkg="omni_odom_publisher" type="omni_odom_publisher" name="omni_odom_publisher" output="screen">
-      <param name="control_frequency" value="$(arg control_frequency)"/>
-      <param name="base_frame_id" value="$(arg base_frame_id)"/>
-      <param name="body_width" value="0.440"/>
-      <param name="initial_table_angle" value="90"/>
-      <param name="gazebo_mode" value="true"/>
-    </node> -->
-  </group>
+    </group>
 
-  <group if="$(eval mode=='real')">
-    <!-- ################ statis tf settings ################ -->
-    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
-    <param name="robot_description" textfile="$(find nhk2022_launcher)/urdf/R2.urdf" />
-    
-    <!-- hardware boot -->
-    <!-- <include file="$(find nhk2022_launcher)/launch/R2/bringup/sensor_activate_R2.launch"/> -->
-    <!-- <include file="$(find nhk2022_launcher)/launch/R2/bringup/activate_wheel_R2.launch"/> -->
-    <node pkg="serial_ros" name="rogi_link" type="rogi_link_node" output="screen" respawn="true">
-      <!-- <param name="looprate" value="$(arg  control_frequency)"/> -->
-      <param name="control_frequency" value="200"/>
-      <param name="port" value="/dev/ttyUSB0"/>
+    <group if="$(eval mode=='real')">
+        <!-- ################ statis tf settings ################ -->
+        <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+        <param name="robot_description" textfile="$(find nhk2022_launcher)/urdf/R2.urdf" />
+
+        <!-- hardware boot -->
+        <include file="$(find nhk2022_launcher)/launch/R2/bringup/sensor_activate_R2.launch"/>
+        <node pkg="serial_ros" name="rogi_link" type="rogi_link_node" output="screen" respawn="true">
+            <!-- <param name="looprate" value="$(arg  control_frequency)"/> -->
+            <param name="control_frequency" value="200"/>
+            <param name="port" value="/dev/ttyUSB0"/>
+        </node>
+
+        <!-- <include file="$(find nhk2022_launcher)/launch/R2/bringup/accessories_driver.launch"/> -->
+
+        <node pkg="omni_wheelctrl" type="omni_wheelctrl" name="omni_wheelctrl" output="screen">
+            <param name="control_frequency" value="$(arg control_frequency)"/>
+            <param name="base_frame_id" value="$(arg base_frame_id)"/>
+            <param name="body_width" value="0.440"/>
+            <param name="body_height" value="0.440"/>
+            <param name="gazebo_mode" value="false"/>
+        </node>
+
+        <!-- <node pkg="omni_odom_publisher" type="omni_odom_publisher" name="omni_odom_publisher" output="screen">
+        <param name="control_frequency" value="$(arg control_frequency)"/>
+        <param name="base_frame_id" value="$(arg base_frame_id)"/>
+        <param name="body_width" value="0.440"/>
+        <param name="body_height" value="0.440"/>
+        </node> -->
+
+        <node pkg="measure_wheel_odom_publisher" type="measure_wheel_odom_publisher" name="measure_wheel_odom_publisher" output="screen">
+            <param name="control_frequency" value="$(arg control_frequency)"/>
+            <param name="base_frame_id" value="$(arg base_frame_id)"/>
+            <param name="c_w_distance" value="0.16">
+        </node>
+
+
+    </group>
+
+    <!-- Joy controller -->
+    <node pkg="joy" type="joy_node" name="joy_node"/>
+
+    <node pkg="joy_commander" type="joy_commander" name="joy_commander" output="screen">
+        <param name="control_frequency" value="$(arg control_frequency)"/>
+        <param name = "acc_lim_xy" value = "1.0" />
+        <param name = "max_vel_xy" value = "1.0" />
+        <param name = "acc_lim_theta" value = "1.57" />
+        <param name = "max_vel_theta" value = "0.785" />
+        <remap from = "teleopflag" to = "/task_selector/teleop_mode"/>
     </node>
-
-    <!-- <include file="$(find nhk2022_launcher)/launch/R2/bringup/accessories_driver.launch"/> -->
-
-    <node pkg="omni_wheelctrl" type="omni_wheelctrl" name="omni_wheelctrl" output="screen">
-      <param name="control_frequency" value="$(arg control_frequency)"/>
-      <param name="base_frame_id" value="$(arg base_frame_id)"/>
-      <param name="body_width" value="0.440"/>
-      <param name="body_height" value="0.440"/>
-      <param name="gazebo_mode" value="false"/>
-    </node>
-
-    <!-- <node pkg="omni_odom_publisher" type="omni_odom_publisher" name="omni_odom_publisher" output="screen">
-      <param name="control_frequency" value="$(arg control_frequency)"/>
-      <param name="base_frame_id" value="$(arg base_frame_id)"/>
-      <param name="body_width" value="0.440"/>
-      <param name="body_height" value="0.440"/>
-    </node> -->
-
-    <!-- <node pkg="measure_wheel_odom_publisher" type="measure_wheel_odom_publisher" name="measure_wheel_odom_publisher" output="screen">
-      <param name="control_frequency" value="$(arg control_frequency)"/>
-      <param name="base_frame_id" value="$(arg base_frame_id)"/>
-      <param name="c_w_distance" value="0.16">
-    </node> -->
-
-
-  </group>
-
-  <!-- Joy controller -->
-  <node pkg="joy" type="joy_node" name="joy_node"/>
-
-  <node pkg="joy_commander" type="joy_commander" name="joy_commander" output="screen">
-    <param name="control_frequency" value="$(arg control_frequency)"/>
-    <param name = "acc_lim_xy" value = "1.0" />
-    <param name = "max_vel_xy" value = "1.0" />
-    <param name = "acc_lim_theta" value = "1.57" />
-    <param name = "max_vel_theta" value = "0.785" />
-    <remap from = "teleopflag" to = "/task_selector/teleop_mode"/>
-  </node>
 
 </launch>

@@ -4,7 +4,7 @@
     <arg name="control_frequency" default="50" />
     <arg name="base_frame_id" default="base_link" />
     <arg name="use_ekf_localization" default="false"/>
-    <arg name="use_laser_filter" default="false"/>
+    <arg name="use_laser_filter" default="true"/>
     <arg name="localization_method" default="amcl"/>
 
     <!-- important config of bezier_path_planning_pursuit -->

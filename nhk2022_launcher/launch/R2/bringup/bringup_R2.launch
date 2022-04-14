@@ -43,7 +43,7 @@
         <node pkg="measure_wheel_odom_publisher" type="measure_wheel_odom_publisher" name="measure_wheel_odom_publisher" output="screen">
             <param name="control_frequency" value="$(arg control_frequency)"/>
             <param name="base_frame_id" value="$(arg base_frame_id)"/>
-            <param name="c_w_distance" value="0.16">
+            <param name="c_w_distance" value="0.16"/>
         </node>
 
 

@@ -1,12 +1,20 @@
 <template>
-  <div class="allContainer">
-    <iframe src="http://localhost:8001/rvizweb/" class="rvizweb"></iframe>
-    <div class="mock">
-      cmd_vel x: {{cmdX}}, y: {{cmdY}}
-      <p v-if="isConnected">Connected</p>
-      <p v-else>Disconnected</p>
-      <button @click="send">send!</button>
-    </div>
+  <div class="q-pa-none q-ma-none">
+    <q-layout view="lhh LpR lff" container style="height: 500px"
+      class="shadow-2 rounded-borders">
+      <q-header reveal class="bg-black">
+        <q-toolbar>
+          <q-toolbar-title>Header</q-toolbar-title>
+        </q-toolbar>
+      </q-header>
+      <div class="mock">
+        cmd_vel x: {{ cmdX }}, y: {{ cmdY }}
+        <p v-if="isConnected">Connected</p>
+        <p v-else>Disconnected</p>
+        <button @click="send">send!</button>
+      </div>
+    </q-layout>
+
   </div>
 </template>
 
@@ -24,16 +32,16 @@ const ros = new roslib.Ros({
 
 type cmdVelMsg = {
   linear: {
-    x: number,
-    y: number,
-    z: number,
-  },
-  angular:{
-    x: number,
-    y: number,
-    z: number
-  }
-}
+    x: number;
+    y: number;
+    z: number;
+  };
+  angular: {
+    x: number;
+    y: number;
+    z: number;
+  };
+};
 
 const listener = new roslib.Topic<cmdVelMsg>({
   ros,
@@ -41,12 +49,12 @@ const listener = new roslib.Topic<cmdVelMsg>({
   messageType: 'geometry_msgs/Twist'
 })
 
-listener.subscribe(msg => {
+listener.subscribe((msg) => {
   cmdX.value = msg.linear.x
   cmdY.value = msg.linear.y
 })
 
-function send () {
+function send() {
   console.log('send')
   const cmdVel = new roslib.Topic({
     ros: ros,
@@ -73,7 +81,7 @@ onMounted(() => {
     isConnected.value = true
   })
 
-  ros.on('error', error => {
+  ros.on('error', (error) => {
     console.log('Error connecting to websocket server: ', error)
   })
 
@@ -84,35 +92,4 @@ onMounted(() => {
 </script>
 
 <style lang="scss">
-.rvizweb {
-  display: block;
-  height: 100vh;
-  margin: 0;
-  padding: 0;
-  border: 0;
-
-  flex-grow: 2;
-}
-.mock {
-  flex-grow: 1;
-}
-.allContainer {
-  display: flex;
-  width: 100vw;
-  height: 100vh;
-}
-body {
-  margin: 0;
-  padding: 0;
-  width: 100vw;
-  height: 100vh;
-}
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin: 0;
-}
 </style>

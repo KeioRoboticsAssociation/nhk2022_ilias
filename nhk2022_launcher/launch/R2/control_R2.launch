@@ -8,10 +8,10 @@
 
     <!-- important config of bezier_path_planning_pursuit -->
     <arg name="acc_lim_xy" default="1.0" />
-    <arg name="max_vel_xy" default="1.0" />
+    <arg name="max_vel_xy" default="2.0" />
     <!--3.0-->
-    <arg name="acc_lim_theta" default="0.314" />
-    <arg name="max_vel_theta" default="0.314" />
+    <arg name="acc_lim_theta" default="3.14" />
+    <arg name="max_vel_theta" default="3.14" />
     <!--3.14-->
     <arg name="initial_vel" default="0.2" />
     <arg name="xy_goal_tolerance" default="0.1" />
@@ -69,7 +69,7 @@
     </group>
 
     <group if="$(eval localization_method=='odom')">
-        <node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args=" 0 0 0 0 0 0 map odom 10" />
+        <node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args=" -5.4 0 0 0 0 0 map odom 10" />
         <node pkg="map_server" type="map_server" name="map_server" args="$(find nhk2022_launcher)/config/map/map.yaml">
             <param name="frame_id" value="map"/>
         </node>

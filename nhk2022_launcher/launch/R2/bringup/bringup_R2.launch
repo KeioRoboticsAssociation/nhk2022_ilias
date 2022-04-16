@@ -7,6 +7,8 @@
 
     <!-- rviz config -->
     <arg name="rvizconfig" default="$(find nhk2022_simulator)/config/localization.rviz" />
+    <param name="robot_description" textfile="$(find nhk2022_launcher)/urdf/R2.urdf" />
+
 
     <!--path_planning_node-->
     <arg name="control_frequency" default="50" />
@@ -21,9 +23,7 @@
 
     <group if="$(eval mode=='real')">
         <!-- ################ statis tf settings ################ -->
-        <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" >
-            <param name="robot_description" textfile="$(find nhk2022_launcher)/urdf/R2.urdf" />
-        </node>
+        <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
 
         <!-- hardware boot -->
         <!-- <include file="$(find nhk2022_launcher)/launch/R2/bringup/sensor_activate_R2.launch"/> -->

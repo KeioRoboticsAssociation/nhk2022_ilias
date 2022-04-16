@@ -2,7 +2,7 @@
   <!-- params -->
   <arg name="mode" default="real"/>
   <arg name="control_frequency" default="50" />
-  <arg name="base_frame_id" default="base_footprint" />
+  <arg name="base_frame_id" default="base_link" />
   <arg name="use_ekf_localization" default="true"/>
   <arg name="use_laser_filter" default="false"/>
   <arg name="localization_method" default="odom"/>
@@ -17,28 +17,28 @@
   <!-- laser_filter -->
   <group if="$(arg use_laser_filter)">
     <include file="$(find nhk2022_launcher)/launch/common/localization/laser_filters.launch">
-      <arg name="laser_filter_file" value="laser_filter_R2.yaml"/> 
+      <arg name="laser_filter_file" value="laser_filter_R2.yaml"/>
     </include>
   </group>
 
   <!-- ekf -->
   <group if="$(arg use_ekf_localization)">
     <include file="$(find nhk2022_launcher)/launch/common/localization/ekf_localization.launch">
-      <arg name="ekf_params_file" value="ekf_params.yaml"/> 
+      <arg name="ekf_params_file" value="ekf_params.yaml"/>
     </include>
   </group>
 
   <!-- amcl -->
   <!-- <group if="$(eval localization_method=='amcl')">
     <include file="$(find nhk2022_launcher)/launch/common/localization/amcl.launch">
-      <arg name="use_laser_filter" value="$(arg use_laser_filter)"/> 
+      <arg name="use_laser_filter" value="$(arg use_laser_filter)"/>
       <arg name="base_frame_id" value="$(arg base_frame_id)" />
       <arg name="initial_pose_x" value="0"/>
       <arg name="initial_pose_y" value="0"/>
       <arg name="initial_pose_a" value="0"/>
     </include>
   </group>
-  
+
   <group if="$(eval localization_method=='odom')">
     <node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="0 0 0 0 0 0 map odom 1" />
   </group> -->

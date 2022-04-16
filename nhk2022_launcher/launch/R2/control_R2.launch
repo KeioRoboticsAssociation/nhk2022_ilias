@@ -1,25 +1,21 @@
 <launch>
     <!-- params -->
-    <arg name="mode" default="simulation"/>
+    <arg name="mode" default="real"/>
     <arg name="control_frequency" default="50" />
     <arg name="base_frame_id" default="base_link" />
     <arg name="use_ekf_localization" default="false"/>
-    <arg name="use_laser_filter" default="true"/>
-    <arg name="localization_method" default="amcl"/>
+    <arg name="localization_method" default="odom"/>
 
     <!-- important config of bezier_path_planning_pursuit -->
-    <arg name="acc_lim_xy" default="2.0" />
+    <arg name="acc_lim_xy" default="1.0" />
     <arg name="max_vel_xy" default="1.0" />
     <!--3.0-->
-    <arg name="acc_lim_theta" default="2.0" />
+    <arg name="acc_lim_theta" default="0.314" />
     <arg name="max_vel_theta" default="0.314" />
     <!--3.14-->
     <arg name="initial_vel" default="0.2" />
     <arg name="xy_goal_tolerance" default="0.1" />
-    <arg name="yaw_goal_tolerance" default="0.1" />
-
-    <!-- laser filter config -->
-    <arg name="laser_filter_file" default="laser_filter_R2.yaml"/>
+    <arg name="yaw_goal_tolerance" default="0.04" />
 
     <!-- ekf config -->
     <arg name="ekf_params_file" default="ekf_params.yaml"/>
@@ -53,13 +49,6 @@
         <arg name="path_granularity" value="0.001" />
     </include>
 
-    <!-- laser_filter -->
-    <!-- 今回R2においてはちょうど画角が270度で不要 -->
-    <group if="$(arg use_laser_filter)">
-        <include file="$(find nhk2022_launcher)/launch/common/localization/laser_filters.launch">
-            <arg name="laser_filter_file" value="$(arg laser_filter_file)"/>
-        </include>
-    </group>
 
     <!-- ekf -->
     <group if="$(arg use_ekf_localization)">
@@ -80,7 +69,10 @@
     </group>
 
     <group if="$(eval localization_method=='odom')">
-        <node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="5.450 11.500 0 -1.570796 0 0 map odom 10" />
+        <node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args=" 0 0 0 0 0 0 map odom 10" />
+        <node pkg="map_server" type="map_server" name="map_server" args="$(find nhk2022_launcher)/config/map/map.yaml">
+            <param name="frame_id" value="map"/>
+        </node>
     </group>
 
     <!-- task_selector -->

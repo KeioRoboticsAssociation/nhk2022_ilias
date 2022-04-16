@@ -1,10 +1,10 @@
 <launch>
   <!--simulation or real-->
   <arg name="mode" default="real"/>
-  
+
   <arg name="control_frequency" default="50" />
-  <arg name="base_frame_id" default="base_footprint" />
-  
+  <arg name="base_frame_id" default="base_link" />
+
   <!-- important config of bezier_path_planning_pursuit -->
   <arg name="acc_lim_xy" default="2.0" />
   <arg name="max_vel_xy" default="1.0" /><!--3.0-->
@@ -16,11 +16,11 @@
 
   <!-- laser filter config -->
   <arg name="use_laser_filter" default="false"/>
-  <arg name="laser_filter_file" default="laser_filter_R1.yaml"/>  
+  <arg name="laser_filter_file" default="laser_filter_R1.yaml"/>
 
   <!-- ekf config -->
   <arg name="use_ekf_localization" default="false"/>
-  <arg name="ekf_params_file" default="ekf_params.yaml"/>  
+  <arg name="ekf_params_file" default="ekf_params.yaml"/>
 
   <!-- localization method -->
   <!-- choose "odom" or "amcl" -->
@@ -52,25 +52,25 @@
     <arg name="fix_angle_gain" value="2.0" />
     <arg name="path_granularity" value="0.001" />
   </include>
-    
+
   <!-- laser_filter -->
   <group if="$(arg use_laser_filter)">
     <include file="$(find nhk2022_launcher)/launch/common/localization/laser_filters.launch">
-      <arg name="laser_filter_file" value="$(arg laser_filter_file)"/> 
+      <arg name="laser_filter_file" value="$(arg laser_filter_file)"/>
     </include>
   </group>
 
   <!-- ekf -->
   <group if="$(arg use_ekf_localization)">
     <include file="$(find nhk2022_launcher)/launch/common/localization/ekf_localization.launch">
-      <arg name="ekf_params_file" value="$(arg ekf_params_file)"/> 
+      <arg name="ekf_params_file" value="$(arg ekf_params_file)"/>
     </include>
   </group>
 
   <!-- amcl -->
   <group if="$(eval localization_method=='amcl')">
     <include file="$(find nhk2022_launcher)/launch/common/localization/amcl.launch">
-      <arg name="use_laser_filter" value="$(arg use_laser_filter)"/> 
+      <arg name="use_laser_filter" value="$(arg use_laser_filter)"/>
       <arg name="base_frame_id" value="$(arg base_frame_id)" />
       <arg name="initial_pose_x" value="0.5"/>
       <arg name="initial_pose_y" value="0.5"/>

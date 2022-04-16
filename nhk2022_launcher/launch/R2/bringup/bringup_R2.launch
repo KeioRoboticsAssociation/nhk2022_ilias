@@ -2,21 +2,31 @@
     <!--simulation or real-->
     <arg name="mode" default="real"/>
 
+    <!-- laser filter config -->
+    <arg name="laser_filter_file" default="laser_filter_R2.yaml"/>
+
+    <!-- rviz config -->
+    <arg name="rvizconfig" default="$(find nhk2022_simulator)/config/localization.rviz" />
+
     <!--path_planning_node-->
     <arg name="control_frequency" default="50" />
     <arg name="base_frame_id" default="base_link" />
 
     <group if="$(eval mode=='simulation')">
-
+        <!-- laser_filter -->
+        <include file="$(find nhk2022_launcher)/launch/common/localization/laser_filters.launch">
+            <arg name="laser_filter_file" value="$(arg laser_filter_file)"/>
+        </include>
     </group>
 
     <group if="$(eval mode=='real')">
         <!-- ################ statis tf settings ################ -->
-        <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
-        <param name="robot_description" textfile="$(find nhk2022_launcher)/urdf/R2.urdf" />
+        <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" >
+            <param name="robot_description" textfile="$(find nhk2022_launcher)/urdf/R2.urdf" />
+        </node>
 
         <!-- hardware boot -->
-        <include file="$(find nhk2022_launcher)/launch/R2/bringup/sensor_activate_R2.launch"/>
+        <!-- <include file="$(find nhk2022_launcher)/launch/R2/bringup/sensor_activate_R2.launch"/> -->
         <node pkg="serial_ros" name="rogi_link" type="rogi_link_node" output="screen" respawn="true">
             <!-- <param name="looprate" value="$(arg  control_frequency)"/> -->
             <param name="control_frequency" value="200"/>
@@ -43,10 +53,12 @@
         <node pkg="measure_wheel_odom_publisher" type="measure_wheel_odom_publisher" name="measure_wheel_odom_publisher" output="screen">
             <param name="control_frequency" value="$(arg control_frequency)"/>
             <param name="base_frame_id" value="$(arg base_frame_id)"/>
-            <param name="c_w_distance" value="0.16"/>
+            <param name="c_w_distance_a" value="0.064"/>
+            <param name="c_w_distance_b" value="0.074"/>
+            <param name="wheel_diameter" value="0.06"/>
         </node>
 
-
+        <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig) -f odom" required="true" />
     </group>
 
     <!-- Joy controller -->

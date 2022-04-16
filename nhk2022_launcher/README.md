@@ -40,9 +40,13 @@ roslaunch nhk2022_launcher contorol_DR.launch
 
 ## task_selector.pyについて
 
-キーコンフィグについては今後追記
+実質緊急停止、及び自動手動の切り替えフラグを出すためだけのノード
 
-コードを読んで感じてください(適当)
+以前はパス選択をjoyコンからやっていたが、今回はスマホGUIからやることにしたのでなし
+
+## accesory_commander.pyについて
+
+
 
 
 

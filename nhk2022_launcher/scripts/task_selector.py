@@ -39,7 +39,7 @@ class Task_Selector():
         self.client.wait_for_result()
         '''
     def Joycallback(self, msg):
-        if msg.buttons[10] == 1: #button stick left
+        if msg.buttons[9] == 1: #start button
             rospy.loginfo("teleop_mode")
             # self.client.cancel_goal()
             # teleop_mode = Bool()
@@ -79,7 +79,7 @@ if __name__ == '__main__':
         # Initializes a rospy node so that the SimpleActionClient can
         # publish and subscribe over ROS.
         rospy.init_node('task_selector')
-        rospy.loginfo("waiting for task input")
+        # rospy.loginfo("waiting for task input")
 
         task_selector = Task_Selector()
         rospy.spin()

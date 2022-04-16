@@ -5,7 +5,26 @@ Throw_Ball_Commander::Throw_Ball_Commander(ros::NodeHandle &_nh, int &_loop_rate
                                            :nh(_nh),loop_rate(_loop_rate),lost_time_threshold(_lost_time_threshold),
                                            limit_UD(_limit_UD),limit_RL(_limit_RL),rise_rate(_rise_rate),roll_rate(_roll_rate)
 {
+    ROS_INFO("Creating throw_ball_commander");
+    ROS_INFO_STREAM("loop_rate [Hz]: " << loop_rate);
+    ROS_INFO_STREAM("lost_time_threshold [ms]: " << lost_time_threshold);
+    ROS_INFO_STREAM("limit_UD [deg]: " << limit_UD);
+    ROS_INFO_STREAM("limit_RL [deg]: " << limit_RL);
+    ROS_INFO_STREAM("rise_rate [mm / deg]: " << rise_rate);
+    ROS_INFO_STREAM("roll_rate [deg / deg]: " << roll_rate);
 
+    pub_ctrl = nh.advertise<rogi_link_msgs::RogiLink>("send_serial", 100);
+    // init subscriver
+    sub_emergence = nh.subscribe("/emergency_stop_flag", 1, &Throw_Ball_Commander::emergence_callback, this);
+    sub_connection = nh.subscribe("/connection_status", 1, &Throw_Ball_Commander::connection_callback, this);
+    sub_target = nh.subscribe("/target_location",1,&Throw_Ball_Commander::target_callback, this);
+    sub_shot = nh.subscribe("/shot_flag",1,&Throw_Ball_Commander::shot_callback, this);
+    sub_bullet = nh.subscribe("/bullet_flag", 1, &Throw_Ball_Commander::bullet_callback, this);
+    sub_limitUD = nh.subscribe("/limitUD_flag", 1, &Throw_Ball_Commander::limitUD_callback, this);
+    sub_limitRL = nh.subscribe("/limitRL_flag", 1, &Throw_Ball_Commander::limitRL_callback, this);
+
+    last_sub_vel_time = std::chrono::system_clock::now();
+    update();
 }
 
 // initializers
@@ -66,7 +85,12 @@ void Throw_Ball_Commander::pubishMsg()
 
 }
 
-void Throw_Ball_Commander::cal_cmd()
+void Throw_Ball_Commander::startup_cal()
+{
+
+}
+
+void Throw_Ball_Commander::main_cal()
 {
 
 }
@@ -80,6 +104,7 @@ void Throw_Ball_Commander::update()
 {
     
 }
+
 // #include "throw_ball_commander.h"
 
 // Throw_Ball_Commander::Throw_Ball_Commander(ros::NodeHandle &_nh, int &_loop_rate, int &_lost_time_threshold,

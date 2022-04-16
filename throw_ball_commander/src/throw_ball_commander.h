@@ -59,20 +59,16 @@ class Throw_Ball_Commander
         std::chrono::system_clock::time_point last_sub_vel_time;
 
     //Variables
-        float target_x;
-        float target_y;
+        float target_x;//標的のx座標
+        float target_y;//標的のy座標
 
-        float target_distance;
-        float target_theta;
-
-        
+        float target_distance;//標的との距離
+        float target_theta;//標的の偏角
 
         // Flags
         bool emergency_stop_flag;//緊急停止
         bool connection_flag;//接続確認
 
-        bool limit_ud_flag;//リミットスイッチ上下
-        bool limit_rl_flag;//リミットスイッチ左右
         bool init_flag;//初期化処理か否かのフラグ
 
         bool shot_flag;//射出フラグ
@@ -95,7 +91,8 @@ class Throw_Ball_Commander
         //others
         bool isSubscribed(); 
         void pubishMsg();
-        void cal_cmd();
+        void startup_cal();
+        void main_cal();
         void reset();
         void update();
 };

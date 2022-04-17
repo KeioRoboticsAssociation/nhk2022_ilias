@@ -1,37 +1,50 @@
 {
-  "name": "rogi_webgui",
-  "version": "0.1.0",
+  "name": "nhk2022_webgui",
   "private": true,
+  "version": "0.0.0",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "lint": "eslint --ext .ts,vue --ignore-path .gitignore .",
+    "lint-fix": "eslint --ext .ts,vue --ignore-path .gitignore . && prettier --write src/**/*.{ts,vue}",
+    "prepare": "husky install"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm run lint"
+    }
+  },
+  "lint-staged": {
+    "*.{js,ts,vue}": [
+      "npm rum lint-fix"
+    ]
   },
   "dependencies": {
-    "@quasar/extras": "^1.0.0",
-    "core-js": "^3.8.3",
-    "quasar": "^2.0.0",
+    "@quasar/extras": "^1.13.5",
+    "quasar": "^2.6.6",
     "roslib": "github:RobotWebTools/roslibjs#dea6e7cd59ff1af88ce69c",
-    "vue": "^3.2.13"
+    "vue": "^3.2.25"
   },
   "devDependencies": {
+    "@quasar/vite-plugin": "^1.0.9",
     "@types/roslib": "^1.1.8",
-    "@typescript-eslint/eslint-plugin": "^5.4.0",
-    "@typescript-eslint/parser": "^5.4.0",
-    "@vue/cli-plugin-babel": "~5.0.0",
-    "@vue/cli-plugin-eslint": "~5.0.0",
-    "@vue/cli-plugin-typescript": "~5.0.0",
-    "@vue/cli-service": "~5.0.0",
-    "@vue/eslint-config-standard": "^6.1.0",
-    "@vue/eslint-config-typescript": "^9.1.0",
-    "eslint": "^7.32.0",
-    "eslint-plugin-import": "^2.25.3",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^5.1.0",
-    "eslint-plugin-vue": "^8.0.3",
-    "sass": "1.32.12",
-    "sass-loader": "^12.0.0",
-    "typescript": "~4.5.5",
-    "vue-cli-plugin-quasar": "~5.0.1"
+    "@typescript-eslint/eslint-plugin": "^5.19.0",
+    "@typescript-eslint/parser": "^5.19.0",
+    "@vitejs/plugin-vue": "^2.3.1",
+    "@vue/eslint-config-typescript": "^10.0.0",
+    "eslint": "^8.13.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-vue": "^8.6.0",
+    "husky": "^7.0.0",
+    "lint-staged": "^12.3.8",
+    "prettier": "^2.6.2",
+    "sass": "^1.32.0",
+    "typescript": "^4.5.4",
+    "vite": "^2.9.2",
+    "vue-tsc": "^0.29.8"
   }
 }

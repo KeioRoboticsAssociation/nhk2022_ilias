@@ -1,18 +1,66 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+
 module.exports = {
-  root: true,
-  env: {
-    node: true
-  },
-  extends: [
-    'plugin:vue/vue3-essential',
-    '@vue/standard',
-    '@vue/typescript/recommended'
-  ],
-  parserOptions: {
-    ecmaVersion: 2020
-  },
-  rules: {
-    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off'
-  }
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        "airbnb-base",
+        // "plugin:vue/essential",
+        "plugin:vue/vue3-recommended",
+        "@vue/typescript/recommended",
+        "prettier",
+    ],
+    "parserOptions": {
+        "ecmaVersion": "latest",
+        "parser": "@typescript-eslint/parser",
+        "sourceType": "module"
+    },
+    "ignorePatterns": ["*.config.ts"],
+    "rules": {
+        "import/no-unresolved": "off",
+        "import/extensions": "off",
+        // console.logを許可
+        "no-console": "off",
+        // ネーミングルールを追加
+        "@typescript-eslint/naming-convention": [
+            "error",
+            {
+                "selector": "default",
+                "format": ["camelCase"]
+            },
+            {
+                "selector": [
+                "property"
+                ],
+                "format": [
+                "camelCase",
+                "PascalCase"
+                ]
+            },
+            {
+                "selector": [
+                "class",
+                "enum",
+                "interface",
+                "typeAlias",
+                "typeParameter"
+                ],
+                "format": [
+                "PascalCase"
+                ]
+            },
+            {
+                "selector": "variable",
+                "modifiers": [
+                "const"
+                ],
+                "format": [
+                "camelCase",
+                "UPPER_CASE"
+                ]
+            }
+        ],
+    },
 }

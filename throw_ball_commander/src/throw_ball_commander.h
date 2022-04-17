@@ -17,13 +17,14 @@ const char LRMD = 0x06; // Left Roller
 const char NKUD = 0x0F; // Neck Motor Up-Down
 const char NKRL = 0x10; // Neck Motor Right-Left
 const char MZSV = 0x0E; // First Servo Motor in the Magazine
-
+const char MZDC = 0x12; // Reloading Motor
 class Throw_Ball_Commander
 {
     public:
     //constructors and destructors
         Throw_Ball_Commander(ros::NodeHandle &_nh,int &_loop_rate,int &_lost_time_threshold,
-        float &_limit_UD, float &_limit_RL, float &_rise_rate, float &_roll_rate);
+        float &_limit_UD, float &_limit_RL, float &_rise_rate, float &_roll_rate,
+        float &_neck_length);
         ~Throw_Ball_Commander(){};
 
     private:
@@ -40,12 +41,15 @@ class Throw_Ball_Commander
         ros::Subscriber sub_target;//ターゲットの座標
         ros::Subscriber sub_shot;//shot コマンド
 
-        ros::Subscriber sub_bullet;//給弾関係
+        ros::Subscriber sub_cocking; //コッキング
+        ros::Subscriber sub_reload; //給弾関係
 
         ros::Subscriber sub_limitUD;//上下のリミットスイッチ
         ros::Subscriber sub_limitRL;//左右のリミットスイッチ
 
-    //Configurations
+        ros::Subscriber sub_RL_location;//左右の回転角のモニタ
+
+        // Configurations
         int loop_rate;//制御周期
         int lost_time_threshold;
 
@@ -55,7 +59,9 @@ class Throw_Ball_Commander
         float rise_rate;//一回転で何mm上がるか
         float roll_rate;//一回転で何度回るか
 
-    //Timers
+        float neck_length;//首の長さ        
+
+        // Timers
         std::chrono::system_clock::time_point last_sub_vel_time;
 
     //Variables
@@ -65,6 +71,12 @@ class Throw_Ball_Commander
         float target_distance;//標的との距離
         float target_theta;//標的の偏角
 
+        float cmd_UD;//上下の操作量
+        float cmd_RL;//左右の操作量
+
+        int remaining_bullets;//
+        float RL_location;
+
         // Flags
         bool emergency_stop_flag;//緊急停止
         bool connection_flag;//接続確認
@@ -72,25 +84,32 @@ class Throw_Ball_Commander
         bool init_flag;//初期化処理か否かのフラグ
 
         bool shot_flag;//射出フラグ
-        bool reload_flag;//リロードフラグ
+        bool cocked_flag;//コッキングフラグ
+        bool reload_flag; //リロードフラグ
 
-    //Methods
-        //initializers
+        bool limit_UD_flag;//リミットスイッチが押されたら立てる
+        bool limit_RL_flag;//リミットスイッチが押されたら立てる
+        bool send_emergence_flag;//リミットスイッチが押されたら立てる
+
+    // Methods
+        // initializers
         void init_drivers();
         void init_variables();
+        void init_flags();
 
-        //callbacks
+        // callbacks
         void emergence_callback(const std_msgs::Empty::ConstPtr &msg);
         void connection_callback(const std_msgs::Bool::ConstPtr &msg);
-        void target_callback(const geometry_msgs::Twist::ConstPtr &cmd_vel);
+        void target_callback(const geometry_msgs::Twist::ConstPtr &msg);
         void shot_callback(const std_msgs::Bool::ConstPtr &msg);
-        void bullet_callback(const std_msgs::Bool::ConstPtr &msg);
+        void cocking_callback(const std_msgs::Float32MultiArray &msg);
+        void reload_callback(const std_msgs::Bool::ConstPtr &msg);
         void limitUD_callback(const std_msgs::Float32MultiArray &msg);
         void limitRL_callback(const std_msgs::Float32MultiArray &msg);
 
         //others
         bool isSubscribed(); 
-        void pubishMsg();
+        void publishMsg();
         void startup_cal();
         void main_cal();
         void reset();

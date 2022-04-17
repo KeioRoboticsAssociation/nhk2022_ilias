@@ -9,6 +9,12 @@
     <arg name="rvizconfig" default="$(find nhk2022_simulator)/config/localization.rviz" />
     <param name="robot_description" textfile="$(find nhk2022_launcher)/urdf/R2.urdf" />
 
+    <!-- spead config -->
+    <arg name="acc_lim_xy" default="1.0" />
+    <arg name="max_vel_xy" default="1.0" />
+    <!--3.0-->
+    <arg name="acc_lim_theta" default="0.314" />
+    <arg name="max_vel_theta" default="0.314" />
 
     <!--path_planning_node-->
     <arg name="control_frequency" default="50" />
@@ -66,10 +72,10 @@
 
     <node pkg="joy_commander" type="joy_commander" name="joy_commander" output="screen">
         <param name="control_frequency" value="$(arg control_frequency)"/>
-        <param name = "acc_lim_xy" value = "1.0" />
-        <param name = "max_vel_xy" value = "1.0" />
-        <param name = "acc_lim_theta" value = "1.57" />
-        <param name = "max_vel_theta" value = "0.785" />
+        <param name = "acc_lim_xy" value = "$(arg acc_lim_xy)" />
+        <param name = "max_vel_xy" value = "$(arg max_vel_xy)" />
+        <param name = "acc_lim_theta" value = "$(arg acc_lim_theta)" />
+        <param name = "max_vel_theta" value = "$(arg max_vel_theta)" />
         <remap from = "teleopflag" to = "/task_selector/teleop_mode"/>
     </node>
 

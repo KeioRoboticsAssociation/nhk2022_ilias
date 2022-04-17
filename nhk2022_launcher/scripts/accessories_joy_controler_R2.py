@@ -3,14 +3,17 @@
 # from click import command
 from enum import Enum
 from operator import mod
+from xmlrpc.client import boolean
 import rospy
+from enum import IntEnum
 
+from struct import *
 from sensor_msgs.msg import Joy
 from rogi_link_msgs.msg import RogiLink
 # from std_msgs.msg import Bool
 # from std_msgs.msg import Float32MultiArray
 
-class HardId(Enum):
+class HardId(IntEnum):
     EMGC_STOP = 0x00
     MAIN_BOARD = 0x01
     RFMD = 0x02
@@ -19,40 +22,46 @@ class HardId(Enum):
     RBMD = 0x05
     L_LAGORI = 0x06
     R_LAGORI = 0x07
-
+    LAGORI_E_MOTOR = 0x08
+    AIR = 0x09
+    LAGORI_SERVO = 0x0A
+    LAGORI_G_MOTOR = 0x0B
+    X_FEINT = 0x0C
+    Y_FEINT = 0x0D
+    SHOT_SERVO = 0x0E
+    ELEVATION_ANGLE = 0x0F
+    TURNE_ANGLE = 0x10
+    SENSOR = 0x11
+    BALL_E_MOTOR = 0x12
 
 
 class Rosconnector():
 
     publish_command = RogiLink()
-
-    def generator(self,hardid,commandid,data):
-        self.publish_command.id=hardid << 6 | commandid
-        self.publish_command.data=data
+    ball_catcher_hight : bool = False
+    ball_catcher_grab : bool = False
 
     def __init__(self):
         self.joy_sub = rospy.Subscriber("joy", Joy, self.Joycallback)
-        self.serial_pub= rospy.Publisher("sending_data", RogiLink ,queue_size=1)
+        self.serial_pub= rospy.Publisher("send_serial", RogiLink ,queue_size=1)
 
-    def generator(self,hardid,commandid,data):
-        self.publish_command.id=hardid << 6 | commandid
-        self.publish_command.data=data
+    def send_rogilink(self,hardid,commandid,data_0,data_1):
+        self.publish_command.id=int(hardid) << 6 | commandid
+        self.publish_command.data=pack('ff',data_0,data_1)
+        self.serial_pub.publish(self.publish_command)
 
     def Joycallback(self, msg):
         if msg.buttons[0]:#X
-            self.generator()
-            # self.ball_catcher_vertical_flag= not self.ball_catcher_vertical_flag
-            # self.controler_id=1
-            # self.accessories_pub_commands.data = [float(1), float(self.ball_catcher_vertical_flag)]
-            # self.accessories_controler_pub.publish(self.accessories_pub_commands)
-
+            self.ball_catcher_hight= not self.ball_catcher_hight
+            if self.ball_catcher_hight:self.send_rogilink(HardId.AIR,0x01,0,0)
+            else: self.send_rogilink(HardId.AIR,0x02,0,0)
             rospy.loginfo("ball catcher hight changed")
 
         elif msg.buttons[1]:#O
-            # self.ball_catcher_catch_flag= not self.ball_catcher_catch_flag
-            # self.accessories_pub_commands.data = [float(2), float(self.ball_catcher_catch_flag)]
-            # self.controler_id=2
-            rospy.loginfo("ball catcher clip changed")
+            self.ball_catcher_grab= not self.ball_catcher_grab
+            if self.ball_catcher_grab:self.send_rogilink(HardId.AIR,0x03,0,0)
+            else: self.send_rogilink(HardId.AIR,0x04,0,0)
+            rospy.loginfo("ball catcher grab changed")
 
 
         elif msg.buttons[2]:#<|
@@ -115,11 +124,11 @@ class Rosconnector():
             # self.controler_id=3
             rospy.loginfo("lagori catcher changed")
 
-        elif msg.buttons[12]:#Rightpush
-            # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
-            # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
-            # self.controler_id=3
-            rospy.loginfo("lagori catcher changed")
+        # elif msg.buttons[12]:#Rightpush
+        #     # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
+        #     # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
+        #     # self.controler_id=3
+        #     rospy.loginfo("lagori catcher changed")
 
         # elif self.elevator_flag!=msg.axes[5]:
         #     # self.controler_id=4

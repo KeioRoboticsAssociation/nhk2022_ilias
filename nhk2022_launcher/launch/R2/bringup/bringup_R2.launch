@@ -64,7 +64,7 @@
             <param name="wheel_diameter" value="0.06"/>
         </node>
 
-        <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig) -f odom" required="true" />
+        <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig) -f odom" required="true" /> -->
     </group>
 
     <!-- Joy controller -->

@@ -82,6 +82,7 @@
 
     <!-- task_selector -->
     <node pkg="nhk2022_launcher" type="task_selector.py" name="task_selector"/>
+    <node pkg="nhk2022_launcher" type="accessories_joy_controler_R2.py" name="accessories_joy_controler_R2"/>
 
     <!-- WebGUI -->
     <include file="$(find nhk2022_webgui)/launch/server.launch">

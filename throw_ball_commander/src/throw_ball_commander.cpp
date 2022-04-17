@@ -23,8 +23,8 @@ Throw_Ball_Commander::Throw_Ball_Commander(ros::NodeHandle &_nh, int &_loop_rate
     sub_shot = nh.subscribe("/shot_flag",1,&Throw_Ball_Commander::shot_callback, this);
     sub_cocking = nh.subscribe("/rcv_serial_0E", 1, &Throw_Ball_Commander::cocking_callback, this);
     sub_reload = nh.subscribe("/bullet_flag", 1, &Throw_Ball_Commander::reload_callback, this);
-    sub_limitUD = nh.subscribe("/rcv_serial_0F", 1, &Throw_Ball_Commander::limitUD_callback, this);
-    sub_limitRL = nh.subscribe("/rcv_serial_10", 1, &Throw_Ball_Commander::limitRL_callback, this);
+    sub_limitSW = nh.subscribe("/", 1, &Throw_Ball_Commander::limitSW_callback, this);
+    sub_RL_location = nh.subscribe("/rcv_serial_10", 1, &Throw_Ball_Commander::RL_location_callback, this);
 
     last_sub_vel_time = std::chrono::system_clock::now();
 
@@ -73,6 +73,10 @@ void Throw_Ball_Commander::init_variables()
 
     target_distance = 0;
     target_theta = 0;
+
+    cmd_RL = 0;
+    cmd_UD = 0;
+    remaining_bullets = 0;
 }
 
 void Throw_Ball_Commander::init_flags()
@@ -80,7 +84,8 @@ void Throw_Ball_Commander::init_flags()
     init_flag = true;
 
     shot_flag = false;
-    reload_flag = false;
+    reloading_flag = false;
+    reloaded_flag = true;
 
     send_emergence_flag = false;
 }
@@ -122,31 +127,38 @@ void Throw_Ball_Commander::cocking_callback(const std_msgs::Float32MultiArray &m
 
 void Throw_Ball_Commander::reload_callback(const std_msgs::Bool::ConstPtr &msg)
 {
-    reload_flag = true;
+    reloaded_flag = true;
+    reloading_flag = false;
     remaining_bullets = 3;
 }
 
-void Throw_Ball_Commander::limitUD_callback(const std_msgs::Float32MultiArray &msg)
+void Throw_Ball_Commander::limitSW_callback(const std_msgs::Float32MultiArray &msg)
 {
     if(init_flag)
     {
-        limit_UD_flag = true;
+        if(msg.data[0])
+        {
+            limit_UD_flag = true;
+        }
+        if(msg.data[1])
+        {
+            limit_RL_flag = true;
+        }
+        if(limit_RL_flag && limit_UD_flag)
+        {
+            init_flag = false;
+            limit_RL_flag = false;
+            limit_UD_flag = false;
+        }
     } else
     {
         send_emergence_flag = true;
     }
 }
 
-void Throw_Ball_Commander::limitRL_callback(const std_msgs::Float32MultiArray &msg)
+void Throw_Ball_Commander::RL_location_callback(const std_msgs::Float32MultiArray &msg)
 {
-    if (init_flag)
-    {
-        limit_UD_flag = true;
-    }
-    else
-    {
-        send_emergence_flag = true;
-    }
+    RL_location = msg.data[0];
 }
 
 // others
@@ -173,7 +185,15 @@ void Throw_Ball_Commander::publishMsg()
 
     if (init_flag)
     {
-        if(!limit_RL_flag)
+        cmd_msg.id = RRMD << 6 | 0x04;
+        *(float *)(&cmd_msg.data[0]) = 0;
+        pub_ctrl.publish(cmd_msg);
+
+        cmd_msg.id = LRMD << 6 | 0x04;
+        *(float *)(&cmd_msg.data[0]) = 0;
+        pub_ctrl.publish(cmd_msg);
+
+        if (!limit_RL_flag)
         {
             // NKRL publish
             cmd_msg.id = NKRL << 6 | 0x03;
@@ -204,13 +224,21 @@ void Throw_Ball_Commander::publishMsg()
     {
         if(remaining_bullets > 0)
         {
-            if (shot_flag && cocked_flag && reload_flag)
+            if (shot_flag && cocked_flag && reloaded_flag)
             {
                 cmd_msg.id = MZSV << 6 | 0x08;
                 *(float *)(&cmd_msg.data[0]) = 0;
                 pub_ctrl.publish(cmd_msg);
                 remaining_bullets--;
             }
+            cmd_msg.id = RRMD << 6 | 0x04;
+            *(float *)(&cmd_msg.data[0]) = 5;
+            pub_ctrl.publish(cmd_msg);
+
+            cmd_msg.id = LRMD << 6 | 0x04;
+            *(float *)(&cmd_msg.data[0]) = 5;
+            pub_ctrl.publish(cmd_msg);
+
             cmd_msg.id = NKUD << 6 | 0x03;
             *(float *)(&cmd_msg.data[0]) = cmd_UD;
             pub_ctrl.publish(cmd_msg);
@@ -220,9 +248,23 @@ void Throw_Ball_Commander::publishMsg()
             pub_ctrl.publish(cmd_msg);
         }
         else{
+            cmd_msg.id = RRMD << 6 | 0x04;
+            *(float *)(&cmd_msg.data[0]) = 0;
+            pub_ctrl.publish(cmd_msg);
+
+            cmd_msg.id = LRMD << 6 | 0x04;
+            *(float *)(&cmd_msg.data[0]) = 0;
+            pub_ctrl.publish(cmd_msg);
+
             cmd_msg.id = NKRL << 6 | 0x03;
             *(float *)(&cmd_msg.data[0]) = 0;
             pub_ctrl.publish(cmd_msg);
+            if(RL_location<0.05 && RL_location > -0.05)
+            {
+                cmd_msg.id = MZDC << 6 | 0x10;
+                *(float *)(&cmd_msg.data[0]) = 0;
+                pub_ctrl.publish(cmd_msg);
+            }
         }
     }
 }
@@ -255,11 +297,7 @@ void Throw_Ball_Commander::update()
 
     while (ros::ok() && init_flag)
     {
-        if(isSubscribed())
-        {
-            startup_cal();
-        }
-        else
+        if(!isSubscribed())
         {
             reset();
         }

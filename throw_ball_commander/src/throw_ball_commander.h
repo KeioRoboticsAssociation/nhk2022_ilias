@@ -44,8 +44,7 @@ class Throw_Ball_Commander
         ros::Subscriber sub_cocking; //コッキング
         ros::Subscriber sub_reload; //給弾関係
 
-        ros::Subscriber sub_limitUD;//上下のリミットスイッチ
-        ros::Subscriber sub_limitRL;//左右のリミットスイッチ
+        ros::Subscriber sub_limitSW;//上下のリミットスイッチ
 
         ros::Subscriber sub_RL_location;//左右の回転角のモニタ
 
@@ -85,7 +84,8 @@ class Throw_Ball_Commander
 
         bool shot_flag;//射出フラグ
         bool cocked_flag;//コッキングフラグ
-        bool reload_flag; //リロードフラグ
+        bool reloading_flag; //リロード要請フラグ
+        bool reloaded_flag;//リロード終了フラグ
 
         bool limit_UD_flag;//リミットスイッチが押されたら立てる
         bool limit_RL_flag;//リミットスイッチが押されたら立てる
@@ -104,10 +104,10 @@ class Throw_Ball_Commander
         void shot_callback(const std_msgs::Bool::ConstPtr &msg);
         void cocking_callback(const std_msgs::Float32MultiArray &msg);
         void reload_callback(const std_msgs::Bool::ConstPtr &msg);
-        void limitUD_callback(const std_msgs::Float32MultiArray &msg);
-        void limitRL_callback(const std_msgs::Float32MultiArray &msg);
-
-        //others
+        void limitSW_callback(const std_msgs::Float32MultiArray &msg);
+        void RL_location_callback(const std_msgs::Float32MultiArray &msg);
+        
+        // others
         bool isSubscribed(); 
         void publishMsg();
         void startup_cal();

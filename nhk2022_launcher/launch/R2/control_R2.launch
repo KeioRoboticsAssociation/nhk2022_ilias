@@ -27,7 +27,6 @@
         <arg name="base_frame_id" value="$(arg base_frame_id)" />
         <arg name="acc_lim_xy" value="$(arg acc_lim_xy)" />
         <arg name="max_vel_xy" value="$(arg max_vel_xy)" />
-        <!--3.0-->
         <arg name="acc_lim_theta" value="$(arg acc_lim_theta)" />
         <arg name="max_vel_theta" value="$(arg max_vel_theta)" />
     </include>
@@ -40,10 +39,8 @@
         <arg name="csv_path" value="$(find nhk2022_launcher)/config/waypoints/R2" />
         <arg name="acc_lim_xy" value="$(arg acc_lim_xy)" />
         <arg name="max_vel_xy" value="$(arg max_vel_xy)" />
-        <!--3.0-->
         <arg name="acc_lim_theta" value="$(arg acc_lim_theta)" />
         <arg name="max_vel_theta" value="$(arg max_vel_theta)" />
-        <!--3.14-->
         <arg name="initial_vel" value="$(arg initial_vel)" />
         <arg name="corner_speed_rate" value="0.8" />
         <arg name="global_frame_id" value="map" />
@@ -81,13 +78,13 @@
     </group>
 
     <!-- task_selector -->
-    <node pkg="nhk2022_launcher" type="task_selector.py" name="task_selector"/>
-    <node pkg="nhk2022_launcher" type="accessories_joy_controler_R2.py" name="accessories_joy_controler_R2"/>
-    <node pkg="nhk2022_launcher" type="hardware_init_R2.py" name="hardware_init_R2"/>
+    <!-- <node pkg="nhk2022_launcher" type="task_selector.py" name="task_selector"/> -->
+    <node pkg="nhk2022_launcher" type="accessories_joy_controler_R2.py" name="accessories_joy_controler_R2" output="screen" />
+    <node pkg="nhk2022_launcher" type="hardware_init_R2.py" name="hardware_init_R2" output="screen" />
 
     <!-- WebGUI -->
-    <include file="$(find nhk2022_webgui)/launch/server.launch">
+    <!-- <include file="$(find nhk2022_webgui)/launch/server.launch">
         <arg name="name" value="roswww_R2"/>
-    </include>
+    </include> -->
 
 </launch>

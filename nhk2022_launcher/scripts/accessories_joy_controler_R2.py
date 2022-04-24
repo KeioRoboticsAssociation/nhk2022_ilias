@@ -1,6 +1,9 @@
 #! /usr/bin/env python3
 
 # from click import command
+from xmlrpc.client import boolean
+
+from matplotlib.pyplot import axes
 import rospy
 from enum import IntEnum
 
@@ -38,8 +41,10 @@ class Rosconnector():
     publish_command = RogiLink()
     ball_catcher_hight : bool = False
     ball_catcher_grab : bool = False
+    elevator_flag : bool = False
     elevator_position : float = 0
     grab_position : float = 0
+    prev_msg = Joy()
 
     def __init__(self):
         self.joy_sub = rospy.Subscriber("joy", Joy, self.Joycallback)
@@ -52,109 +57,108 @@ class Rosconnector():
         self.serial_pub.publish(self.publish_command)
 
     def Joycallback(self, msg):
-        if msg.buttons[0]:#X
-            self.ball_catcher_hight= not self.ball_catcher_hight
-            if self.ball_catcher_hight:self.send_rogilink(HardId.AIR,0x01,0,0)
-            else: self.send_rogilink(HardId.AIR,0x02,0,0)
-            rospy.loginfo("ball catcher hight changed")
+        if msg.buttons != self.prev_msg.buttons:
+            self.prev_msg = msg #saving prev message
 
-        elif msg.buttons[1]:#O
-            self.ball_catcher_grab= not self.ball_catcher_grab
-            if self.ball_catcher_grab:self.send_rogilink(HardId.AIR,0x03,0,0)
-            else: self.send_rogilink(HardId.AIR,0x04,0,0)
-            rospy.loginfo("ball catcher grab changed")
+            if msg.buttons[0]:#X
+                self.ball_catcher_hight= not self.ball_catcher_hight
+                if self.ball_catcher_hight:self.send_rogilink(HardId.AIR,0x01,0,0)
+                else: self.send_rogilink(HardId.AIR,0x02,0,0)
+                rospy.loginfo("ball catcher hight changed")
+
+            if msg.buttons[1]:#O
+                self.ball_catcher_grab= not self.ball_catcher_grab
+                if self.ball_catcher_grab:self.send_rogilink(HardId.AIR,0x03,0,0)
+                else: self.send_rogilink(HardId.AIR,0x04,0,0)
+                rospy.loginfo("ball catcher grab changed")
 
 
-        elif msg.buttons[2]:#<|
-            # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
-            # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
-            # self.controler_id=3
-            rospy.loginfo("lagori catcher changed")
+            if msg.buttons[2]:#<|
+                # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
+                # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
+                # self.controler_id=3
+                rospy.loginfo("lagori catcher changed")
 
-        elif msg.buttons[3]:#<>
-            # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
-            # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
-            # self.controler_id=3
-            rospy.loginfo("lagori catcher changed")
+            if msg.buttons[3]:#<>
+                # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
+                # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
+                # self.controler_id=3
+                rospy.loginfo("lagori catcher changed")
 
-        elif msg.buttons[4]:#L1
-            # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
-            # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
-            # self.controler_id=3
-            rospy.loginfo("lagori catcher changed")
+            if msg.buttons[4]:#L1
+                # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
+                # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
+                # self.controler_id=3
+                rospy.loginfo("lagori catcher changed")
 
-        elif msg.buttons[5]:#R1
-            # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
-            # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
-            # self.controler_id=3
-            rospy.loginfo("lagori catcher changed")
+            if msg.buttons[5]:#R1
+                # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
+                # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
+                # self.controler_id=3
+                rospy.loginfo("lagori catcher changed")
 
-        elif msg.buttons[6]:#L2
-            # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
-            # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
-            # self.controler_id=3
-            rospy.loginfo("lagori catcher changed")
+            if msg.buttons[6]:#L2
+                # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
+                # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
+                # self.controler_id=3
+                rospy.loginfo("lagori catcher changed")
 
-        elif msg.buttons[7]:#R2
-            # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
-            # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
-            # self.controler_id=3
-            rospy.loginfo("lagori catcher changed")
+            if msg.buttons[7]:#R2
+                # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
+                # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
+                # self.controler_id=3
+                rospy.loginfo("lagori catcher changed")
 
-        elif msg.buttons[8]:#Share back
-            emergency_msg = Empty()
-            self.emergency_stop_pub.publish(emergency_msg)
-            rospy.logwarn("EMERGENCY STOP")
+            if msg.buttons[8]:#Share back
+                emergency_msg = Empty()
+                self.emergency_stop_pub.publish(emergency_msg)
+                rospy.logwarn("EMERGENCY STOP")
 
-        elif msg.buttons[9]:#Options
-            # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
-            # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
-            # self.controler_id=3
-            rospy.loginfo("lagori catcher changed")
+            if msg.buttons[9]:#Options
+                # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
+                # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
+                # self.controler_id=3
+                rospy.loginfo("lagori catcher changed")
 
-        elif msg.buttons[10]:#PS
-            # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
-            # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
-            # self.controler_id=3
-            rospy.loginfo("lagori catcher changed")
+            if msg.buttons[10]:#PS
+                # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
+                # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
+                # self.controler_id=3
+                rospy.loginfo("lagori catcher changed")
 
-        elif msg.buttons[11]:#Leftpush
-            # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
-            # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
-            # self.controler_id=3
-            rospy.loginfo("lagori catcher changed")
+            # if msg.buttons[11]:#Leftpush
+                # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
+                # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
+                # self.controler_id=3
+                rospy.loginfo("lagori catcher changed")
 
-        # elif msg.buttons[12]:#Rightpush
-        #     # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
-        #     # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
-        #     # self.controler_id=3
-        #     rospy.loginfo("lagori catcher changed")
+            # if msg.buttons[12]:#Rightpush
+            #     # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
+            #     # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
+            #     # self.controler_id=3
+                rospy.loginfo("lagori catcher changed")
 
-        elif self.elevator_flag!=msg.axes[5]:
-            if(self.elevator_position>0):
-                self.elevator_position = self.elevator_position + msg.axes[5]
-                self.send_rogilink(HardId.LAGORI_E_MOTOR,0x03,self.elevator_position)
-            else: rospy.loginfo("elevator too low")
-        #     # self.controler_id=4
-        #     # self.elevator_flag=msg.axes[5]
-        #     # self.accessories_pub_commands.data = [float(4), float(self.elevator_flag)]
+
+        if msg.axes[7]:
+            if(self.elevator_position>=0):
+                self.elevator_position = self.elevator_position + msg.axes[7] / 100
+                self.send_rogilink(HardId.LAGORI_E_MOTOR.value,0x03,self.elevator_position,0)
+            else:
+                self.elevator_position = 0
+                rospy.loginfo("elevator too low")
+
             rospy.loginfo("move elevator")
 
-        if self.table_flag!=msg.axes[4]:
-            if(self.grab_position>0):
-                self.grab_position = self.grab_position + msg.axes[5]
-                self.send_rogilink(HardId.LAGORI_G_MOTOR,0x03,self.grab_position)
-            else: rospy.loginfo("grabing too much")
+        if msg.axes[6]:
+            if(self.grab_position<=0):
+                self.grab_position = self.grab_position - msg.axes[6] / 100
+                self.send_rogilink(HardId.LAGORI_G_MOTOR.value,0x03,self.grab_position,0)
+            else:
+                self.grab_position = 0
+                rospy.loginfo("grabing too much")
 
             rospy.loginfo("move gripper")
 
-
-        # self.accessories_pub_commands.data = [float(self.ball_catcher_catch_flag), float(self.ball_catcher_vertical_flag)]
-        # self.elevator_pub_commands.data = [float(self.elevator_flag),250]
-        # self.table_pub_commands.data = [float(self.table_flag),0]
-        # self.accessories_controler_pub.publish(self.accessories_pub_commands)
-        # self.elevator_controler_pub.publish(self.elevator_pub_commands)
-        # self.table_controler_pub.publish(self.table_pub_commands)
 
 
 if __name__ == '__main__':

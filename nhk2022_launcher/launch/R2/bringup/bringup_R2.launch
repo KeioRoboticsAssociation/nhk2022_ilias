@@ -12,7 +12,6 @@
     <!-- spead config -->
     <arg name="acc_lim_xy" default="1.0" />
     <arg name="max_vel_xy" default="1.0" />
-    <!--3.0-->
     <arg name="acc_lim_theta" default="0.314" />
     <arg name="max_vel_theta" default="0.314" />
 
@@ -41,13 +40,13 @@
 
         <!-- <include file="$(find nhk2022_launcher)/launch/R2/bringup/accessories_driver.launch"/> -->
 
-        <node pkg="omni_wheelctrl" type="omni_wheelctrl" name="omni_wheelctrl" output="screen">
+        <!-- <node pkg="omni_wheelctrl" type="omni_wheelctrl" name="omni_wheelctrl" output="screen">
             <param name="control_frequency" value="$(arg control_frequency)"/>
             <param name="base_frame_id" value="$(arg base_frame_id)"/>
             <param name="body_width" value="0.440"/>
             <param name="body_height" value="0.440"/>
             <param name="gazebo_mode" value="false"/>
-        </node>
+        </node> -->
 
         <!-- <node pkg="omni_odom_publisher" type="omni_odom_publisher" name="omni_odom_publisher" output="screen">
         <param name="control_frequency" value="$(arg control_frequency)"/>
@@ -68,10 +67,12 @@
     </group>
 
     <!-- Joy controller -->
-    <node pkg="joy" type="joy_node" name="joy_node"/>
+    <node pkg="joy" type="joy_node" name="joy_node">
+        <param name = "autorepeat_rate" value = "100"/>
+    </node>
 
     <node pkg="joy_commander" type="joy_commander" name="joy_commander" output="screen">
-        <param name="control_frequency" value="$(arg control_frequency)"/>
+        <param name ="control_frequency" value="$(arg control_frequency)"/>
         <param name = "acc_lim_xy" value = "$(arg acc_lim_xy)" />
         <param name = "max_vel_xy" value = "$(arg max_vel_xy)" />
         <param name = "acc_lim_theta" value = "$(arg acc_lim_theta)" />

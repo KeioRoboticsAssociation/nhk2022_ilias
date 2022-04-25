@@ -15,8 +15,6 @@ int main(int argc, char **argv)
     float limit_RL = 30;
     float rise_rate = 5;
     float roll_rate = 0.5;
-    float motor_click = 36; //モーターのギア数
-    float luck_click = 80;//ラックのギア数
 
     pnh.getParam("loop_rate", loop_rate);
     pnh.getParam("lost_time_threshold", lost_time_threshold);

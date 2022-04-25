@@ -41,6 +41,7 @@ class Rosconnector():
     publish_command = RogiLink()
     ball_catcher_hight : bool = False
     ball_catcher_grab : bool = False
+    lagori_catcher_angle_flag : bool = False
     elevator_flag : bool = False
     elevator_position : float = 0
     grab_position : float = 0
@@ -56,28 +57,36 @@ class Rosconnector():
         self.publish_command.data=pack('ff',data_0,data_1)
         self.serial_pub.publish(self.publish_command)
 
+    def send_rogilink_servo(self,hardid,commandid,data_0,data_1,data_2):
+        self.publish_command.id=int(hardid) << 6 | commandid
+        self.publish_command.data=pack('bbbbb',0,0,data_0,data_1,data_2)
+        self.serial_pub.publish(self.publish_command)
+
     def Joycallback(self, msg):
         if msg.buttons != self.prev_msg.buttons:
             self.prev_msg = msg #saving prev message
 
             if msg.buttons[0]:#X
                 self.ball_catcher_hight= not self.ball_catcher_hight
-                if self.ball_catcher_hight:self.send_rogilink(HardId.AIR,0x01,0,0)
+                if self.ball_catcher_hight:self.send_rogilink(HardId.AIR.value,0x01,0,0)
                 else: self.send_rogilink(HardId.AIR,0x02,0,0)
                 rospy.loginfo("ball catcher hight changed")
 
             if msg.buttons[1]:#O
                 self.ball_catcher_grab= not self.ball_catcher_grab
-                if self.ball_catcher_grab:self.send_rogilink(HardId.AIR,0x03,0,0)
+                if self.ball_catcher_grab:self.send_rogilink(HardId.AIR.value,0x03,0,0)
                 else: self.send_rogilink(HardId.AIR,0x04,0,0)
                 rospy.loginfo("ball catcher grab changed")
 
 
             if msg.buttons[2]:#<|
+                self.lagori_catcher_angle_flag = not self.lagori_catcher_angle_flag
+                if self.lagori_catcher_angle_flag:self.send_rogilink_servo(HardId.LAGORI_SERVO.value,0x03,0,0,0)
+                else: self.send_rogilink_servo(HardId.LAGORI_SERVO.value,0x03,0,9,0)
                 # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
                 # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
                 # self.controler_id=3
-                rospy.loginfo("lagori catcher changed")
+                rospy.loginfo("lagori catcher angle changed")
 
             if msg.buttons[3]:#<>
                 # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag

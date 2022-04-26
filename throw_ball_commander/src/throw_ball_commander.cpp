@@ -111,7 +111,7 @@ void Throw_Ball_Commander::target_callback(const geometry_msgs::Twist::ConstPtr 
 
     last_sub_vel_time = std::chrono::system_clock::now();
 
-    if(emergence_callback)
+    if(emergency_stop_flag)
         ROS_ERROR_ONCE("Error: Emergency Stopping...");
 }
 

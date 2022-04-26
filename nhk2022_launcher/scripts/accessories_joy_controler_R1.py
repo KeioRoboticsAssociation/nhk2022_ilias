@@ -17,8 +17,8 @@ class HardId(IntEnum):
     LFMD = 0x03
     LBMD = 0x04
     RBMD = 0x05
-    L_LAGORI = 0x06
-    R_LAGORI = 0x07
+    L_BALL = 0x06
+    R_BALL = 0x07
     LAGORI_E_MOTOR = 0x08
     AIR = 0x09
     LAGORI_SERVO = 0x0A
@@ -137,23 +137,23 @@ class Rosconnector():
 
         if msg.axes[7]:
             if(self.elevator_position>=0):
-                self.elevator_position = self.elevator_position + msg.axes[7] / 100
-                self.send_rogilink(HardId.LAGORI_E_MOTOR.value,0x03,self.elevator_position,0)
+                self.turn_position = self.turn_position + msg.axes[7] / 100
+                # self.send_rogilink(HardId.ELEVATION_ANGLE.value,0x03,self.elevator_position,0)
             else:
                 self.elevator_position = 0
-                rospy.loginfo("elevator too low")
+                rospy.loginfo("turning too much")
 
-            rospy.loginfo("move elevator")
+            rospy.loginfo("move turn table angle")
 
         if msg.axes[6]:
             if(self.grab_position<=0):
                 self.grab_position = self.grab_position - msg.axes[6] / 100
-                self.send_rogilink(HardId.LAGORI_G_MOTOR.value,0x03,self.grab_position,0)
+                self.send_rogilink(HardId.TURNE_ANGLE.value,0x03,self.grab_position,0)
             else:
                 self.grab_position = 0
-                rospy.loginfo("grabing too much")
+                rospy.loginfo("elevating too much")
 
-            rospy.loginfo("move gripper")
+            rospy.loginfo("move elevation angle")
 
 
 

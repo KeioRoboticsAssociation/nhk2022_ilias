@@ -25,7 +25,8 @@
     "@quasar/extras": "^1.13.5",
     "quasar": "^2.6.6",
     "roslib": "github:RobotWebTools/roslibjs#dea6e7cd59ff1af88ce69c",
-    "vue": "^3.2.25"
+    "vue": "^3.2.25",
+    "vue-router": "^4.0.14"
   },
   "devDependencies": {
     "@quasar/vite-plugin": "^1.0.9",

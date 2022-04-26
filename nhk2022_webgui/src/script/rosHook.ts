@@ -6,7 +6,9 @@ import { TopicInfo } from "../types/msgTypes";
 
 const roslib = window.ROSLIB;
 
-const ros = new roslib.Ros({});
+const ros = new roslib.Ros({
+  // url: "ws://localhost:9090",
+});
 
 export function connectRos(url: string) {
   ros.connect(url);

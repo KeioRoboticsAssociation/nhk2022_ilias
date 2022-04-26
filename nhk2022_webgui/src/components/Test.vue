@@ -1,13 +1,7 @@
 <script lang="ts" setup>
 import { computed } from "vue";
 import { CmdVelPacket, cmdVelInfo } from "../types/cmdVel";
-import {
-  createTopic,
-  useSubscriber,
-  publishTopic,
-  useRosStatus,
-  connectRos,
-} from "../script/rosHook";
+import { createTopic, useSubscriber, useRosStatus } from "../script/rosHook";
 
 const { isConnected } = useRosStatus();
 

@@ -39,7 +39,7 @@ Throw_Ball_Commander::Throw_Ball_Commander(ros::NodeHandle &_nh, int &_loop_rate
 void Throw_Ball_Commander::init_drivers()
 {
     rogi_link_msgs::RogiLink init_msg;
-    
+
     //RightRoller
     init_msg.id = RRMD << 6 | 0x02;
     init_msg.data[0] = 1;
@@ -111,7 +111,7 @@ void Throw_Ball_Commander::target_callback(const geometry_msgs::Twist::ConstPtr 
 
     last_sub_vel_time = std::chrono::system_clock::now();
 
-    if(emergence_callback)
+    if(emergency_stop_flag)
         ROS_ERROR_ONCE("Error: Emergency Stopping...");
 }
 

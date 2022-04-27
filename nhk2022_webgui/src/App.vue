@@ -45,6 +45,7 @@ function send() {
             icon="arrow_back"
             @click="() => router.push('/')"
           />
+          {{ $route.name }}
         </q-toolbar-title>
         <q-space />
         <q-chip v-if="isConnected" color="secondary" text-color="white">
@@ -74,5 +75,7 @@ function send() {
   font-family: "BIZ UDPGothic", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  font-size: 12px;
 }
 </style>

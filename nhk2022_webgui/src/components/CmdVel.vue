@@ -18,7 +18,7 @@ const angularZ = computed(() => cmdVelData.value?.angular.z);
     <q-card-section class="q-pa-sm">
       <p>x: {{ linearX }}</p>
       <p>y: {{ linearY }}</p>
-      <p>θ: {{ angularZ }}</p>
+      <p>ω: {{ angularZ }}</p>
     </q-card-section>
   </q-card>
 </template>

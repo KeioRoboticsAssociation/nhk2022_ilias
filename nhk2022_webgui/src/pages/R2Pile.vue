@@ -10,12 +10,12 @@ import Joy from "../components/Joy.vue";
         <img src="" alt="" class="cam" />
       </div>
       <div class="col column" style="height: 100%">
-        <div class="col-5 row">
+        <div class="col-7 row">
           <CmdVel class="col-6" />
           <Joy class="col-6" />
         </div>
         <div class="col">
-          <p v-for="n in 3" :key="n">
+          <p v-for="n in 1" :key="n">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit nihil
             praesentium molestias a adipisci, dolore vitae odit, quidem
             consequatur optio voluptates asperiores pariatur eos numquam rerum

@@ -1,19 +1,21 @@
 <script lang="ts" setup>
-import { ref } from "vue";
+import { computed } from "vue";
 import { JoyType, joyInfo } from "../types/joy";
 import { createTopic, useSubscriber } from "../script/rosHook";
 
 const joyTopic = createTopic<JoyType>(joyInfo);
 const joyData = useSubscriber(joyTopic);
+
+const axes = computed(() => joyData.value?.axes.map((e) => e.toFixed(3)));
 </script>
 
 <template>
   <q-card>
-    <q-card-section class="q-pa-sm">
+    <q-card-section class="q-px-sm q-py-xs">
       <div class="text-h7">Joy</div>
     </q-card-section>
-    <q-card-section class="q-pa-sm">
-      <p>axes: {{ joyData?.axes }}</p>
+    <q-card-section class="q-px-sm q-py-xs">
+      <p class="q-mb-sm">axes: {{ axes }}</p>
       <div class="row wrap justify-start">
         <div
           v-for="(btn, index) in joyData?.buttons"
@@ -34,10 +36,11 @@ const joyData = useSubscriber(joyTopic);
 
 <style lang="scss" scoped>
 .perfect-circle {
-  width: 1.1rem;
-  height: 1.1rem;
+  width: 1rem;
+  height: 1rem;
   border-radius: 50%;
   color: white;
-  font-size: small;
+  font-size: 0.6rem;
+  text-align: center;
 }
 </style>

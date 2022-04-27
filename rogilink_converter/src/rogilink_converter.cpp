@@ -1,6 +1,6 @@
 #include "rogilink_converter.h"
 
-Rogilink_Converter::Rogilink_Converter(ros::NodeHandle &_nh,int _loop_rate, int _lost_time_threshold)
+Rogilink_Converter::Rogilink_Converter(ros::NodeHandle &_nh,const int &_loop_rate, const int &_lost_time_threshold)
 :nh(_nh),loop_rate(_loop_rate),lost_time_threshold(_lost_time_threshold)
 {
     ROS_INFO("Creating rogilink converter");
@@ -17,7 +17,7 @@ Rogilink_Converter::Rogilink_Converter(ros::NodeHandle &_nh,int _loop_rate, int 
     update();
 }
 
-void Rogilink_Converter::sub_conv_callback(rogi_link_msgs::RogiLink &msg)
+void Rogilink_Converter::sub_conv_callback(const rogi_link_msgs::RogiLink &msg)
 {
     que.push(msg);
 }

@@ -8,7 +8,7 @@
 class Rogilink_Converter
 {
     public:
-        Rogilink_Converter(ros::NodeHandle &_nh, int _loop_rate, int _lost_time_threshold);
+        Rogilink_Converter(ros::NodeHandle &_nh, const int &_loop_rate, const int &_lost_time_threshold);
         ~Rogilink_Converter(){};
 
     private:
@@ -29,7 +29,7 @@ class Rogilink_Converter
         std::queue<rogi_link_msgs::RogiLink> que;
         std::chrono::system_clock::time_point last_sub_vel_time_;
 
-        void sub_conv_callback(rogi_link_msgs::RogiLink &msg);
+        void sub_conv_callback(const rogi_link_msgs::RogiLink &msg);
         void pub_msgs();
         void update();
 };

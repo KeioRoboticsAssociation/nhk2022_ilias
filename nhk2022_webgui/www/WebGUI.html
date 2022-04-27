@@ -6,16 +6,15 @@
     <title>nhk2022 Web Monitor</title>
     <link rel="stylesheet" type="text/css" href="style.css">
 
-    <script type="text/javascript"
-        src="http://static.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js"></script>
+    <script type="text/javascript" src="http://static.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js"></script>
     <script type="text/javascript" src="http://static.robotwebtools.org/roslibjs/current/roslib.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/105/three.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/three.js/105/three.min.js"></script>
 
-    <script type="text/javascript" type="text/javascript">
+    <script type="text/javascript" >
         // Connecting to ROS
         // -----------------
 
-        var ros = new ROSLIB.Ros();
+        const ros = new ROSLIB.Ros();
         ros.on('error', function (error) {
             document.getElementById('state').innerHTML = "<span style='color: red;'><b>Error</b></span>";
         });
@@ -30,58 +29,58 @@
         // Subscribing to a Topic
         // ----------------------
 
-        var CmdVellistener = new ROSLIB.Topic({
+        const CmdVellistener = new ROSLIB.Topic({
             ros: ros,
             name: '/cmd_vel',
             messageType: 'geometry_msgs/Twist'
         });
 
         CmdVellistener.subscribe(function (message) {
-            var linearX = message.linear.x;
-            var linearY = message.linear.y;
-            var angularZ = message.angular.z;
+            const linearX = message.linear.x;
+            const linearY = message.linear.y;
+            const angularZ = message.angular.z;
             document.getElementById("linearX").textContent = "linearX: " + linearX.toFixed(3) + " m/s";
             document.getElementById("linearY").textContent = "linearY: " + linearY.toFixed(3) + " m/s";
             document.getElementById("angularZ").textContent = "angularZ: " + angularZ.toFixed(3) + " rad/s";
             //console.log(linearX, linearY, angularZ);
         });
 
-        var odomlistener = new ROSLIB.Topic({
+        const odomlistener = new ROSLIB.Topic({
             ros: ros,
             name: '/odom',
             messageType: 'nav_msgs/Odometry'
         });
 
         odomlistener.subscribe(function (message) {
-            var odomlinearX = message.twist.twist.linear.x;
-            var odomlinearY = message.twist.twist.linear.y;
-            var odomangularZ = message.twist.twist.angular.z;
+            const odomlinearX = message.twist.twist.linear.x;
+            const odomlinearY = message.twist.twist.linear.y;
+            const odomangularZ = message.twist.twist.angular.z;
             document.getElementById("odomlinearX").textContent = "linearX: " + odomlinearX.toFixed(3) + " m/s";
             document.getElementById("odomlinearY").textContent = "linearY: " + odomlinearY.toFixed(3) + " m/s";
             document.getElementById("odomangularZ").textContent = "angularZ: " + odomangularZ.toFixed(3) + " rad/s";
             //console.log(odomlinearX, odomlinearY, odomangularZ);
         });
 
-        var pathmodelistener = new ROSLIB.Topic({
+        const pathmodelistener = new ROSLIB.Topic({
             ros: ros,
             name: '/task_selector/joy_pathmode',
             messageType: 'std_msgs/Int32'
         });
 
         pathmodelistener.subscribe(function (message) {
-            var pathmode = message.data;
+            const pathmode = message.data;
             document.getElementById("pathmode").textContent = "pathmode: " + pathmode;
             //console.log(pathmode);
         });
 
-        var runmodelistener = new ROSLIB.Topic({
+        const runmodelistener = new ROSLIB.Topic({
             ros: ros,
             name: '/task_selector/teleop_mode',
             messageType: 'std_msgs/Bool'
         });
 
         runmodelistener.subscribe(function (message) {
-            var runmode = message.data;
+            const runmode = message.data;
             if(runmode == true){
                 document.getElementById("runmode").innerHTML = "status: <span style='color: black;'><b>teleop</b></span>";
             }
@@ -92,33 +91,33 @@
         });
 
         
-        var feedbacklistener = new ROSLIB.Topic({
+        const feedbacklistener = new ROSLIB.Topic({
             ros: ros,
             name: '/bezier_path_planning_pursuit/feedback',
             messageType: 'bezier_path_planning_pursuit/PursuitPathActionFeedback'
         });
 
         feedbacklistener.subscribe(function (message) {
-            var progress = message.feedback.progress;
+            const progress = message.feedback.progress;
             document.getElementById("progress").textContent = "progress: " + progress.toFixed(3) + " %";
             //console.log(pathmode);
         });
 
-        var goallistener = new ROSLIB.Topic({
+        const goallistener = new ROSLIB.Topic({
                 ros: ros,
                 name: '/bezier_path_planning_pursuit/goal',
                 messageType: 'bezier_path_planning_pursuit/PursuitPathActionGoal'
             });
 
         goallistener.subscribe(function (message) {
-            var pathmode = message.goal.pathmode;
-            var direction = message.goal.direction;
+            const pathmode = message.goal.pathmode;
+            const direction = message.goal.direction;
             document.getElementById("planner_pathmode").textContent = "pathmode: " + pathmode;
             document.getElementById("direction").textContent = "direction: " + direction;
             //console.log(pathmode);
         });
 
-        var statuslistener = new ROSLIB.Topic({
+        const statuslistener = new ROSLIB.Topic({
             ros: ros,
             name: '/bezier_path_planning_pursuit/status',
             messageType: 'actionlib_msgs/GoalStatusArray'
@@ -126,12 +125,12 @@
 
         statuslistener.subscribe(function (message) {
             //console.log(message);
-            var statuslist = message.status_list;
+            const statuslist = message.status_list;
             if(statuslist.length == 0){
                 document.getElementById("status").innerHTML = "status: <span style='color: black;'><b>initialized</b></span>";
             }
             else{
-                var status = statuslist.slice(-1)[0].status;
+                const status = statuslist.slice(-1)[0].status;
                 if(status == 1){
                     document.getElementById("status").innerHTML = "status: <span style='color: blue;'><b>ACTIVE</b></span>";
                 }
@@ -164,7 +163,7 @@
         });   
 
         // tf listener
-        var tfClient = new ROSLIB.TFClient({
+        const tfClient = new ROSLIB.TFClient({
             ros: ros,
             fixedFrame: 'map',
             angularThres: 0.01,
@@ -172,13 +171,13 @@
         });
 
         tfClient.subscribe('base_footprint', function (tf) {
-            var mapX = tf.translation.x;
-            var mapY = tf.translation.y;
+            const mapX = tf.translation.x;
+            const mapY = tf.translation.y;
 
-            var quaternion = new THREE.Quaternion(tf.rotation.x, tf.rotation.y, tf.rotation.z, tf.rotation.w);
-            var euler = new THREE.Euler;
+            const quaternion = new THREE.Quaternion(tf.rotation.x, tf.rotation.y, tf.rotation.z, tf.rotation.w);
+            const euler = new THREE.Euler;
             euler.setFromQuaternion(quaternion);
-            var mapAngle = euler.z * 180.0 / Math.PI;
+            const mapAngle = euler.z * 180.0 / Math.PI;
             document.getElementById("mapX").textContent = "X: " + mapX.toFixed(3) + " m";
             document.getElementById("mapY").textContent = "Y: " + mapY.toFixed(3) + " m";
             document.getElementById("mapAngle").textContent = "Angle: " + mapAngle.toFixed(3) + " deg";
@@ -219,16 +218,16 @@
         </div>
     </div>
 
-    <div class="second_row">
+    <!-- <div class="second_row">
         <div class="block position">
             <h2>Position</h2>
             <p id="mapX">X: 0.0 m</p>
             <p id="mapY">Y: 0.0 m</p>
             <p id="mapAngle">Angle: 0.0 deg</p>
         </div>
-    </div>
+    </div> -->
 
-    <div class="third_row">
+    <!-- <div class="third_row">
         <div  class="block joycon_status">
             <h2>JoyCon Status</h2>
             <p id="pathmode">pathmode: 0</p>
@@ -242,7 +241,7 @@
             <p id="direction">direction: 0</p>
             <p id="progress">progress: 0.0 %</p>
         </div>
-    </div>
+    </div> --> 
     
 
 </body>

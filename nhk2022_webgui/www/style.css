@@ -1,11 +1,12 @@
 body {
-    background: #eeeeee;
+    background: #242424;
 }
 
 .header{
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    color: white;
 }
 
 .first_row{
@@ -14,9 +15,9 @@ body {
 .block {
     flex-basis: 48%;
     text-align: center;
-    background: #ffffff;
+    background: #b4b4b4;
     padding: 10px;
-    border: 1px solid #cccccc;
+    border: 1px solid #a1a1a1;
     margin: 10px auto;
 }
 

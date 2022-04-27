@@ -7,7 +7,7 @@ echo "#############################################"
 ## Resolve dependencies (from git repository)
 echo "1/4 Resolve dependencies (from git repository)"
 sudo apt-get update
-sudo apt-get install python-vcstool
+sudo apt-get install python3-vcstool
 dir_path=`pwd`
 dirs=`find $dir_path -maxdepth 2 -type f -name *.rosinstall`
 echo $dirs
@@ -48,12 +48,11 @@ done
 chmod +x ./bezier_path_planning_pursuit/action/PursuitPath.action
 
 ## install pyrealsense2
-sudo apt install python-pip
-pip install pyrealsense2
+sudo apt install python3-pip
+# pip install pyrealsense2
 
 ## Build
-echo "4/4 catkin_make"
-cd ../../
-catkin_make
+echo "4/4 catkin build"
+catkin build
 
 echo "Installing finished successfully."

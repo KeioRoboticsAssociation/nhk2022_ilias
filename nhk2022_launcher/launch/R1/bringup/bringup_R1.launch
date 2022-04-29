@@ -10,10 +10,11 @@
     </node>
 
     <!-- serial nodes -->
-    <node pkg="serial_tros" name="mbed_LF" type="serial_test_node" output="screen" respawn="true">
-        <param name = "port" value = "/dev/serial/by-id/usb-STMicroelectronics_STM32_STLink_066DFF495649657867251820-if02"/>
+    <node pkg="serial_ros" name="ball_e_motor" type="serial_ros_node" output="screen" respawn="true">
+        <param name = "port" value = "/dev/serial/by-id/usb-STMicroelectronics_STM32_STLink_066EFF303032424257010822-if02"/>
         <param name = "looprate" value = "70"/>
-        <remap from = "/Serial_sub_float" to = "/control_06" />
-        <remap from = "/Serial_pub_float" to = "/rcv_serial_06" />
+        <remap from = "/Serial_sub_float" to = "/control_12" />
+        <remap from = "/Serial_pub_float" to = "/rcv_serial_12" />
     </node>
+
 </launch>

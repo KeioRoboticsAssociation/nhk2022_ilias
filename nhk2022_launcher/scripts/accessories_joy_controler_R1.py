@@ -39,6 +39,7 @@ class Rosconnector():
     ball_catcher_grab : bool = False
     elevator_flag : bool = False
     elevator_position : float = 0
+    ball_elevator_position : float = 0
     grab_position : float = 0
     prev_msg = Joy()
 
@@ -82,10 +83,14 @@ class Rosconnector():
                 rospy.loginfo("lagori catcher changed")
 
             if msg.buttons[4]:#L1
-                # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
-                # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
-                # self.controler_id=3
-                rospy.loginfo("lagori catcher changed")
+                if(self.ball_elevator_position>=0):
+                    self.ball_elevator_position= self.ball_elevator_position + 1 / 100
+                    self.send_rogilink(HardId.BALL_E_MOTOR.value,0x03,self.ball_elevator_position,0)
+                else:
+                    self.ball_elevator_position = 0
+                    rospy.loginfo("elevating too much")
+
+                rospy.loginfo("move ball elevator")
 
             if msg.buttons[5]:#R1
                 # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
@@ -94,10 +99,14 @@ class Rosconnector():
                 rospy.loginfo("lagori catcher changed")
 
             if msg.buttons[6]:#L2
-                # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
-                # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
-                # self.controler_id=3
-                rospy.loginfo("lagori catcher changed")
+                if(self.ball_elevator_position>=0):
+                    self.ball_elevator_position = self.ball_elevator_position - 1 / 100
+                    self.send_rogilink(HardId.BALL_E_MOTOR.value,0x03,self.ball_elevator_position,0)
+                else:
+                    self.ball_elevator_position = 0
+                    rospy.loginfo("elevating too much")
+
+                rospy.loginfo("move ball elevator")
 
             if msg.buttons[7]:#R2
                 # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
@@ -116,7 +125,7 @@ class Rosconnector():
                 # self.controler_id=3
                 rospy.loginfo("lagori catcher changed")
 
-            if msg.buttons[10]:#PS
+            # if msg.buttons[10]:#PS
                 # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
                 # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
                 # self.controler_id=3
@@ -135,9 +144,9 @@ class Rosconnector():
                 rospy.loginfo("lagori catcher changed")
 
 
-        if msg.axes[7]:
+        if msg.axes[5]:
             if(self.elevator_position>=0):
-                self.turn_position = self.turn_position + msg.axes[7] / 100
+                self.turn_position = self.turn_position + msg.axes[5] / 100
                 # self.send_rogilink(HardId.ELEVATION_ANGLE.value,0x03,self.elevator_position,0)
             else:
                 self.elevator_position = 0
@@ -145,9 +154,19 @@ class Rosconnector():
 
             rospy.loginfo("move turn table angle")
 
-        if msg.axes[6]:
+        if msg.axes[4]:
             if(self.grab_position<=0):
-                self.grab_position = self.grab_position - msg.axes[6] / 100
+                self.grab_position = self.grab_position - msg.axes[4] / 100
+                self.send_rogilink(HardId.TURNE_ANGLE.value,0x03,self.grab_position,0)
+            else:
+                self.grab_position = 0
+                rospy.loginfo("elevating too much")
+
+            rospy.loginfo("move elevation angle")
+
+        if msg.axes[3]:
+            if(self.grab_position<=0):
+                self.grab_position = self.grab_position - msg.axes[3] / 100
                 self.send_rogilink(HardId.TURNE_ANGLE.value,0x03,self.grab_position,0)
             else:
                 self.grab_position = 0

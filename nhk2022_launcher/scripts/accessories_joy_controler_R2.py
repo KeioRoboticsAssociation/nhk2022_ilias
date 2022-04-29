@@ -123,13 +123,13 @@ class Rosconnector():
                 self.emergency_stop_pub.publish(emergency_msg)
                 rospy.logwarn("EMERGENCY STOP")
 
-            if msg.buttons[9]:#Options
+            # if msg.buttons[9]:#Options
                 # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
                 # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
                 # self.controler_id=3
                 rospy.loginfo("lagori catcher changed")
 
-            if msg.buttons[10]:#PS
+            # if msg.buttons[10]:#PS
                 # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
                 # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
                 # self.controler_id=3
@@ -148,9 +148,9 @@ class Rosconnector():
                 rospy.loginfo("lagori catcher changed")
 
 
-        if msg.axes[7]:
+        if msg.axes[5]:
             if(self.elevator_position>=0):
-                self.elevator_position = self.elevator_position + msg.axes[7] / 100
+                self.elevator_position = self.elevator_position + msg.axes[5] / 100
                 self.send_rogilink(HardId.LAGORI_E_MOTOR.value,0x03,self.elevator_position,0)
             else:
                 self.elevator_position = 0
@@ -158,9 +158,9 @@ class Rosconnector():
 
             rospy.loginfo("move elevator")
 
-        if msg.axes[6]:
+        if msg.axes[4]:
             if(self.grab_position<=0):
-                self.grab_position = self.grab_position - msg.axes[6] / 100
+                self.grab_position = self.grab_position - msg.axes[4] / 100
                 self.send_rogilink(HardId.LAGORI_G_MOTOR.value,0x03,self.grab_position,0)
             else:
                 self.grab_position = 0

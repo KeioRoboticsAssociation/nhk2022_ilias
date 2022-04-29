@@ -26,8 +26,9 @@ void Rogilink_Converter::pub_msgs()
 {
     rogi_link_msgs::RogiLink msg;
     std_msgs::Float32MultiArray msg2;
-    memcpy(&msg2.data[0], msg.data.begin(), msg.data.size());
+    msg2.data.resize(2);
     msg = que.front();
+    memcpy(&msg2.data[0], msg.data.begin(), msg.data.size());
     que.pop();
 
     switch(msg.id >> 6)

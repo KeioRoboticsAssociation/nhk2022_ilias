@@ -2,6 +2,7 @@
 import { computed } from "vue";
 import { CmdVelPacket, cmdVelInfo } from "../types/cmdVel";
 import { createTopic, useSubscriber } from "../script/rosHook";
+import Card from "./Card.vue";
 
 const cmdVelTopic = createTopic<CmdVelPacket>(cmdVelInfo);
 const cmdVelData = useSubscriber(cmdVelTopic);
@@ -11,20 +12,11 @@ const angularZ = computed(() => cmdVelData.value?.angular.z);
 </script>
 
 <template>
-  <q-card class="card">
-    <q-card-section class="q-pa-sm">
-      <div class="text-h7">CmdVel</div>
-    </q-card-section>
-    <q-card-section class="q-pa-sm">
-      <p>x: {{ linearX }}</p>
-      <p>y: {{ linearY }}</p>
-      <p>ω: {{ angularZ }}</p>
-    </q-card-section>
-  </q-card>
+  <Card title="CmdVel">
+    <p>x: {{ linearX }}</p>
+    <p>y: {{ linearY }}</p>
+    <p>ω: {{ angularZ }}</p>
+  </Card>
 </template>
 
-<style lang="scss" scoped>
-.card {
-  height: 100%;
-}
-</style>
+<style lang="scss" scoped></style>

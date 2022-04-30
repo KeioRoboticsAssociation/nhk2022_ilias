@@ -1,39 +1,58 @@
-<launch>  
-  <!-- sensors-->
-  <!--IMU-->
-  <node pkg="bno055_usb_stick" type="bno055_usb_stick_node" name="bno055" output="screen">
-    <param name="port" value = "/dev/BNO"/>
-    <param name="publish_tf" value="false"/>
-    <param name="tf_frame_id" value="base_footprint"/>
-    <param name="publish_tf" value="bno055"/>
-    <param name="mode" value="imu" />
-  </node>
+<launch>
+    <!-- sensors-->
+    <!--IMU-->
+    <node pkg="bno055_usb_stick" type="bno055_usb_stick_node" name="bno055" output="screen">
+        <param name="port" value = "/dev/BNO"/>
+        <param name="publish_tf" value="false"/>
+        <param name="tf_frame_id" value="base_link"/>
+        <param name="publish_tf" value="bno055"/>
+        <param name="mode" value="imu" />
+    </node>
 
-  <!--LiDAR-->
-  <!--RPlidar-->
-  <!-- <include file="$(find rplidar_ros)/launch/rplidar_a3.launch" /> -->
-    <!-- <param name="serial_port"   type="string" value="/dev/ttyUSB1"/>
-    <param name="serial_baudrate"     type="int"    value="256000" />
-    <param name="frame_id"            type="string" value="laser"/>
-    <param name="inverted"            type="bool"   value="false"/>
-    <param name="angle_compensate"    type="bool"   value="true"/> -->
-    
-  <!-- sick -->
-  <!-- <include file="$(find sick_scan)/launch/sick_tim_5xx.launch" >
-    <arg name="frame_id" value="laser1" /> 
-    <arg name="hostname" value="192.168.0.80"/>
-  </include> -->
+    <!--LiDAR-->
+    <!--RPlidar-->
+    <!-- <include file="$(find rplidar_ros)/launch/rplidar_a3.launch" /> -->
+    <!-- <param name="serial_port" type="string" value="/dev/ttyUSB1"/>
+    <param name="serial_baudrate" type="int" value="256000" />
+    <param name="frame_id" type="string" value="laser"/>
+    <param name="inverted" type="bool" value="false"/>
+    <param name="angle_compensate" type="bool" value="true"/> -->
 
-  <include file="$(find sick_scan)/launch/sick_tim_5xx.launch" >
-    <arg name="frame_id" value="laser2" /> 
-    <arg name="hostname" value="192.168.0.81"/>
-  </include>
+    <!-- sick -->
+    <include file="$(find sick_scan)/launch/sick_tim_5xx.launch">
+        <arg name="frame_id" value="laser1" />
+        <arg name="hostname" value="192.168.0.80"/>
+    </include>
 
-  <!-- inverted_laser -->
-  <!-- git clone https://github.com/timkambic/invert_laser.git -->
-  <!-- publish /scan_inv -->
-  <node pkg="invert_laser" type="invert_laser_node" name="invert_laser">
-    <param name="out_frame" value="laser2"/>
-  </node>
+    <include file="$(find sick_scan)/launch/sick_tim_5xx.launch">
+        <arg name="frame_id" value="laser2" />
+        <arg name="hostname" value="192.168.0.81"/>
+    </include>
+
+    <!-- inverted_laser -->
+    <!-- git clone https://github.com/timkambic/invert_laser.git -->
+    <!-- publish /scan_inv -->
+    <node pkg="invert_laser" type="invert_laser_node" name="invert_laser_2">
+        <!-- <param name="out_frame" value="laser1"/> -->
+        <remap  from="/scan_inv" to="/laser1_inv"/>
+    </node>
+
+    <node pkg="invert_laser" type="invert_laser_node" name="invert_laser_2">
+        <!-- <param name="out_frame" value="laser2"/> -->
+        <remap  from="/scan_inv" to="/laser2_inv"/>
+    </node>
+
+    <node pkg="ira_laser_tools" name="laserscan_multi_merger" type="laserscan_multi_merger" output="screen">
+        <param name="destination_frame" value="cart_frame"/>
+        <param name="cloud_destination_topic" value="/merged_cloud"/>
+        <param name="scan_destination_topic" value="/scan_multi"/>
+        <param name="laserscan_topics" value ="/laser1_inv /lase2_inv" /><!-- LIST OF THE LASER SCAN TOPICS TO SUBSCRIBE -->
+        <!-- <param name="angle_min" value="-2.0"/> -->
+        <!-- <param name="angle_max" value="2.0"/> -->
+        <!-- <param name="angle_increment" value="0.0058"/> -->
+        <!-- <param name="scan_time" value="0.0333333"/> -->
+        <!-- <param name="range_min" value="0.30"/> -->
+        <!-- <param name="range_max" value="50.0"/> -->
+    </node>
 
 </launch>

@@ -165,9 +165,9 @@ x,y,theta
 
 ## 簡単な動作確認方法
 
-このパッケージのノードを起動したのち、以下のコマンドを打つとaction client guiが立ち上がり、action serverとしての機能を容易に確認することができる。
+このパッケージのノードを起動したのち、以下のコマンドを打つとaction client guiが立ち上がり、action serverとしての機能を容易に確認することができる。(デフォルトのインストールではactionlib_toolsは入っていないので`sudo apt install ros-noetic-actionlib-tools`でインストール)
 
 ```shell
-rosrun actionlib axclient.py /bezier_path_planning_pursuit
+rosrun actionlib_tools axclient.py /bezier_path_planning_pursuit
 ```
 

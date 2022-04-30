@@ -39,7 +39,7 @@ int main(int argc, char **argv)
     float fix_angle_gain = 10.0;
     float path_granularity = 0.01;
     std::string global_frame_id = "odom";
-    std::string base_frame_id = "base_footprint";
+    std::string base_frame_id = "base_link";
     std::string angle_source = "pose";
 
     float acc_lim_theta = 3.2;

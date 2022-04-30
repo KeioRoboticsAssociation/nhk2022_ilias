@@ -24,6 +24,7 @@
   "dependencies": {
     "@quasar/extras": "^1.13.5",
     "quasar": "^2.6.6",
+    "quaternion-to-euler": "^0.5.0",
     "roslib": "github:RobotWebTools/roslibjs#dea6e7cd59ff1af88ce69c",
     "vue": "^3.2.25",
     "vue-router": "^4.0.14"

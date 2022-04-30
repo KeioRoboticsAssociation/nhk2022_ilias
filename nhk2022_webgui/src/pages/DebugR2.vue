@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import CmdVel from "../components/CmdVel.vue";
 import Joy from "../components/Joy.vue";
+import Odom from "../components/Odom.vue";
 </script>
 
 <template>
@@ -14,6 +15,7 @@ import Joy from "../components/Joy.vue";
       <Joy />
       <CmdVel />
       <Joy />
+      <Odom />
     </div>
   </q-page>
 </template>

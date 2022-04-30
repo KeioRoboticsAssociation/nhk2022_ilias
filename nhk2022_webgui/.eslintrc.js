@@ -18,6 +18,12 @@ module.exports = {
         "sourceType": "module"
     },
     "ignorePatterns": ["*.config.ts"],
+    "globals": {
+        "defineProps": "readonly",
+        "defineEmits": "readonly",
+        "defineExpose": "readonly",
+        "withDefaults": "readonly"
+    },
     "rules": {
         "import/no-unresolved": "off",
         "import/extensions": "off",

@@ -10,38 +10,35 @@
     </node>
 
     <!-- serial nodes -->
-    <!-- <node pkg="serial_ros" name="serial_ros_12" type="serial_ros_node" output="screen" respawn="true">
+
+    <node pkg="serial_ros" name="rogi_link" type="rogi_link_node"  respawn="true">
+        <!-- <param name="looprate" value="$(arg  control_frequency)"/> -->
+        <param name="control_frequency" value="200"/>
+        <param name="port" value="/dev/ttyUSB0"/>
+    </node>
+
+
+    <node pkg="serial_ros" name="serial_ros_12" type="serial_ros_node" output="screen" respawn="true">
         <param name = "port" value = "/dev/serial/by-id/usb-STMicroelectronics_STM32_STLink_066EFF303032424257010822-if02"/>
-        <param name = "looprate" value = "70"/>
+        <param name = "looprate" value = "50"/>
         <remap from = "/Serial_sub_float" to = "/control_12" />
         <remap from = "/Serial_pub_float" to = "/rcv_serial_12" />
-    </node> -->
+    </node>
     <node pkg="serial_ros" name="serial_ros_10" type="serial_ros_node" output="screen" respawn="true">
         <param name="port" value="/dev/serial/by-id/usb-STMicroelectronics_STM32_STLink_0672FF515055657867244941-if02" />
         <param name="looprate" value="70" />
         <remap from="/Serial_sub_float" to="/control_10" />
         <remap from="/Serial_pub_float" to="/rcv_serial_10" />
     </node>
-    <!-- <node pkg="serial_ros" name="serial_ros_0F" type="serial_ros_node" output="screen" respawn="true">
-        <param name="port" value="/dev/serial/by-id/usb-STMicroelectronics_STM32_STLink_066EFF303032424257010822-if02" />
-        <param name="looprate" value="70" />
-        <remap from="/Serial_sub_float" to="/control_0F" />
-        <remap from="/Serial_pub_float" to="/rcv_serial_0F" />
-    </node>
+<!--
     <node pkg="serial_ros" name="serial_ros_07" type="serial_ros_node" output="screen" respawn="true">
-        <param name="port" value="/dev/serial/by-id/usb-STMicroelectronics_STM32_STLink_066EFF303032424257010822-if02" />
-        <param name="looprate" value="70" />
+        <param name="port" value="/dev/serial/by-id/usb-STMicroelectronics_STM32_STLink_066CFF303032424257013528-if02" />
+        <param name="looprate" value="50" />
         <remap from="/Serial_sub_float" to="/control_07" />
         <remap from="/Serial_pub_float" to="/rcv_serial_07" />
-    </node>
-    <node pkg="serial_ros" name="serial_ros_06" type="serial_ros_node" output="screen" respawn="true">
-        <param name="port" value="/dev/serial/by-id/usb-STMicroelectronics_STM32_STLink_066EFF303032424257010822-if02" />
-        <param name="looprate" value="70" />
-        <remap from="/Serial_sub_float" to="/control_06" />
-        <remap from="/Serial_pub_float" to="/rcv_serial_06" />
     </node> -->
 
-    <node pkg="throw_ball_commander" name="throw_ball" type="throw_ball_commander" output="screen">
+    <!-- <node pkg="throw_ball_commander" name="throw_ball" type="throw_ball_commander" output="screen">
         <param name="loop_rate" value="30"/>
         <param name="lost_time_threshold" value="500"/>
         <param name="neck_length" value="500" />
@@ -49,5 +46,5 @@
         <param name="limit_RL" value="30" />
         <param name="rise_rate" value="5" />
         <param name="roll_rate" value="0.5" />
-    </node>
+    </node> -->
 </launch>

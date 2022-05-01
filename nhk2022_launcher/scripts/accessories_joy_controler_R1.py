@@ -59,11 +59,11 @@ class Rosconnector():
             self.prev_msg = msg #saving prev message
 
             if msg.buttons[0]:#X
-                self.ball_catcher_hight:self.send_rogilink(HardId.SHOT_SERVO,0x04,0,0)
+                self.send_rogilink(HardId.SHOT_SERVO.value,0x04,0,0)
                 rospy.loginfo("reload")
 
             if msg.buttons[1]:#O
-                self.ball_catcher_grab:self.send_rogilink(HardId.SHOT_SERVO,0x08,0,0)
+                self.send_rogilink(HardId.SHOT_SERVO.value,0x08,0,0)
                 rospy.loginfo("shoot")
 
 
@@ -159,10 +159,10 @@ class Rosconnector():
             rospy.loginfo("%f",self.angle_position)
 
 
-        if msg.axes[1]:
-            self.roller_speed = msg.axes[1]*100
-            self.send_rogilink(HardId.R_BALL.value,0x05,self.roller_speed,-self.roller_speed)
-            self.send_rogilink(HardId.L_BALL.value,0x05,self.roller_speed,-self.roller_speed)
+        # if msg.axes[1]:
+        self.roller_speed = msg.axes[1]*10
+        self.send_rogilink(HardId.R_BALL.value,0x05,self.roller_speed,-self.roller_speed)
+            # self.send_rogilink(HardId.L_BALL.value,0x05,self.roller_speed,-self.roller_speed)
 
         #     rospy.loginfo("move elevation angle")
 

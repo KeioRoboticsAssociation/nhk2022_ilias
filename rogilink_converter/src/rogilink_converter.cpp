@@ -34,13 +34,13 @@ void Rogilink_Converter::pub_msgs()
     switch(msg.id >> 6)
     {
         case 0x06:
-            pub_06.publish(msg2);
+            pub_07.publish(msg2); //メッセージを統合する必要があるのでごめんなさいの06->07
             break;
         case 0x07:
             pub_07.publish(msg2);
             break;
         case 0x0f:
-            pub_0f.publish(msg2);
+            pub_10.publish(msg2); //メッセージを統合する必要があるのでごめんなさいの0f->10
             break;
         case 0x10:
             pub_10.publish(msg2);

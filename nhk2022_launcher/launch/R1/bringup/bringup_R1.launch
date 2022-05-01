@@ -10,19 +10,19 @@
     </node>
 
     <!-- serial nodes -->
-    <node pkg="serial_ros" name="serial_ros_12" type="serial_ros_node" output="screen" respawn="true">
+    <!-- <node pkg="serial_ros" name="serial_ros_12" type="serial_ros_node" output="screen" respawn="true">
         <param name = "port" value = "/dev/serial/by-id/usb-STMicroelectronics_STM32_STLink_066EFF303032424257010822-if02"/>
         <param name = "looprate" value = "70"/>
         <remap from = "/Serial_sub_float" to = "/control_12" />
         <remap from = "/Serial_pub_float" to = "/rcv_serial_12" />
-    </node>
+    </node> -->
     <node pkg="serial_ros" name="serial_ros_10" type="serial_ros_node" output="screen" respawn="true">
-        <param name="port" value="/dev/serial/by-id/usb-STMicroelectronics_STM32_STLink_066EFF303032424257010822-if02" />
+        <param name="port" value="/dev/serial/by-id/usb-STMicroelectronics_STM32_STLink_0672FF515055657867244941-if02" />
         <param name="looprate" value="70" />
         <remap from="/Serial_sub_float" to="/control_10" />
         <remap from="/Serial_pub_float" to="/rcv_serial_10" />
     </node>
-    <node pkg="serial_ros" name="serial_ros_0F" type="serial_ros_node" output="screen" respawn="true">
+    <!-- <node pkg="serial_ros" name="serial_ros_0F" type="serial_ros_node" output="screen" respawn="true">
         <param name="port" value="/dev/serial/by-id/usb-STMicroelectronics_STM32_STLink_066EFF303032424257010822-if02" />
         <param name="looprate" value="70" />
         <remap from="/Serial_sub_float" to="/control_0F" />
@@ -39,9 +39,9 @@
         <param name="looprate" value="70" />
         <remap from="/Serial_sub_float" to="/control_06" />
         <remap from="/Serial_pub_float" to="/rcv_serial_06" />
-    </node>
+    </node> -->
 
-    <node pkg="throw_ball_commander" name="throw_ball" type="throw_ball" output="screen">
+    <node pkg="throw_ball_commander" name="throw_ball" type="throw_ball_commander" output="screen">
         <param name="loop_rate" value="30"/>
         <param name="lost_time_threshold" value="500"/>
         <param name="neck_length" value="500" />

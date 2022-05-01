@@ -1,14 +1,9 @@
 #! /usr/bin/env python3
 
-# from click import command
-from asyncio import wait_for
-from numpy import std
 import rospy
 from enum import IntEnum
 
-from std_msgs.msg import Empty
 from struct import *
-from sensor_msgs.msg import Joy
 from rogi_link_msgs.msg import RogiLink
 from std_msgs.msg import Bool
 # from std_msgs.msg import Bool
@@ -59,10 +54,10 @@ class Rosconnector():
         self.serial_pub.publish(self.publish_command)
 
     def hardware_initialize(self):
-        # self.send_rogilink_b(HardId.RFMD.value,0x02,1)
-        # self.send_rogilink_b(HardId.LFMD.value,0x02,1)
-        # self.send_rogilink_b(HardId.LBMD.value,0x02,1)
-        # self.send_rogilink_b(HardId.RBMD.value,0x02,1)
+        self.send_rogilink_b(HardId.RFMD.value,0x02,1)
+        self.send_rogilink_b(HardId.LFMD.value,0x02,1)
+        self.send_rogilink_b(HardId.LBMD.value,0x02,1)
+        self.send_rogilink_b(HardId.RBMD.value,0x02,1)
         # self.send_rogilinb(HardId.L_BALL,0x02,1)
         # self.send_rogilinb(HardId.R_BALL,0x02,1)
         self.send_rogilink_b(HardId.LAGORI_E_MOTOR.value,0x02,0)

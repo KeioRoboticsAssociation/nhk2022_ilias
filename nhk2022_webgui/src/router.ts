@@ -12,7 +12,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(), // HTML5 History モード
+  history: createWebHistory("/nhk2022_webgui/www/"), // HTML5 History モード
   routes,
 });
 

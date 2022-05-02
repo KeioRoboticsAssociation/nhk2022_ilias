@@ -20,8 +20,16 @@ const theta = computed(() => {
 
 <template>
   <Card title="Odom">
-    <p>Pose: X: {{ position?.x }}, Y: {{ position?.y }}, θ: {{ theta }}</p>
-    <p>Velocity: X: {{ velocity?.x }}, Y: {{ velocity?.y }}, ω: {{ omega }}</p>
+    <div class="text-subtitle2">Pose</div>
+    <p>
+      X: {{ position?.x.toFixed(3) }}, Y: {{ position?.y.toFixed(3) }}, θ:
+      {{ theta.toFixed(3) }}
+    </p>
+    <div class="text-subtitle2">Velocity</div>
+    <p>
+      X: {{ velocity?.x.toFixed(3) }}, Y: {{ velocity?.y.toFixed(3) }}, ω:
+      {{ omega?.toFixed(3) }}
+    </p>
   </Card>
 </template>
 

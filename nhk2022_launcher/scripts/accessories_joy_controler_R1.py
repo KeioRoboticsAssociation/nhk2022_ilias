@@ -43,6 +43,12 @@ class Rosconnector():
     angle_position : float = 0
     prev_msg = Joy()
     roller_speed : float = 0
+    old_roller_speed : float = 0
+    controller_roller_speed : float = 0
+    command_roller_speed : float = 0
+    max_roller_speed : float = 23
+    acc_lim = 10
+    loop_rate = 20 #joyノードから出る/joyのスピードに合わせてください。本当にごめんなさい
 
     def __init__(self):
         self.joy_sub = rospy.Subscriber("joy", Joy, self.Joycallback)
@@ -125,7 +131,9 @@ class Rosconnector():
 
 
             if msg.buttons[5]:#L1
-                self.send_rogilink(HardId.BALL_E_MOTOR.value,0x03,-13.5,0)
+                self.send_rogilink(HardId.BALL_E_MOTOR.value,0x03,-13.7,0)
+                self.send_rogilink(HardId.SHOT_SERVO.value,0x07,0,0)
+
 
                 rospy.loginfo("move ball elevator")
 
@@ -154,23 +162,43 @@ class Rosconnector():
             # else:
             #     self.angle_position = 0
             #     rospy.loginfo("turning too much")
-        self.send_rogilink(HardId.TURNE_ANGLE.value,0x03,4*msg.axes[4],4*msg.axes[5])
+        self.send_rogilink(HardId.TURNE_ANGLE.value,0x03,-3*msg.axes[4],-20*msg.axes[5])
 
 
             # rospy.loginfo("move turn table angle")
             # rospy.loginfo("%f",self.angle_position)
 
 
-        if msg.axes[1]:
-            if msg.axes[1]>=0:
-                self.roller_speed = msg.axes[1]*40
-                self.send_rogilink(HardId.R_BALL.value,0x05,self.roller_speed,self.roller_speed)
-                self.send_rogilink(HardId.L_BALL.value,0x05,self.roller_speed,self.roller_speed)
-            else:
-                self.roller_speed = 0
-                self.send_rogilink(HardId.R_BALL.value,0x05,self.roller_speed,-self.roller_speed)
-                self.send_rogilink(HardId.L_BALL.value,0x05,self.roller_speed,-self.roller_speed)
+        # if msg.axes[1]:
+        if msg.axes[1]>=0:
+            self.controller_roller_speed = msg.axes[1]*self.max_roller_speed
+                # self.send_rogilink(HardId.R_BALL.value,0x05,self.roller_speed,-self.roller_speed)
+                # self.send_rogilink(HardId.L_BALL.value,0x05,self.roller_speed,-self.roller_speed)
+        else:
+            self.controller_roller_speed = 0
+                # self.send_rogilink(HardId.R_BALL.value,0x05,self.roller_speed,-self.roller_speed)
+                # self.send_rogilink(HardId.L_BALL.value,0x05,self.roller_speed,-self.roller_speed)
 
+        if self.controller_roller_speed - self.old_roller_speed >= 0:
+            if (self.controller_roller_speed - self.old_roller_speed)*self.loop_rate > self.acc_lim:
+                self.command_roller_speed = self.old_roller_speed + self.acc_lim / self.loop_rate
+            else:
+                self.command_roller_speed = self.controller_roller_speed
+        else:
+            if (self.controller_roller_speed - self.old_roller_speed)*self.loop_rate < -self.acc_lim:
+                self.command_roller_speed = self.old_roller_speed - self.acc_lim / self.loop_rate
+            else:
+                self.command_roller_speed = self.controller_roller_speed
+        if self.command_roller_speed > 0:
+            if self.command_roller_speed > self.max_roller_speed:
+                self.command_roller_speed = self.max_roller_speed
+
+        else:
+            if self.command_roller_speed < -self.max_roller_speed:
+                self.command_roller_speed = -self.max_roller_speed
+        self.old_roller_speed = self.command_roller_speed
+        self.send_rogilink(HardId.R_BALL.value,0x05,self.command_roller_speed,-self.command_roller_speed)
+        rospy.loginfo("%f",self.command_roller_speed)
         #     rospy.loginfo("move elevation angle")
 
 

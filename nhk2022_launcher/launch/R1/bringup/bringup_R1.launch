@@ -38,7 +38,7 @@
     </node> -->
     <node pkg="serial_ros" name="serial_ros_07" type="serial_ros_node" output="screen" respawn="true">
         <param name="port" value="/dev/serial/by-id/usb-STMicroelectronics_STM32_STLink_066CFF303032424257013528-if02" />
-        <param name="looprate" value="70" />
+        <param name="looprate" value="50" />
         <remap from="/Serial_sub_float" to="/control_07" />
         <remap from="/Serial_pub_float" to="/rcv_serial_07" />
     </node>

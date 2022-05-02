@@ -63,7 +63,7 @@ class Rosconnector():
                 rospy.loginfo("reload")
 
             if msg.buttons[1]:#O
-                self.send_rogilink(HardId.SHOT_SERVO.valuse,0x08,0,0)
+                self.send_rogilink(HardId.SHOT_SERVO.value,0x08,0,0)
                 rospy.loginfo("shoot")
 
 

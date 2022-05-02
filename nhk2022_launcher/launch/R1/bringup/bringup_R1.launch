@@ -10,9 +10,17 @@
     </node>
 
     <!-- serial nodes -->
+
+    <node pkg="serial_ros" name="rogi_link" type="rogi_link_node"  respawn="true">
+        <!-- <param name="looprate" value="$(arg  control_frequency)"/> -->
+        <param name="control_frequency" value="200"/>
+        <param name="port" value="/dev/ttyUSB0"/>
+    </node>
+
+
     <node pkg="serial_ros" name="serial_ros_12" type="serial_ros_node" output="screen" respawn="true">
         <param name = "port" value = "/dev/serial/by-id/usb-STMicroelectronics_STM32_STLink_066EFF303032424257010822-if02"/>
-        <param name = "looprate" value = "70"/>
+        <param name = "looprate" value = "50"/>
         <remap from = "/Serial_sub_float" to = "/control_12" />
         <remap from = "/Serial_pub_float" to = "/rcv_serial_12" />
     </node>

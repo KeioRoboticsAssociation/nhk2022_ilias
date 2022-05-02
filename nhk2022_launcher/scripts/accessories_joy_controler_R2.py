@@ -150,7 +150,7 @@ class Rosconnector():
 
         if msg.axes[5]:
             if(self.elevator_position>=0):
-                self.elevator_position = self.elevator_position + msg.axes[5] / 100
+                self.elevator_position = self.elevator_position + msg.axes[5] / 50
                 self.send_rogilink(HardId.LAGORI_E_MOTOR.value,0x03,self.elevator_position,0)
             else:
                 self.elevator_position = 0
@@ -160,7 +160,7 @@ class Rosconnector():
 
         if msg.axes[4]:
             if(self.grab_position<=0):
-                self.grab_position = self.grab_position - msg.axes[4] / 100
+                self.grab_position = self.grab_position - msg.axes[4] / 50
                 self.send_rogilink(HardId.LAGORI_G_MOTOR.value,0x03,self.grab_position,0)
             else:
                 self.grab_position = 0

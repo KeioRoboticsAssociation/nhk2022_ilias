@@ -29,10 +29,10 @@ do
     rosdep install -i --from-paths -y $dir
 done
 
-sudo apt-get install -y ros-noetic-realsense2-description
+# sudo apt-get install -y ros-noetic-realsense2-description
 sudo apt-get install -y ros-noetic-robot-localization
 sudo apt-get install -y ros-noetic-navigation
-sudo apt-get install -y ros-noetic-rplidar-ros
+# sudo apt-get install -y ros-noetic-rplidar-ros
 
 ## Give permission to python scripts
 echo "3/4 Give permissions to python scripts"

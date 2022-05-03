@@ -23,6 +23,11 @@ source install.sh
 
 [Here](https://github.com/KeioRoboticsAssociation/nhk2022_ilias/blob/main/Dependencies.md) is a detail description about installing and dependencies of this repository.
 
+### issues
+
+We are using https link in while doing `git clone` from .rosinstall files and this is not recommended.
+
+
 
 
 ## 各パッケージについて
@@ -69,7 +74,7 @@ source install.sh
 
   <img src="key_config.png" width="100%"/>
 
-  
+
 3. WebGUIのリンクは[こちら](http://localhost:8085/nhk2022_webgui/WebGUI.html)
 
 

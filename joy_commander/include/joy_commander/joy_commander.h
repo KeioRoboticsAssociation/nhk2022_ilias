@@ -11,7 +11,7 @@
 /***************** joystick number ********************/
 #define JOY_X 1
 #define JOY_Y 0
-#define JOY_OMEGA 3
+#define JOY_OMEGA 2
 #define JOY_RESET 11
 /******************************************************/
 

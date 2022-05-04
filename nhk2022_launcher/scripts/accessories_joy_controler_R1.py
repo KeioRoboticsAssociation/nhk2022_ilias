@@ -10,6 +10,8 @@ from rogi_link_msgs.msg import RogiLink
 # from std_msgs.msg import Bool
 # from std_msgs.msg import Float32MultiArray
 
+loop_rate = 10 #joyノードから出る/joyのスピードに合わせてください。本当にごめんなさい
+
 class HardId(IntEnum):
     EMGC_STOP = 0x00
     MAIN_BOARD = 0x01
@@ -48,10 +50,10 @@ class Rosconnector():
     command_roller_speed : float = 0
     max_roller_speed : float = 23
     acc_lim = 10
-    loop_rate = 10 #joyノードから出る/joyのスピードに合わせてください。本当にごめんなさい
     joy_msg = Joy()
     joy_msg.axes={0}
     joy_msg.buttons={0}
+    sub_flag = False
 
     def __init__(self):
         self.joy_sub = rospy.Subscriber("joy", Joy, self.Joycallback)
@@ -65,6 +67,7 @@ class Rosconnector():
 
     def Joycallback(self, msg):
         self.joy_msg = msg
+        self.sub_flag = True
 
     def msg_gen(self, msg):
         if msg.buttons != self.prev_msg.buttons:
@@ -77,7 +80,6 @@ class Rosconnector():
             if msg.buttons[1]:#O
                 self.send_rogilink(HardId.SHOT_SERVO.value,0x08,0,0)
                 rospy.loginfo("shoot")
-
 
             if msg.buttons[2]:#<|
                 # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
@@ -185,13 +187,13 @@ class Rosconnector():
                 # self.send_rogilink(HardId.L_BALL.value,0x05,self.roller_speed,-self.roller_speed)
 
         if self.controller_roller_speed - self.old_roller_speed >= 0:
-            if (self.controller_roller_speed - self.old_roller_speed)*self.loop_rate > self.acc_lim:
-                self.command_roller_speed = self.old_roller_speed + self.acc_lim / self.loop_rate
+            if (self.controller_roller_speed - self.old_roller_speed)*loop_rate > self.acc_lim:
+                self.command_roller_speed = self.old_roller_speed + self.acc_lim / loop_rate
             else:
                 self.command_roller_speed = self.controller_roller_speed
         else:
-            if (self.controller_roller_speed - self.old_roller_speed)*self.loop_rate < -self.acc_lim:
-                self.command_roller_speed = self.old_roller_speed - self.acc_lim / self.loop_rate
+            if (self.controller_roller_speed - self.old_roller_speed)*loop_rate < -self.acc_lim:
+                self.command_roller_speed = self.old_roller_speed - self.acc_lim / loop_rate
             else:
                 self.command_roller_speed = self.controller_roller_speed
         if self.command_roller_speed > 0:
@@ -215,7 +217,12 @@ if __name__ == '__main__':
 
         Rosconnector = Rosconnector()
 
-        rate = rospy.Rate(10) # 10hz
+        rate = rospy.Rate(loop_rate) # 10hz
+
+        while not rospy.is_shutdown():
+            while not Rosconnector.sub_flag:
+                rospy.loginfo_once("waiting for joy publisher")
+
         while not rospy.is_shutdown():
             Rosconnector.msg_gen(Rosconnector.joy_msg)
             rate.sleep()

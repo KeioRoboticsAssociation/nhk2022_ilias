@@ -3,10 +3,12 @@
 
 #include <ros/ros.h>
 #include <geometry_msgs/Twist.h>
+#include <math.h>
 
 #include <sensor_msgs/Joy.h>
 #include <std_msgs/Bool.h>
 #include <std_msgs/Empty.h>
+#include <std_msgs/Float32.h>
 
 /***************** joystick number ********************/
 #define JOY_X 1
@@ -31,6 +33,7 @@ private:
     ros::Publisher init_angle_pub;
     ros::Subscriber joy_sub;
     ros::Subscriber teleopflag_sub;
+    ros::Subscriber joy_angle_sub;
 
     //Configurations
     int loop_rate_;
@@ -48,11 +51,13 @@ private:
     float vx;
     float old_vy;
     float vy;
+    float coordinate_angle;
 
     //Methods
     float AdjustVelocity(const float &ref, float &old_v, const float &max_v, const float &acc_lim);
     void joy_callback(const sensor_msgs::Joy::ConstPtr &joy_msg);
     void teleopflag_callback(const std_msgs::Bool::ConstPtr &joy_msg);
+    void joy_angle_callback(const std_msgs::Float32::ConstPtr &angle_msg);
     float roundoff(const float &value, const float &epsilon);
     void update();
 };

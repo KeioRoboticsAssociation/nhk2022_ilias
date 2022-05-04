@@ -48,7 +48,10 @@ class Rosconnector():
     command_roller_speed : float = 0
     max_roller_speed : float = 23
     acc_lim = 10
-    loop_rate = 20 #joyノードから出る/joyのスピードに合わせてください。本当にごめんなさい
+    loop_rate = 10 #joyノードから出る/joyのスピードに合わせてください。本当にごめんなさい
+    joy_msg = Joy()
+    joy_msg.axes={0}
+    joy_msg.buttons={0}
 
     def __init__(self):
         self.joy_sub = rospy.Subscriber("joy", Joy, self.Joycallback)
@@ -61,6 +64,9 @@ class Rosconnector():
         self.serial_pub.publish(self.publish_command)
 
     def Joycallback(self, msg):
+        self.joy_msg = msg
+
+    def msg_gen(self, msg):
         if msg.buttons != self.prev_msg.buttons:
             self.prev_msg = msg #saving prev message
 
@@ -133,7 +139,6 @@ class Rosconnector():
             if msg.buttons[5]:#L1
                 self.send_rogilink(HardId.BALL_E_MOTOR.value,0x03,-13.7,0)
                 self.send_rogilink(HardId.SHOT_SERVO.value,0x07,0,0)
-
 
                 rospy.loginfo("move ball elevator")
 
@@ -209,7 +214,11 @@ if __name__ == '__main__':
         rospy.loginfo("create accessories controler")
 
         Rosconnector = Rosconnector()
-        rospy.spin()
+
+        rate = rospy.Rate(10) # 10hz
+        while not rospy.is_shutdown():
+            Rosconnector.msg_gen(Rosconnector.joy_msg)
+            rate.sleep()
 
     except rospy.ROSInterruptException:
         print("program interrupted before completion")

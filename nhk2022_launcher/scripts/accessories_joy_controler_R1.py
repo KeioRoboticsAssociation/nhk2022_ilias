@@ -57,7 +57,7 @@ class Rosconnector():
 
     def __init__(self):
         self.joy_sub = rospy.Subscriber("joy", Joy, self.Joycallback)
-        self.serial_pub= rospy.Publisher("send_serial", RogiLink ,queue_size=1)
+        self.serial_pub= rospy.Publisher("send_serial", RogiLink ,queue_size=100)
         self.emergency_stop_pub = rospy.Publisher('/emergency_stop_flag', Empty, queue_size=1)
 
     def send_rogilink(self,hardid,commandid,data_0,data_1):
@@ -222,6 +222,7 @@ if __name__ == '__main__':
         while not rospy.is_shutdown():
             while not Rosconnector.sub_flag:
                 rospy.loginfo_once("waiting for joy publisher")
+            break
 
         while not rospy.is_shutdown():
             Rosconnector.msg_gen(Rosconnector.joy_msg)

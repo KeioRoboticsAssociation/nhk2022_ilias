@@ -69,7 +69,6 @@ class Rosconnector():
         self.joy_msg = msg
         self.sub_flag = True
 
-    def msg_gen(self, msg):
         if msg.buttons != self.prev_msg.buttons:
             self.prev_msg = msg #saving prev message
 
@@ -150,6 +149,7 @@ class Rosconnector():
                 rospy.loginfo("move ball elevator")
 
 
+    def msg_gen(self, msg):
         # if msg.axes[5]:
             # if(self.elevator_position>=0):
             #     self.elevator_position = self.elevator_position + msg.axes[5] / 100

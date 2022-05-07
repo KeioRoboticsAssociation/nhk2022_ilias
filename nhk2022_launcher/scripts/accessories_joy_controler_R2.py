@@ -1,16 +1,14 @@
 #! /usr/bin/env python3
 
-# from click import command
-from xmlrpc.client import boolean
-
-from matplotlib.pyplot import axes
 import rospy
 from enum import IntEnum
+from math import pi
 
 from std_msgs.msg import Empty
 from struct import *
 from sensor_msgs.msg import Joy
 from rogi_link_msgs.msg import RogiLink
+from std_msgs.msg import Float32
 # from std_msgs.msg import Bool
 # from std_msgs.msg import Float32MultiArray
 
@@ -39,6 +37,7 @@ class HardId(IntEnum):
 class Rosconnector():
 
     publish_command = RogiLink()
+    coordinate_angle = Float32()
     ball_catcher_hight : bool = False
     ball_catcher_grab : bool = False
     lagori_catcher_angle_flag : bool = False
@@ -51,6 +50,7 @@ class Rosconnector():
         self.joy_sub = rospy.Subscriber("joy", Joy, self.Joycallback)
         self.serial_pub= rospy.Publisher("send_serial", RogiLink ,queue_size=1)
         self.emergency_stop_pub = rospy.Publisher('/emergency_stop_flag', Empty, queue_size=1)
+        self.joy_angle_sub = rospy.Publisher("joy_angle", Float32, queue_size=1)
 
     def send_rogilink(self,hardid,commandid,data_0,data_1):
         self.publish_command.id=int(hardid) << 6 | commandid
@@ -123,7 +123,17 @@ class Rosconnector():
                 self.emergency_stop_pub.publish(emergency_msg)
                 rospy.logwarn("EMERGENCY STOP")
 
-            # if msg.buttons[9]:#Options
+            if msg.buttons[10]:#Leftpush
+                self.coordinate_angle.data = 0
+                self.joy_angle_sub.publish(self.coordinate_angle)
+                rospy.loginfo("coordinate angle 0")
+
+            if msg.buttons[11]:#Rightpush
+                self.coordinate_angle.data = pi/4
+                self.joy_angle_sub.publish(self.coordinate_angle)
+                rospy.loginfo("coordinate angle pi/4")
+
+            if msg.buttons[9]:#Options
                 # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
                 # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
                 # self.controler_id=3
@@ -150,7 +160,7 @@ class Rosconnector():
 
         if msg.axes[5]:
             if(self.elevator_position>=0):
-                self.elevator_position = self.elevator_position + msg.axes[5] / 100
+                self.elevator_position = self.elevator_position + msg.axes[5] / 50
                 self.send_rogilink(HardId.LAGORI_E_MOTOR.value,0x03,self.elevator_position,0)
             else:
                 self.elevator_position = 0
@@ -160,7 +170,7 @@ class Rosconnector():
 
         if msg.axes[4]:
             if(self.grab_position<=0):
-                self.grab_position = self.grab_position - msg.axes[4] / 100
+                self.grab_position = self.grab_position - msg.axes[4] / 50
                 self.send_rogilink(HardId.LAGORI_G_MOTOR.value,0x03,self.grab_position,0)
             else:
                 self.grab_position = 0

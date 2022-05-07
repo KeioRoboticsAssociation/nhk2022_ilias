@@ -16,6 +16,9 @@ JOYSTICK::JOYSTICK(ros::NodeHandle &nh, const int &loop_rate, const float &acc_l
                                  &JOYSTICK::joy_callback, this);
     teleopflag_sub = nh_.subscribe("teleopflag", 1,
                                  &JOYSTICK::teleopflag_callback, this);
+    joy_angle_sub = nh_.subscribe("joy_angle", 1, &JOYSTICK::joy_angle_callback , this);
+
+    coordinate_angle = 0;
     teleop_flag = true;
     old_omega = 0;
     omega = 0;
@@ -88,6 +91,10 @@ void JOYSTICK::teleopflag_callback(const std_msgs::Bool::ConstPtr &joy_msg){
     teleop_flag = joy_msg->data;
 }
 
+void JOYSTICK::joy_angle_callback(const std_msgs::Float32::ConstPtr &angle_msg){
+    coordinate_angle = angle_msg->data;
+}
+
 void JOYSTICK::update()
 {
     ros::Rate r(loop_rate_);
@@ -95,8 +102,8 @@ void JOYSTICK::update()
     while (ros::ok())
     {
         if(teleop_flag){
-            cmd_vel.linear.x = AdjustVelocity(vx, old_vx, max_vel_xy_, acc_lim_xy_);
-            cmd_vel.linear.y = AdjustVelocity(vy, old_vy, max_vel_xy_, acc_lim_xy_);
+            cmd_vel.linear.x = cos(coordinate_angle)*AdjustVelocity(vx, old_vx, max_vel_xy_, acc_lim_xy_)-sin(coordinate_angle)*AdjustVelocity(vy, old_vy, max_vel_xy_, acc_lim_xy_);
+            cmd_vel.linear.y = sin(coordinate_angle)*AdjustVelocity(vx, old_vx, max_vel_xy_, acc_lim_xy_)+cos(coordinate_angle)*AdjustVelocity(vy, old_vy, max_vel_xy_, acc_lim_xy_);
             cmd_vel.angular.z = AdjustVelocity(omega, old_omega, max_vel_theta_, acc_lim_theta_);
             cmd_pub.publish(cmd_vel);
         }
@@ -113,7 +120,7 @@ int main(int argc, char **argv)
     ros::NodeHandle nh;
     ros::NodeHandle arg_n("~");
     int looprate = 30; // Hz
-    
+
     float acc_lim_xy = 2.5;
     float max_vel_xy = 1.5;
     float acc_lim_theta = 3.2;

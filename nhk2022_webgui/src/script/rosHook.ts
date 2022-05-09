@@ -2,7 +2,8 @@
 import ROSLIB from "roslib";
 import "roslib/build/roslib";
 import { onMounted, ref, onUnmounted, reactive, computed, toRefs } from "vue";
-import { TopicInfo } from "../types/msgTypes";
+import { TopicInfo, ActionInfo } from "../types/msgTypes";
+import { ActionStatus, GoalTyped } from "../types/ActionTyped";
 
 const roslib = window.ROSLIB;
 
@@ -67,6 +68,56 @@ export const useSubscriber = <T>(topic: ROSLIB.Topic<T>) => {
     topic.unsubscribe();
   });
   return subscribeData;
+};
+
+export const createActionClient = (
+  { serverName, actionName }: ActionInfo,
+  timeout: number
+) =>
+  new roslib.ActionClient({
+    ros,
+    serverName,
+    actionName,
+    timeout,
+  });
+
+export const useGoal = <TGoal, TFeedback, TResult>(
+  actionClient: ROSLIB.ActionClient
+) => {
+  const result = ref<TResult>();
+  const feedback = ref<TFeedback>();
+  const status = ref<ActionStatus>();
+  const cancel = ref<() => void>();
+
+  const goal = ref<GoalTyped<TGoal, TFeedback, TResult>>();
+
+  function sendGoal(data: TGoal) {
+    goal.value = new GoalTyped({
+      actionClient,
+      goalMessage: data,
+    });
+    goal.value.on("feedback", (e) => {
+      feedback.value = e;
+    });
+    goal.value.on("result", (e) => {
+      result.value = e;
+    });
+    goal.value.on("status", (e) => {
+      status.value = e;
+    });
+    cancel.value = () => {
+      goal.value?.cancel();
+    };
+    goal.value.send();
+  }
+
+  return {
+    sendGoal,
+    result,
+    feedback,
+    status,
+    cancel,
+  };
 };
 
 export const publishTopic = <T>(topic: ROSLIB.Topic<T>, data: T) => {

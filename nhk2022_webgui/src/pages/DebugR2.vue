@@ -2,6 +2,7 @@
 import CmdVel from "../components/CmdVel.vue";
 import Joy from "../components/Joy.vue";
 import Odom from "../components/Odom.vue";
+import AutoPath from "../components/AutoPath.vue";
 </script>
 
 <template>
@@ -9,13 +10,8 @@ import Odom from "../components/Odom.vue";
     <div class="col-12 row wrap shelf">
       <CmdVel />
       <Joy />
-      <CmdVel />
-      <Joy />
-      <CmdVel />
-      <Joy />
-      <CmdVel />
-      <Joy />
       <Odom />
+      <AutoPath />
     </div>
   </q-page>
 </template>

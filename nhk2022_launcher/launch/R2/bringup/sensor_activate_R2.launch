@@ -5,7 +5,7 @@
         <param name="port" value = "/dev/BNO"/>
         <param name="publish_tf" value="false"/>
         <param name="tf_frame_id" value="base_link"/>
-        <param name="publish_tf" value="bno055"/>
+        <!-- <param name="publish_tf" value="bno055"/> -->
         <param name="mode" value="imu" />
     </node>
 
@@ -19,30 +19,37 @@
     <param name="angle_compensate" type="bool" value="true"/> -->
 
     <!-- sick -->
-    <include file="$(find sick_scan)/launch/sick_tim_5xx.launch">
-        <arg name="frame_id" value="laser1" />
-        <arg name="hostname" value="192.168.0.80"/>
-    </include>
+    <group ns="lidar1">
+        <!-- <include file="$(find sick_scan)/launch/sick_tim_5xx.launch">
+            <arg name="frame_id" value="laser1" />
+            <arg name="hostname" value="192.168.0.80"/>
+        </include> -->
 
-    <include file="$(find sick_scan)/launch/sick_tim_5xx.launch">
-        <arg name="frame_id" value="laser2" />
-        <arg name="hostname" value="192.168.0.81"/>
-    </include>
+        <node pkg="invert_laser" type="invert_laser_node" name="invert_laser_1">
+            <!-- <param name="out_frame" value="laser1"/> -->
+            <remap  from="/scan_inv" to="/laser1_inv"/>
+        </node>
+    </group>
+
+    <group ns="lidar2">
+        <!-- <include file="$(find sick_scan)/launch/sick_tim_5xx.launch">
+            <arg name="frame_id" value="laser2" />
+            <arg name="hostname" value="192.168.0.81"/>
+        </include> -->
+
+        <node pkg="invert_laser" type="invert_laser_node" name="invert_laser_2">
+            <!-- <param name="out_frame" value="laser2"/> -->
+            <remap  from="/scan_inv" to="/laser2_inv"/>
+        </node>
+    </group>
 
     <!-- inverted_laser -->
     <!-- git clone https://github.com/timkambic/invert_laser.git -->
     <!-- publish /scan_inv -->
-    <node pkg="invert_laser" type="invert_laser_node" name="invert_laser_2">
-        <!-- <param name="out_frame" value="laser1"/> -->
-        <remap  from="/scan_inv" to="/laser1_inv"/>
-    </node>
 
-    <node pkg="invert_laser" type="invert_laser_node" name="invert_laser_2">
-        <!-- <param name="out_frame" value="laser2"/> -->
-        <remap  from="/scan_inv" to="/laser2_inv"/>
-    </node>
 
-    <node pkg="ira_laser_tools" name="laserscan_multi_merger" type="laserscan_multi_merger" output="screen">
+
+    <node pkg="ira_laser_tools" name="laserscan_multi_merger" type="laserscan_multi_merger" >
         <param name="destination_frame" value="cart_frame"/>
         <param name="cloud_destination_topic" value="/merged_cloud"/>
         <param name="scan_destination_topic" value="/scan_multi"/>

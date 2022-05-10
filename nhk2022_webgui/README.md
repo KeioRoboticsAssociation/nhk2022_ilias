@@ -1,21 +1,12 @@
-# nhk2022_WebGUI
+# rogi_webgui
 
-## これは何
+gui のあれです
 
-下図のようにトピックをブラウザで可視化する
+## 開発方法
 
-![](https://i.imgur.com/xCHDBmp.png)
+install.sh は実行している前提
 
+1. `roslanch rvizweb rvizweb.launch`
+1. `npm run dev`
 
-
-## Launch
-
-```shell
-roslaunch nhk2022_webgui server.launch
-```
-
-上記コマンドを実行後、実行したパソコンで下記リンク先にアクセスするとWebGUIを表示できる。
-
-http://localhost:8085/nhk2022_webgui/WebGUI.html
-
-また、実行したパソコンと同じネットワークに接続している端末では、上記リンクの**localhost**を実行PCのIPアドレスに置き換えたリンクにアクセスすることでWebGUIを表示できる。
+https://qiita.com/hbvcg00/items/2bc189727fb28ea84bd2#4-webworkify%E3%81%AE%E4%BF%AE%E6%AD%A3

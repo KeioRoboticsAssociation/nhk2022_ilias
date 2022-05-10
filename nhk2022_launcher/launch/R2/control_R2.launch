@@ -83,8 +83,8 @@
     <node pkg="nhk2022_launcher" type="hardware_init_R2.py" name="hardware_init_R2" output="screen" />
 
     <!-- WebGUI -->
-    <!-- <include file="$(find nhk2022_webgui)/launch/server.launch">
-        <arg name="name" value="roswww_R2"/>
-    </include> -->
+    <include file="$(find rvizweb)/launch/rvizweb.launch">
+        <!-- <arg name="name" value="roswww_R2"/> -->
+    </include>
 
 </launch>

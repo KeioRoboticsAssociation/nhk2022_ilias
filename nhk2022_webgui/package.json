@@ -1,0 +1,43 @@
+{
+  "name": "nhk2022_webgui",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "lint": "eslint --ext .ts,vue --ignore-path .gitignore .",
+    "lint-fix": "eslint --ext .ts,vue --ignore-path .gitignore . && prettier --write src/**/*.{ts,vue}"
+  },
+  "lint-staged": {
+    "*.{js,ts,vue}": [
+      "npm rum lint-fix"
+    ]
+  },
+  "dependencies": {
+    "@quasar/extras": "^1.13.5",
+    "quasar": "^2.6.6",
+    "quaternion-to-euler": "^0.5.0",
+    "roslib": "github:RobotWebTools/roslibjs#dea6e7cd59ff1af88ce69c",
+    "vue": "^3.2.25",
+    "vue-router": "^4.0.14"
+  },
+  "devDependencies": {
+    "@quasar/vite-plugin": "^1.0.9",
+    "@types/roslib": "^1.1.8",
+    "@typescript-eslint/eslint-plugin": "^5.19.0",
+    "@typescript-eslint/parser": "^5.19.0",
+    "@vitejs/plugin-vue": "^2.3.1",
+    "@vue/eslint-config-typescript": "^10.0.0",
+    "eslint": "^8.13.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-vue": "^8.6.0",
+    "prettier": "^2.6.2",
+    "sass": "^1.32.0",
+    "typescript": "^4.5.4",
+    "vite": "^2.9.2",
+    "vue-tsc": "^0.29.8"
+  }
+}

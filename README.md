@@ -12,6 +12,7 @@
 
 ## Install
 
+Before run `install.sh`, please install Nodejs
 Clone this repository and just run `install.sh`
 
 ```shell

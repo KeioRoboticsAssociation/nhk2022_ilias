@@ -1,13 +1,13 @@
 <launch>
     <!-- params -->
-    <arg name="mode" default="real"/>
+    <arg name="mode" default="simulation"/>
     <arg name="control_frequency" default="50" />
     <arg name="base_frame_id" default="base_link" />
     <arg name="use_ekf_localization" default="false"/>
     <arg name="localization_method" default="odom"/>
 
     <!-- important config of bezier_path_planning_pursuit -->
-    <arg name="acc_lim_xy" default="2.0" />
+    <arg name="acc_lim_xy" default="1.0" />
     <arg name="max_vel_xy" default="2.0" />
     <!--3.0-->
     <arg name="acc_lim_theta" default="3.14" />
@@ -62,7 +62,7 @@
     <!-- amcl -->
     <group if="$(eval localization_method=='amcl')">
         <include file="$(find nhk2022_launcher)/launch/common/localization/amcl.launch">
-            <arg name="use_laser_filter" value="$(arg use_laser_filter)"/>
+            <arg name="use_laser_filter" value="true"/>
             <arg name="base_frame_id" value="$(arg base_frame_id)" />
             <arg name="initial_pose_x" value="-5.45"/>
             <arg name="initial_pose_y" value="0"/>
@@ -83,8 +83,8 @@
     <node pkg="nhk2022_launcher" type="hardware_init_R2.py" name="hardware_init_R2" output="screen" />
 
     <!-- WebGUI -->
-    <!-- <include file="$(find nhk2022_webgui)/launch/server.launch">
-        <arg name="name" value="roswww_R2"/>
-    </include> -->
+    <include file="$(find rvizweb)/launch/rvizweb.launch">
+        <!-- <arg name="name" value="roswww_R2"/> -->
+    </include>
 
 </launch>

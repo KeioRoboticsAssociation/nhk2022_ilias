@@ -18,7 +18,7 @@ class Task_Selector():
         # self.client = actionlib.SimpleActionClient('/bezier_path_planning_pursuit', bezier_path_planning_pursuit.msg.PursuitPathAction)
         self.joy_sub = rospy.Subscriber("joy", Joy, self.Joycallback)
         # self.pathmode_pub = rospy.Publisher('/task_selector/joy_pathmode', Int32, queue_size=1)
-        # self.teleopflag_pub = rospy.Publisher('/task_selector/teleop_mode', Bool, queue_size=1)
+        self.teleopflag_pub = rospy.Publisher('/task_selector/teleop_mode', Bool, queue_size=1)
         self.emergency_stop_pub = rospy.Publisher('/emergency_stop_flag', Empty, queue_size=1)
         # Waits until the action server has started up and started
         # listening for goals.
@@ -42,9 +42,9 @@ class Task_Selector():
         if msg.buttons[9] == 1: #start button
             rospy.loginfo("teleop_mode")
             # self.client.cancel_goal()
-            # teleop_mode = Bool()
-            # teleop_mode.data = True
-            # self.teleopflag_pub.publish(teleop_mode)
+            teleop_mode = Bool()
+            teleop_mode.data = True
+            self.teleopflag_pub.publish(teleop_mode)
         # elif msg.buttons[5] == 1: #RB
             # rospy.loginfo("pathmode+1")
             # self.pathmode_ += 1
@@ -68,7 +68,7 @@ class Task_Selector():
             # self.teleopflag_pub.publish(teleop_mode)
             emergency_msg = Empty()
             self.emergency_stop_pub.publish(emergency_msg)
-        
+
         # message = Int32()
         # message.data = self.pathmode_
         # self.pathmode_pub.publish(message)

@@ -65,8 +65,8 @@
     <material>Gazebo/Red</material>
   </gazebo> -->
 
-    <xacro:laser_macro prefix="lidar1" parent="base_link" xyz="${lidar_w/2} ${lidar_w/2} 0.04" rpy="0 0 ${PI/4}" />
-    <xacro:laser_macro prefix="lidar2" parent="base_link" xyz="-${lidar_w/2} -${lidar_w/2} 0.04" rpy="0 0 -${3*PI/4}" />
+    <xacro:laser_macro prefix="lidar1" parent="base_link" xyz="${lidar_w/2} -${lidar_w/2} 0.04" rpy="0 0 -${PI/4}" />
+    <xacro:laser_macro prefix="lidar2" parent="base_link" xyz="-${lidar_w/2} ${lidar_w/2} 0.04" rpy="0 0 ${3*PI/4}" />
 
     <xacro:imu_macro prefix="imu" parent="base_link" xyz="0.0 0 0.10" />
 

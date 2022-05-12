@@ -20,13 +20,13 @@
     <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
 
     <!-- Spawn the robot -->
-    <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" args="-urdf -model simple_omni -param robot_description -x -5.2 -y 0 -z 0.02 -R 0 -P 0 -Y 0 " />
+    <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" args="-urdf -model simple_omni -param robot_description -x -5.45 -y 0 -z 0.02 -R 0 -P 0 -Y 1.57 " />
 
     <!-- coordination changer base link -->
-    <!-- <node name="odom_tf_publisher" pkg="nhk2022_simulator" type="odom_tf_publisher"> -->
-        <!-- <param name = "base_frame_id" value = "base_link" /> -->
-        <!-- <remap from="odom" to="odom_filtered" /> -->
-    <!-- </node> -->
+    <!-- <node name="odom_tf_publisher" pkg="nhk2022_simulator" type="odom_tf_publisher">
+        <param name = "base_frame_id" value = "base_link" />
+        <remap from="odom" to="odom_filtered" />
+    </node> -->
 
     <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig) -f odom" required="true" />
 

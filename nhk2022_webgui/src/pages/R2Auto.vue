@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import CmdVel from "../components/CmdVel.vue";
 import AutoPath from "../components/AutoPath.vue";
+
+const { host } = window.location;
 </script>
 
 <template>
@@ -8,7 +10,7 @@ import AutoPath from "../components/AutoPath.vue";
     <div class="col-12 row no-wrap justify-start items-start content-start">
       <div class="col-4" style="height: 100%">
         <iframe
-          src="http://localhost:8001/rvizweb"
+          :src="`http://${host}/rvizweb`"
           style="display: block; width: 100%; height: 100%"
         ></iframe>
       </div>

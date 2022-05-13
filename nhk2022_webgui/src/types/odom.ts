@@ -27,7 +27,7 @@ export type OdomType = {
   };
   twist: {
     twist: {
-      liniar: {
+      linear: {
         x: number;
         y: number;
         z: number;

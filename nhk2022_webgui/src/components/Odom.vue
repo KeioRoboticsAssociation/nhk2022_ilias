@@ -8,7 +8,7 @@ import Card from "./Card.vue";
 const odomTopic = createTopic<OdomType>(odomInfo);
 const odomData = useSubscriber(odomTopic);
 const position = computed(() => odomData.value?.pose.pose.position);
-const velocity = computed(() => odomData.value?.twist.twist.liniar);
+const velocity = computed(() => odomData.value?.twist.twist.linear);
 const omega = computed(() => odomData.value?.twist.twist.angular.z);
 const theta = computed(() => {
   if (odomData.value?.pose.pose.orientation == null) {

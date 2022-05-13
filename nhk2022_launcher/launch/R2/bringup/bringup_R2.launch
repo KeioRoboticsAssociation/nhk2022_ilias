@@ -1,6 +1,6 @@
 <launch>
     <!--simulation or real-->
-    <arg name="mode" default="real"/>
+    <arg name="mode" default="simulation"/>
 
     <!-- laser filter config -->
     <arg name="laser_filter_file" default="laser_filter_R2.yaml"/>
@@ -59,8 +59,11 @@
             <param name="control_frequency" value="$(arg control_frequency)"/>
             <param name="base_frame_id" value="$(arg base_frame_id)"/>
             <param name="c_w_distance_a" value="0.064"/>
-            <param name="c_w_distance_b" value="0.074"/>
+            <param name="c_w_distance_b" value="0.064"/>
             <param name="wheel_diameter" value="0.06"/>
+            <param name="initial_position_x" value="-5.45"/>
+            <param name="initial_position_y" value="0"/>
+            <param name="initial_position_theta" value="0"/>
         </node>
 
         <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig) -f odom" required="true" /> -->

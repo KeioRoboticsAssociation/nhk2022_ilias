@@ -1,13 +1,13 @@
 <launch>
     <!-- params -->
-    <arg name="mode" default="simulation"/>
+    <arg name="mode" default="real"/>
     <arg name="control_frequency" default="50" />
     <arg name="base_frame_id" default="base_link" />
     <arg name="use_ekf_localization" default="false"/>
     <arg name="localization_method" default="odom"/>
 
     <!-- important config of bezier_path_planning_pursuit -->
-    <arg name="acc_lim_xy" default="1.0" />
+    <arg name="acc_lim_xy" default="2.0" />
     <arg name="max_vel_xy" default="2.0" />
     <!--3.0-->
     <arg name="acc_lim_theta" default="3.14" />
@@ -71,7 +71,7 @@
     </group>
 
     <group if="$(eval localization_method=='odom')">
-        <node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args=" -5.45 0 0 0 0 0 map odom 10" />
+        <node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args=" 0 0 0 0 0 0 map odom 10" />
         <node pkg="map_server" type="map_server" name="map_server" args="$(find nhk2022_launcher)/config/map/map.yaml">
             <param name="frame_id" value="map"/>
         </node>

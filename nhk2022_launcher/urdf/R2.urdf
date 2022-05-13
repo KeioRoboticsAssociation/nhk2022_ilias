@@ -11,19 +11,19 @@
   <joint name="imu_link_joint" type="fixed">
     <parent link="base_link" />
     <child link="bno055" />
-    <origin xyz="0.0 0.0 0.0" rpy="0 -0 3.1415" />
+    <origin xyz="0.0 0.0 0.3" rpy="0 -0 3.1415" />
   </joint>
 
   <joint name="laser1_link_joint" type="fixed">
     <parent link="base_link" />
     <child link="laser1" />
-    <origin xyz="0.48 0.48 0.0" rpy="0 -0 0.785" />
+    <origin xyz="0.48 -0.48 0.0" rpy="0 -0 -0.785" />
   </joint>
 
   <joint name="laser2_link_joint" type="fixed">
     <parent link="base_link" />
     <child link="laser2" />
-    <origin xyz="-0.48 -0.48 0.0" rpy="0 -0 -2.355" />
+    <origin xyz="-0.48 0.48 0.0" rpy="0 -0 2.355" />
   </joint>
 
 

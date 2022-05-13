@@ -14,7 +14,8 @@ const theta = computed(() => {
   if (odomData.value?.pose.pose.orientation == null) {
     return 0;
   }
-  return qte(Object.values(odomData.value.pose.pose.orientation))[2];
+  const {x,y,z,w} = odomData.value.pose.pose.orientation;
+  return qte([w, x, y, z])[2];
 });
 </script>
 

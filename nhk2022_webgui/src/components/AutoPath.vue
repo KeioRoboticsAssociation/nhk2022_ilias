@@ -10,7 +10,7 @@ import { createActionClient, useGoal } from "../script/rosHook";
 
 import Card from "./Card.vue";
 
-const pathAction = createActionClient(pursuitPathActionInfo, 100);
+const pathAction = createActionClient(pursuitPathActionInfo, 10000);
 const { feedback, result, cancel, status, sendGoal } = useGoal<
   PursuitPathGoal,
   PursuitPathFeedback,

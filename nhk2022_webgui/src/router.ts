@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 import Home from "./pages/Home.vue";
 import R2Auto from "./pages/R2Auto.vue";
 import R2Pile from "./pages/R2Pile.vue";
@@ -12,7 +12,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory("/nhk2022_webgui/www/"), // HTML5 History モード
+  history: createWebHashHistory(), // HTML5 History モード
   routes,
 });
 

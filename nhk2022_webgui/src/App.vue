@@ -1,36 +1,13 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { CmdVelPacket, cmdVelInfo } from "./types/cmdVel";
-import {
-  createTopic,
-  publishTopic,
-  useRosStatus,
-  connectRos,
-} from "./script/rosHook";
+import { useRosStatus, connectRos } from "./script/rosHook";
 
 const router = useRouter();
 
 const { isConnected } = useRosStatus();
 
-const url = ref<string>("ws://localhost:9090");
-
-function send() {
-  console.log("send");
-  const msgTopic = createTopic<CmdVelPacket>(cmdVelInfo);
-  publishTopic(msgTopic, {
-    linear: {
-      x: 5,
-      y: 0,
-      z: 0,
-    },
-    angular: {
-      x: 5,
-      y: 0,
-      z: 0,
-    },
-  });
-}
+const url = ref<string>(`ws://${window.location.hostname}:9090`);
 </script>
 
 <template>

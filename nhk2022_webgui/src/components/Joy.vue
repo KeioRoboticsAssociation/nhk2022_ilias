@@ -12,7 +12,9 @@ const axes = computed(() => joyData.value?.axes.map((e) => e.toFixed(3)));
 
 <template>
   <Card :title="'Joy'">
-    <p class="q-mb-sm">axes: {{ axes }}</p>
+    <p class="q-mb-sm">axes:</p>
+    <p>R: {{ axes?.at(0) }}:{{ axes?.at(1) }}</p>
+    <p>L: {{ axes?.at(2) }}:{{ axes?.at(3) }}</p>
     <div class="row wrap justify-start">
       <div
         v-for="(btn, index) in joyData?.buttons"

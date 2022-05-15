@@ -38,11 +38,6 @@ const { cancel, sendGoal } = useGoal<
   PursuitPathFeedback,
   PursuitPathResult
 >(pathAction);
-const cancelAction = () => {
-  if (cancel.value === undefined) return;
-  console.log("cancel");
-  cancel.value();
-};
 
 const goalNum = ref<number>(1);
 const dirNum = ref<number>(0);
@@ -54,6 +49,14 @@ const send = () => {
     direction: dirNum.value,
   });
   opensDialog.value = false;
+  teleopFlag.value = false;
+};
+
+const cancelAction = () => {
+  if (cancel.value === undefined) return;
+  console.log("cancel");
+  cancel.value();
+  teleopFlag.value = true;
 };
 
 // mount時teleop_flagを強制的にtrueにする

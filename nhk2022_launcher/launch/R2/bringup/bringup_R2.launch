@@ -31,7 +31,7 @@
         <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
 
         <!-- hardware boot -->
-        <!-- <include file="$(find nhk2022_launcher)/launch/R2/bringup/sensor_activate_R2.launch"/> -->
+        <include file="$(find nhk2022_launcher)/launch/R2/bringup/sensor_activate_R2.launch"/>
         <node pkg="serial_ros" name="rogi_link" type="rogi_link_node" output="screen" respawn="true">
             <!-- <param name="looprate" value="$(arg  control_frequency)"/> -->
             <param name="control_frequency" value="200"/>
@@ -63,7 +63,7 @@
             <param name="wheel_diameter" value="0.06"/>
             <param name="initial_position_x" value="-5.45"/>
             <param name="initial_position_y" value="0"/>
-            <param name="initial_position_theta" value="0"/>
+            <param name="initial_position_theta" value="1.57"/>
         </node>
 
         <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig) -f odom" required="true" /> -->

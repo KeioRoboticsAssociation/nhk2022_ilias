@@ -1,14 +1,14 @@
 <launch>
     <!-- params -->
-    <arg name="mode" default="real"/>
+    <arg name="mode" default="simulation"/>
     <arg name="control_frequency" default="50" />
     <arg name="base_frame_id" default="base_link" />
     <arg name="use_ekf_localization" default="false"/>
     <arg name="localization_method" default="odom"/>
 
     <!-- important config of bezier_path_planning_pursuit -->
-    <arg name="acc_lim_xy" default="2.0" />
-    <arg name="max_vel_xy" default="2.0" />
+    <arg name="acc_lim_xy" default="1.0" />
+    <arg name="max_vel_xy" default="1.0" />
     <!--3.0-->
     <arg name="acc_lim_theta" default="3.14" />
     <arg name="max_vel_theta" default="3.14" />
@@ -34,8 +34,8 @@
     <!-- bezier_path_planning_and_pursuit-->
     <include file="$(find bezier_path_planning_pursuit)/launch/bezier_path_planning_pursuit.launch">
         <arg name="control_frequency" value="$(arg control_frequency)" />
-        <arg name="use_tf" value="true" />
-        <arg name="angle_source" value="imu" />
+        <arg name="use_tf" value="false" />
+        <arg name="angle_source" value="odom" />
         <arg name="csv_path" value="$(find nhk2022_launcher)/config/waypoints/R2" />
         <arg name="acc_lim_xy" value="$(arg acc_lim_xy)" />
         <arg name="max_vel_xy" value="$(arg max_vel_xy)" />

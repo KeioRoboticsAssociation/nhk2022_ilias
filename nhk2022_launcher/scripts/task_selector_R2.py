@@ -18,7 +18,7 @@ class Task_Selector():
         # self.client = actionlib.SimpleActionClient('/bezier_path_planning_pursuit', bezier_path_planning_pursuit.msg.PursuitPathAction)
         self.joy_sub = rospy.Subscriber("joy", Joy, self.Joycallback)
         # self.pathmode_pub = rospy.Publisher('/task_selector/joy_pathmode', Int32, queue_size=1)
-        self.teleopflag_pub = rospy.Publisher('/teleop_mode', Bool, queue_size=1)
+        self.teleopflag_pub = rospy.Publisher('/teleop_flag', Bool, queue_size=1)
         self.emergency_stop_pub = rospy.Publisher('/emergency_stop_flag', Empty, queue_size=1)
         # Waits until the action server has started up and started
         # listening for goals.

@@ -1,15 +1,37 @@
 <script lang="ts" setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import {
   pursuitPathActionInfo,
   PursuitPathFeedback,
   PursuitPathGoal,
   PursuitPathResult,
 } from "../types/pursuitPath";
-import { createActionClient, useGoal } from "../script/rosHook";
+import {
+  createActionClient,
+  useGoal,
+  createTopic,
+  useSubscriber,
+} from "../script/rosHook";
 
 import Card from "./Card.vue";
 
+type TeleopFlagType = {
+  data: boolean;
+};
+const teleopFlagTopic = createTopic<TeleopFlagType>({
+  name: "/teleopflag",
+  messageType: "std_msgs/Bool",
+});
+const teleopFlagData = useSubscriber(teleopFlagTopic);
+const teleopFlag = computed({
+  get: () => teleopFlagData.value?.data,
+  set: (data: boolean | undefined) => {
+    if (data === undefined) return;
+    teleopFlagTopic.publish({
+      data,
+    });
+  },
+});
 const pathAction = createActionClient(pursuitPathActionInfo, 10000);
 const { feedback, result, cancel, status, sendGoal } = useGoal<
   PursuitPathGoal,
@@ -64,18 +86,24 @@ const send = () => {
         </q-card-actions>
       </q-card>
     </q-dialog>
-    <q-btn
-      @click="
-        () => {
-          opensDialog = true;
-        }
-      "
-    >
-      パス設定
-    </q-btn>
-    <p>{{ feedback }}</p>
+    <div>
+      <q-toggle v-model="teleopFlag" label="On Left" left-label />
+    </div>
+    <div>
+      <q-btn
+        style="width: 100%"
+        @click="
+          () => {
+            opensDialog = true;
+          }
+        "
+      >
+        パス設定
+      </q-btn>
+      <!-- <p>{{ feedback }}</p>
     <p>{{ result }}</p>
-    <p>{{ status }}</p>
-    <q-btn @click="() => cancelAction()">cancel</q-btn>
+    <p>{{ status }}</p> -->
+      <q-btn style="width: 100%" @click="() => cancelAction()">cancel</q-btn>
+    </div>
   </Card>
 </template>

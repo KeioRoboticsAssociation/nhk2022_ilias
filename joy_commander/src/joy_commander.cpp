@@ -14,9 +14,9 @@ JOYSTICK::JOYSTICK(ros::NodeHandle &nh, const int &loop_rate, const float &acc_l
     init_angle_pub = nh_.advertise<std_msgs::Empty>("/init_angle_flag", 1);
     joy_sub = nh_.subscribe("/joy", 1,
                                  &JOYSTICK::joy_callback, this);
-    teleopflag_sub = nh_.subscribe("teleopflag", 1,
+    teleopflag_sub = nh_.subscribe("/teleop_flag", 1,
                                  &JOYSTICK::teleopflag_callback, this);
-    joy_angle_sub = nh_.subscribe("joy_angle", 1, &JOYSTICK::joy_angle_callback , this);
+    joy_angle_sub = nh_.subscribe("/joy_angle", 1, &JOYSTICK::joy_angle_callback , this);
 
     coordinate_angle = 0;
     teleop_flag = true;

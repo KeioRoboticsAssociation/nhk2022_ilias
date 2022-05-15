@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import {
   pursuitPathActionInfo,
   PursuitPathFeedback,
@@ -19,7 +19,7 @@ type TeleopFlagType = {
   data: boolean;
 };
 const teleopFlagTopic = createTopic<TeleopFlagType>({
-  name: "/teleopflag",
+  name: "/teleop_flag",
   messageType: "std_msgs/Bool",
 });
 const teleopFlagData = useSubscriber(teleopFlagTopic);
@@ -33,7 +33,7 @@ const teleopFlag = computed({
   },
 });
 const pathAction = createActionClient(pursuitPathActionInfo, 10000);
-const { feedback, result, cancel, status, sendGoal } = useGoal<
+const { cancel, sendGoal } = useGoal<
   PursuitPathGoal,
   PursuitPathFeedback,
   PursuitPathResult
@@ -55,6 +55,14 @@ const send = () => {
   });
   opensDialog.value = false;
 };
+
+// mount時teleop_flagを強制的にtrueにする
+onMounted(() => {
+  setTimeout(() => {
+    if (teleopFlag.value !== undefined) return;
+    teleopFlag.value = true;
+  }, 300);
+});
 </script>
 
 <template>
@@ -87,7 +95,7 @@ const send = () => {
       </q-card>
     </q-dialog>
     <div>
-      <q-toggle v-model="teleopFlag" label="On Left" left-label />
+      <q-toggle v-model="teleopFlag" label="teleop_flag" left-label />
     </div>
     <div>
       <q-btn

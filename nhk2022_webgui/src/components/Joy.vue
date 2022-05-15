@@ -4,6 +4,12 @@ import { JoyType, joyInfo } from "../types/joy";
 import { createTopic, useSubscriber } from "../script/rosHook";
 import Card from "./Card.vue";
 
+const joyAngleTopic = createTopic<{ data: number }>({
+  name: "/joy_angle",
+  messageType: "std_msgs/Float32",
+});
+const joyAngle = useSubscriber(joyAngleTopic);
+
 const joyTopic = createTopic<JoyType>(joyInfo);
 const joyData = useSubscriber(joyTopic);
 
@@ -15,6 +21,7 @@ const axes = computed(() => joyData.value?.axes.map((e) => e.toFixed(3)));
     <p class="q-mb-sm">axes:</p>
     <p>R: {{ axes?.at(0) }}:{{ axes?.at(1) }}</p>
     <p>L: {{ axes?.at(2) }}:{{ axes?.at(3) }}</p>
+    <p>joyAngle: {{ joyAngle?.data.toFixed(3) }}</p>
     <div class="row wrap justify-start">
       <div
         v-for="(btn, index) in joyData?.buttons"

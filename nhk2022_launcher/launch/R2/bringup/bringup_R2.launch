@@ -61,12 +61,13 @@
             <param name="c_w_distance_a" value="0.064"/>
             <param name="c_w_distance_b" value="0.064"/>
             <param name="wheel_diameter" value="0.06"/>
+            <param name="vertical_axis" value="z"/>
             <param name="initial_position_x" value="-5.45"/>
             <param name="initial_position_y" value="0"/>
             <param name="initial_position_theta" value="1.57"/>
         </node>
 
-        <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig) -f odom" required="true" /> -->
+        <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig) -f odom" required="true" />
     </group>
 
     <!-- Joy controller -->

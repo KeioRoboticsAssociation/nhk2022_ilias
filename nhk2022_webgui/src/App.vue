@@ -61,8 +61,6 @@ const sendEmergency = () => {
 </template>
 
 <style lang="scss">
-// @import url("https://fonts.googleapis.com/css2?family=BIZ+UDPGothic&display=swap");
-
 @font-face {
   font-family: "BIZ UDPGothic"; /* フォント名 */
   /* フォーマットごとにパスを指定 */

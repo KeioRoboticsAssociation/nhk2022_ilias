@@ -85,6 +85,7 @@
     <!-- WebGUI -->
     <include file="$(find rvizweb)/launch/rvizweb.launch">
         <!-- <arg name="name" value="roswww_R2"/> -->
+        <arg name="config_file" value="$(find nhk2022_webgui)/rvizwebConfig.json" />
     </include>
 
 </launch>

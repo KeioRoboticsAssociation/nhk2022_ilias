@@ -11,7 +11,7 @@
   <joint name="imu_link_joint" type="fixed">
     <parent link="base_link" />
     <child link="bno055" />
-    <origin xyz="0.0 0.0 0.3" rpy="0 -0 3.1415" />
+    <origin xyz="0.0 0.0 0.3" rpy="0 00 0" />
   </joint>
 
   <joint name="laser1_link_joint" type="fixed">

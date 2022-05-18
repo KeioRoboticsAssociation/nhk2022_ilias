@@ -100,9 +100,10 @@ onMounted(() => {
     <div>
       <q-toggle v-model="teleopFlag" label="teleop_flag" left-label />
     </div>
-    <div>
+    <div class="q-my-md">
       <q-btn
         style="width: 100%"
+        class="q-mb-sm"
         @click="
           () => {
             opensDialog = true;

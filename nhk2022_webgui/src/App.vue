@@ -1,13 +1,21 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { useRosStatus, connectRos } from "./script/rosHook";
+import { useRosStatus, connectRos, createTopic } from "./script/rosHook";
 
 const router = useRouter();
 
 const { isConnected } = useRosStatus();
 
 const url = ref<string>(`ws://${window.location.hostname}:9090`);
+
+const emergencyStopTopic = createTopic<Record<string, never>>({
+  name: "/emergency_stop_flag",
+  messageType: "std_msgs::Empty",
+});
+const sendEmergency = () => {
+  emergencyStopTopic.publish({});
+};
 </script>
 
 <template>
@@ -30,7 +38,13 @@ const url = ref<string>(`ws://${window.location.hostname}:9090`);
         </q-chip>
         <q-chip v-else color="red" text-color="white">Disconnected</q-chip>
 
-        <q-chip color="red" text-color="white" icon="stop_circle" clickable>
+        <q-chip
+          color="red"
+          text-color="white"
+          icon="stop_circle"
+          clickable
+          @click="sendEmergency"
+        >
           STOP
         </q-chip>
       </q-toolbar>
@@ -47,8 +61,6 @@ const url = ref<string>(`ws://${window.location.hostname}:9090`);
 </template>
 
 <style lang="scss">
-// @import url("https://fonts.googleapis.com/css2?family=BIZ+UDPGothic&display=swap");
-
 @font-face {
   font-family: "BIZ UDPGothic"; /* フォント名 */
   /* フォーマットごとにパスを指定 */

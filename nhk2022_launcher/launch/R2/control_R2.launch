@@ -8,12 +8,12 @@
 
     <!-- important config of bezier_path_planning_pursuit -->
     <arg name="acc_lim_xy" default="1.0" />
-    <arg name="max_vel_xy" default="1.0" />
+    <arg name="max_vel_xy" default="2.0" />
     <!--3.0-->
     <arg name="acc_lim_theta" default="3.14" />
     <arg name="max_vel_theta" default="3.14" />
     <!--3.14-->
-    <arg name="initial_vel" default="0.6" />
+    <arg name="initial_vel" default="0.5" />
     <arg name="xy_goal_tolerance" default="0.1" />
     <arg name="yaw_goal_tolerance" default="0.04" />
 
@@ -34,8 +34,8 @@
     <!-- bezier_path_planning_and_pursuit-->
     <include file="$(find bezier_path_planning_pursuit)/launch/bezier_path_planning_pursuit.launch">
         <arg name="control_frequency" value="$(arg control_frequency)" />
-        <arg name="use_tf" value="false" />
-        <arg name="angle_source" value="odom" />
+        <arg name="use_tf" value="true" />
+        <arg name="angle_source" value="odom_filtered" />
         <arg name="csv_path" value="$(find nhk2022_launcher)/config/waypoints/R2" />
         <arg name="acc_lim_xy" value="$(arg acc_lim_xy)" />
         <arg name="max_vel_xy" value="$(arg max_vel_xy)" />

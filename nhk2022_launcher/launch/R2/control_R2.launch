@@ -13,8 +13,8 @@
     <arg name="acc_lim_theta" default="3.14" />
     <arg name="max_vel_theta" default="3.14" />
     <!--3.14-->
-    <arg name="initial_vel" default="0.6" />
-    <arg name="xy_goal_tolerance" default="0.1" />
+    <arg name="initial_vel" default="0.1" />
+    <arg name="xy_goal_tolerance" default="0.05" />
     <arg name="yaw_goal_tolerance" default="0.04" />
 
     <!-- ekf config -->
@@ -34,7 +34,7 @@
     <!-- bezier_path_planning_and_pursuit-->
     <include file="$(find bezier_path_planning_pursuit)/launch/bezier_path_planning_pursuit.launch">
         <arg name="control_frequency" value="$(arg control_frequency)" />
-        <arg name="use_tf" value="false" />
+        <arg name="use_tf" value="true" />
         <arg name="angle_source" value="odom" />
         <arg name="csv_path" value="$(find nhk2022_launcher)/config/waypoints/R2" />
         <arg name="acc_lim_xy" value="$(arg acc_lim_xy)" />
@@ -66,7 +66,7 @@
             <arg name="base_frame_id" value="$(arg base_frame_id)" />
             <arg name="initial_pose_x" value="-5.45"/>
             <arg name="initial_pose_y" value="0"/>
-            <arg name="initial_pose_a" value="0"/>
+            <arg name="initial_pose_a" value="1.57"/>
         </include>
     </group>
 
@@ -78,7 +78,7 @@
     </group>
 
     <!-- task_selector -->
-    <!-- <node pkg="nhk2022_launcher" type="task_selector.py" name="task_selector"/> -->
+    <node pkg="nhk2022_launcher" type="task_selector_R2.py" name="task_selector_R2" output="screen"/>
     <node pkg="nhk2022_launcher" type="accessories_joy_controler_R2.py" name="accessories_joy_controler_R2" output="screen" />
     <node pkg="nhk2022_launcher" type="hardware_init_R2.py" name="hardware_init_R2" output="screen" />
 

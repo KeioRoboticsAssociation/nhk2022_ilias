@@ -3,6 +3,7 @@ import CmdVel from "../components/CmdVel.vue";
 import Joy from "../components/Joy.vue";
 import Odom from "../components/Odom.vue";
 import AutoPath from "../components/AutoPath.vue";
+import Arm from "../components/Arm.vue";
 </script>
 
 <template>
@@ -12,6 +13,7 @@ import AutoPath from "../components/AutoPath.vue";
       <Joy />
       <Odom />
       <AutoPath />
+      <Arm />
     </div>
   </q-page>
 </template>

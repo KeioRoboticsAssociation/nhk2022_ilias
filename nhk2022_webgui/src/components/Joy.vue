@@ -21,6 +21,7 @@ const axes = computed(() => joyData.value?.axes.map((e) => e.toFixed(3)));
     <p class="q-mb-sm">axes:</p>
     <p>R: {{ axes?.at(0) }}:{{ axes?.at(1) }}</p>
     <p>L: {{ axes?.at(2) }}:{{ axes?.at(3) }}</p>
+    <p>DPAD: {{ axes?.at(4) }}:{{ axes?.at(5) }}</p>
     <p>joyAngle: {{ joyAngle?.data.toFixed(3) }}</p>
     <div class="row wrap justify-start">
       <div

@@ -14,7 +14,7 @@ const theta = computed(() => {
   if (odomData.value?.pose.pose.orientation == null) {
     return 0;
   }
-  const {x,y,z,w} = odomData.value.pose.pose.orientation;
+  const { x, y, z, w } = odomData.value.pose.pose.orientation;
   return qte([w, x, y, z])[2];
 });
 </script>
@@ -22,15 +22,13 @@ const theta = computed(() => {
 <template>
   <Card title="Odom">
     <div class="text-subtitle2">Pose</div>
-    <p>
-      X: {{ position?.x.toFixed(3) }}, Y: {{ position?.y.toFixed(3) }}, θ:
-      {{ theta.toFixed(3) }}
-    </p>
+    <p>X: {{ position?.x.toFixed(3) }}</p>
+    <p>Y: {{ position?.y.toFixed(3) }}</p>
+    <p>θ: {{ theta.toFixed(3) }}</p>
     <div class="text-subtitle2">Velocity</div>
-    <p>
-      X: {{ velocity?.x.toFixed(3) }}, Y: {{ velocity?.y.toFixed(3) }}, ω:
-      {{ omega?.toFixed(3) }}
-    </p>
+    <p>X: {{ velocity?.x.toFixed(3) }}</p>
+    <p>Y: {{ velocity?.y.toFixed(3) }}</p>
+    <p>ω: {{ omega?.toFixed(3) }}</p>
   </Card>
 </template>
 

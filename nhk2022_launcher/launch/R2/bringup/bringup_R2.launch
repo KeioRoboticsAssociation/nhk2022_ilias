@@ -65,7 +65,7 @@
             <param name="initial_position_x" value="-5.45"/>
             <param name="initial_position_y" value="0"/>
             <param name="initial_position_theta" value="1.57"/>
-            <param name="tf_pub" value="false"/>
+            <param name="tf_pub" value="true"/>
         </node>
 
         <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig) -f odom" required="true" />

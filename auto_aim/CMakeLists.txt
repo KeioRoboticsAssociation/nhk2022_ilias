@@ -205,8 +205,3 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
-
-
-add_executable(BoH_indicator src/main.cpp src/BoH_indicator.cpp)
-target_link_libraries(BoH_indicator ${catkin_LIBRARIES})
-add_dependencies(BoH_indicator ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})

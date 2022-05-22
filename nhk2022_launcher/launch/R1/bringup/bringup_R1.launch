@@ -9,6 +9,10 @@
         <param name = "autorepeat_rate" value = "10"/>
     </node>
 
+    <param name="robot_description" textfile="$(find nhk2022_launcher)/urdf/R1.urdf" />
+
+    <include file="$(find nhk2022_launcher)/launch/R1/bringup/sensor_activate_R1.launch"/>
+
     <!-- serial nodes -->
 
     <node pkg="serial_ros" name="rogi_link" type="rogi_link_node"  respawn="true">

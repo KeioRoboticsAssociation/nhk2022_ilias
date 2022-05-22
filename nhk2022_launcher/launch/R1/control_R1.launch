@@ -11,9 +11,9 @@
         <arg name="control_frequency" value="$(arg control_frequency)" />
     </include>
     <include file="$(find auto_aim)/launch/BoH.launch">
-        <param name="loop_rate" value="$(loopRate)" />
-        <param name="max_range" value="$(maxRange)" />
-        <param name="limit_angle" value="$(limitAngle)" />
+        <param name="loop_rate" value="$(arg loopRate)" />
+        <param name="max_range" value="$(arg maxRange)" />
+        <param name="limit_angle" value="$(arg limitAngle)" />
     </include>
 
     <!-- laser_filter -->
@@ -24,7 +24,7 @@
     </group>
 
     <!-- task_selector -->
-    <node pkg="nhk2022_launcher" type="task_selector.py" name="task_selector" output="screen"/>
+    <node pkg="nhk2022_launcher" type="task_selector_R1.py" name="task_selector_R1" output="screen"/>
 
     <node pkg="nhk2022_launcher" type="accessories_joy_controler_R1.py" name="accessories_joy_controler_R1" output="screen" />
 

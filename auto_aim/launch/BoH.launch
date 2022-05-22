@@ -4,8 +4,8 @@
     <arg name="limitAngle" default = "0.523333"/>
 
     <node name="BoH_indicator" pkg="auto_aim" type="BoH_indicator.py" output = "screen">
-        <param name="loop_rate" value="$(loopRate)"/>
-        <param name="max_range" value="$(maxRange)"/>
-        <param name="limit_angle" value="$(limitAngle)"/>
+        <param name="loop_rate" value="$(arg loopRate)"/>
+        <param name="max_range" value="$(arg maxRange)"/>
+        <param name="limit_angle" value="$(arg limitAngle)"/>
     </node>
 </launch>

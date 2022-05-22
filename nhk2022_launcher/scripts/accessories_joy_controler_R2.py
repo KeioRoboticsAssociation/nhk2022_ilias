@@ -264,16 +264,6 @@ class Rosconnector():
                 self.emergency_stop_pub.publish(emergency_msg)
                 rospy.logwarn("EMERGENCY STOP")
 
-            if msg.buttons[10]:  # Leftpush
-                self.coordinate_angle.data = 0
-                self.joy_angle_sub.publish(self.coordinate_angle)
-                rospy.loginfo("coordinate angle 0")
-
-            if msg.buttons[11]:  # Rightpush
-                self.coordinate_angle.data = pi/4
-                self.joy_angle_sub.publish(self.coordinate_angle)
-                rospy.loginfo("coordinate angle pi/4")
-
             if msg.buttons[9]:  # Options
                 # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
                 # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
@@ -286,17 +276,15 @@ class Rosconnector():
                 # self.controler_id=3
                 rospy.loginfo("lagori catch")
 
-            # if msg.buttons[11]:#Leftpush
-                # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
-                # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
-                # self.controler_id=3
-                rospy.loginfo("lagori catcher changed")
+            if msg.buttons[11]:  # Leftpush
+                self.coordinate_angle.data = 0
+                self.joy_angle_sub.publish(self.coordinate_angle)
+                rospy.loginfo("coordinate angle 0")
 
-            # if msg.buttons[12]:#Rightpush
-            #     # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
-            #     # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
-            #     # self.controler_id=3
-                rospy.loginfo("lagori catcher changed")
+            if msg.buttons[12]:  # Rightpush
+                self.coordinate_angle.data = pi/4
+                self.joy_angle_sub.publish(self.coordinate_angle)
+                rospy.loginfo("coordinate angle pi/4")
 
         if msg.axes[5]:
             if(self.elevator_position >= 0):

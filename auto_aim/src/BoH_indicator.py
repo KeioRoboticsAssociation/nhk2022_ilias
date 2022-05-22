@@ -8,47 +8,75 @@ import numpy as np
 class BohIndicator:
     def __init__(self,_loop_rate,_max_range,_limit_angle):
         # init handles
+        rospy.logwarn("enter init")
         rospy.init_node("BoH_Indicator")
         self.Boh_pub = rospy.Publisher("Boh_location", Float32MultiArray, queue_size=100)
-        self.Boh_sub = rospy.Subscriber("/scan",LaserScan,self.LiDAR_callback,queue_size=100)
-        
+        rospy.Subscriber("/scan",LaserScan,self.LiDARCallback,queue_size=100)
+        rospy.logwarn("nya")
+
         # params
-        self.loop_rate = rospy.Rate(_loop_rate)
-        self.MAX_RANGE = _max_range
-        self.LIMIT_ANGLE = _limit_angle
-        
+        self.myrate = rospy.Rate(30)
+        # rospy.logwarn("bya")
+        self.MAX_RANGE = 3
+        # rospy.logwarn("bya")
+        self.LIMIT_ANGLE = 0.53
+        # rospy.logwarn("nya2")
+
         # variables
         self.isCaptured = False
         self.x = list()
         self.y = list()
-        
+        # rospy.logwarn("nya3")
+
         # methods
         self.update()
-    
+
     def circleFitting(self,x,y):
         sumx = sum(x)
         sumy = sum(y)
-        sumx2 = sum([ix ** 2 for ix in x])
-        sumy2 = sum([iy ** 2 for iy in y])
-        sumxy = sum([ix * iy for (ix, iy) in zip(x, y)])
+        if not (sumx == 0 or sumy == 0):
+            rospy.logwarn("enter fitting")
+            sumx2 = sum([ix ** 2 for ix in x])
+            sumy2 = sum([iy ** 2 for iy in y])
+            sumxy = sum([ix * iy for (ix, iy) in zip(x, y)])
+            rospy.logwarn("pipi")
+            F = np.array([[sumx2, sumxy, sumx],
+                            [sumxy, sumy2, sumy],
+                            [sumx, sumy, len(x)]])
+            rospy.logwarn("pipi")
 
-        F = np.array([[sumx2, sumxy, sumx],
-                        [sumxy, sumy2, sumy],
-                        [sumx, sumy, len(x)]])
+            G = np.array([[-sum([ix ** 3 + ix*iy ** 2 for (ix, iy) in zip(x, y)])],
+                            [-sum([ix ** 2 * iy + iy ** 3 for (ix, iy) in zip(x, y)])],
+                            [-sum([ix ** 2 + iy ** 2 for (ix, iy) in zip(x, y)])]])
+            rospy.logwarn("pipi")
+            if np.linalg.det(F) == 0 :
+                rospy.logwarn("nyuuu")
+                return (0,0)
+            else:
+                I = np.linalg.inv(F)
+                rospy.logwarn("nya")
+                T = np.dot(I,G)
+                rospy.logwarn("pipi")
 
-        G = np.array([[-sum([ix ** 3 + ix*iy ** 2 for (ix, iy) in zip(x, y)])],
-                        [-sum([ix ** 2 * iy + iy ** 3 for (ix, iy) in zip(x, y)])],
-                        [-sum([ix ** 2 + iy ** 2 for (ix, iy) in zip(x, y)])]])
+                cxe = float(T[0]/-2)
+                rospy.logwarn("nya")
+                cye = float(T[1]/-2)
+                rospy.logwarn("nya")
+                rospy.logwarn("pipi")
+                # if cxe**2+cye**2-T[2] >= 0 :
+                # re = math.sqrt(cxe**2+cye**2-T[2])
+                rospy.logwarn("nya")
+                rospy.logwarn("pipi")
 
-        T = np.linalg.inv(F).dot(G)
+                return (cxe, cye)
+        else :
+            return (0,0)
 
-        cxe = float(T[0]/-2)
-        cye = float(T[1]/-2)
-        re = math.sqrt(cxe**2+cye**2-T[2])
 
-        return (cxe, cye, re)
-      
     def LiDARCallback(self,msg):
+        self.x.clear()
+        self.y.clear()
+        rospy.logwarn("rcv msg")
         for num in range(len(msg.ranges)) :
             theta = msg.angle_min + num*msg.angle_increment
             r = msg.ranges[num]
@@ -60,40 +88,60 @@ class BohIndicator:
                 self.y.append(y_num)
 
     def sendMsg(self,pub_x,pub_y):
-        my_msg = Float32MultiArray()
+        array=[]
+        rospy.logwarn("gya")
         if pub_x == 0:
-            my_msg.data[0] = 0
-            my_msg.data[1] = 0
+            rospy.logwarn("gya0")
+            array.append(0)
+            array.append(0)
         else :
-            my_msg.data[0] = pub_x + 0.260
-            my_msg.data[1] = pub_y + 0.2405
+            rospy.logwarn("gya1")
+            array.append(pub_x + 0.260)
+            rospy.logwarn("gyagya")
+            array.append(pub_y + 0.2405)
+
+        my_msg = Float32MultiArray(data=array)
+
+        rospy.logwarn("gya1")
         self.Boh_pub.publish(my_msg)
-        rospy.loginfo(my_msg.data)                  
-    
+        rospy.loginfo(my_msg.data)
+
     def update(self):
+        rospy.logwarn("enter update")
         while not rospy.is_shutdown():
+            rospy.logwarn("enter while")
             if self.isCaptured:
-                cxe,cye,re = self.circleFitting(self.x,self.y)
+                rospy.logwarn("enter if")
+                cxe,cye = self.circleFitting(self.x,self.y)
+                rospy.logwarn("bya")
                 self.x.clear()
+                rospy.logwarn("bya")
                 self.y.clear()
+                rospy.logwarn("bya")
                 self.isCaptured = False
+                rospy.logwarn("bya")
                 self.sendMsg(cxe,cye)
-            rospy.sleep(self.loop_rate)
-    
+                rospy.logwarn("bya")
+
+            self.myrate.sleep()
+
 
 def main():
     try:
+        rospy.loginfo("wei")
         loop_rate = rospy.get_param("loop_rate","default")
         max_range = rospy.get_param("max_range","default")
         limit_angle = rospy.get_param("limit_angle","default")
         func = BohIndicator(loop_rate,max_range,limit_angle)
-        
+
     except:
-        rospy.loginfo("BoH_Indicator : something wrong")
-        
+        rospy.logwarn("BoH_Indicator : something wrong")
+
     finally:
-        rospy.loginfo("end process")
-        
+        rospy.logwarn("end process")
+
+if __name__ == "__main__" :
+    main()
 
 # #!/usr/bin/env python
 # # -*- coding: utf-8 -*-

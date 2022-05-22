@@ -12,6 +12,6 @@
   <!-- sick -->
     <include file="$(find sick_scan)/launch/sick_tim_5xx.launch">
         <arg name="frame_id" value="laser" />
-        <arg name="hostname" value="192.168.0.81"/>
+        <arg name="hostname" value="192.168.0.83"/>
     </include>
 </launch>

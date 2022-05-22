@@ -2,11 +2,19 @@
     <arg name="control_frequency" default="50" />
     <arg name="use_laser_filter" default="false"/>
 
+    <arg name="loopRate" default="30" />
+    <arg name="maxRange" default="8" />
+    <arg name="limitAngle" default="0.523333" />
+
     <!-- bringup -->
     <include file="$(find nhk2022_launcher)/launch/R1/bringup/bringup_R1.launch">
         <arg name="control_frequency" value="$(arg control_frequency)" />
     </include>
-
+    <include file="$(find auto_aim)/launch/BoH.launch">
+        <param name="loop_rate" value="$(loopRate)" />
+        <param name="max_range" value="$(maxRange)" />
+        <param name="limit_angle" value="$(limitAngle)" />    
+    </include>
 
     <!-- laser_filter -->
     <group if="$(arg use_laser_filter)">
@@ -24,7 +32,7 @@
     <node pkg="nhk2022_launcher" type="hardware_init_R1.py" name="hardware_init_R1" output="screen" />
 
     <node pkg="rogilink_converter" name="rogilink_converter" type="rogilink_converter" output="screen" />
-
+    
     <!-- WebGUI -->
     <!-- <include file="$(find nhk2022_webgui)/launch/server.launch">
     <arg name="name" value="roswww_R1"/>

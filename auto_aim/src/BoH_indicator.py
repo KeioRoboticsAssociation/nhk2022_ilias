@@ -65,8 +65,8 @@ class BohIndicator:
             my_msg.data[0] = 0
             my_msg.data[1] = 0
         else :
-            my_msg.data[0] = math.sqrt(pub_x*pub_x+pub_y+pub_y)
-            my_msg.data[1] = math.atan(pub_y/pub_x)
+            my_msg.data[0] = pub_x
+            my_msg.data[1] = pub_y
         self.Boh_pub.publish(my_msg)
         rospy.loginfo(my_msg.data)                  
     

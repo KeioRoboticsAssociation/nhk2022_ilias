@@ -6,8 +6,9 @@ from std_msgs.msg import Float32MultiArray
 import numpy as np
 
 class BohIndicator:
-    def __init__(self,_loop_rate,_max_range,_limit_angle):
+    def __init__(self,loop_rate,max_range,limit_angle):
         # init handles
+        rospy.logwarn([loop_rate, max_range, limit_angle])
         rospy.logwarn("enter init")
         rospy.init_node("BoH_Indicator")
         self.Boh_pub = rospy.Publisher("Boh_location", Float32MultiArray, queue_size=100)
@@ -15,11 +16,11 @@ class BohIndicator:
         rospy.logwarn("nya")
 
         # params
-        self.myrate = rospy.Rate(30)
+        self.myrate = rospy.Rate(loop_rate)
         # rospy.logwarn("bya")
-        self.MAX_RANGE = 3
+        self.MAX_RANGE = max_range
         # rospy.logwarn("bya")
-        self.LIMIT_ANGLE = 0.53
+        self.LIMIT_ANGLE = limit_angle
         # rospy.logwarn("nya2")
 
         # variables
@@ -126,13 +127,16 @@ class BohIndicator:
             self.myrate.sleep()
 
 
-def main():
+if __name__ == "__main__" :
+    rospy.logwarn("start!")
     try:
-        rospy.loginfo("wei")
-        loop_rate = rospy.get_param("loop_rate","default")
-        max_range = rospy.get_param("max_range","default")
-        limit_angle = rospy.get_param("limit_angle","default")
-        func = BohIndicator(loop_rate,max_range,limit_angle)
+        rospy.logwarn("wei")
+        loop_rate = rospy.get_param("/BoH_indicator/loop_rate")
+        rospy.logwarn("wei")
+        max_range = rospy.get_param("/BoH_indicator/max_range")
+        rospy.logwarn("wei")
+        limit_angle = rospy.get_param("/BoH_indicator/limit_angle")
+        func = BohIndicator(loop_rate, max_range, limit_angle)
 
     except:
         rospy.logwarn("BoH_Indicator : something wrong")
@@ -140,8 +144,6 @@ def main():
     finally:
         rospy.logwarn("end process")
 
-if __name__ == "__main__" :
-    main()
 
 # #!/usr/bin/env python
 # # -*- coding: utf-8 -*-

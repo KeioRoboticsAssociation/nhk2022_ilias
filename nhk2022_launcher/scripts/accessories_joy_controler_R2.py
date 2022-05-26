@@ -298,27 +298,26 @@ class Rosconnector():
             #     # self.controler_id=3
                 rospy.loginfo("lagori catcher changed")
 
-        if msg.axes[5]:
+        if msg.axes[7]:
             if(self.elevator_position >= 0):
-                self.elevator_position = self.elevator_position + \
-                    msg.axes[5] / 50
+                self.elevator_position = self.elevator_position + msg.axes[7] / 50
             else:
                 self.elevator_position = 0
                 rospy.loginfo("elevator too low")
+            self.send_rogilink(HardId.LAGORI_E_MOTOR.value,0x03, self.elevator_position, 0)
+            rospy.loginfo("move elevator %f",self.elevator_position)
 
-            rospy.loginfo("move elevator")
-
-        if msg.axes[4]:
+        if msg.axes[6]:
             if(self.grab_position <= 0):
-                self.grab_position = self.grab_position - msg.axes[4] / 50
+                self.grab_position = self.grab_position - msg.axes[6] / 50
             else:
                 self.grab_position = 0
                 rospy.loginfo("grabing too much")
+            self.send_rogilink(HardId.LAGORI_G_MOTOR.value,0x03, self.grab_position, 0)
+            rospy.loginfo("move gripper %f",self.grab_position)
 
-            rospy.loginfo("move gripper")
 
-        self.send_rogilink(HardId.LAGORI_E_MOTOR.value,0x03, self.elevator_position, 0)
-        self.send_rogilink(HardId.LAGORI_G_MOTOR.value,0x03, self.grab_position, 0)
+
 
 if __name__ == '__main__':
     try:

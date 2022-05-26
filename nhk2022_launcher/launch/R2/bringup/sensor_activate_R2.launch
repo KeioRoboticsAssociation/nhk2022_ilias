@@ -11,7 +11,7 @@
 
     <!-- camera -->
     <node name="head_camera" pkg="usb_cam" type="usb_cam_node">
-        <param name="video_device" value="/dev/video2"/>
+        <param name="video_device" value="/dev/video3"/>
         <param name="pixel_format" value="yuyv" />
         <param name="image_width" value="640" />
         <param name="image_height" value="480" />

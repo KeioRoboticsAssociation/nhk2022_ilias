@@ -48,7 +48,7 @@ class Rosconnector():
     old_roller_speed : float = 0
     controller_roller_speed : float = 0
     command_roller_speed : float = 0
-    max_roller_speed : float = 23
+    max_roller_speed : float = 10
     acc_lim = 10
     joy_msg = Joy()
     joy_msg.axes={0}
@@ -204,7 +204,8 @@ class Rosconnector():
             if self.command_roller_speed < -self.max_roller_speed:
                 self.command_roller_speed = -self.max_roller_speed
         self.old_roller_speed = self.command_roller_speed
-        self.send_rogilink(HardId.R_BALL.value,0x05,self.command_roller_speed,-self.command_roller_speed)
+        self.send_rogilink(HardId.R_BALL.value,0x05,self.command_roller_speed,0)
+        self.send_rogilink(HardId.L_BALL.value,0x05,-self.command_roller_speed,0)
         rospy.loginfo("%f",self.command_roller_speed)
         #     rospy.loginfo("move elevation angle")
 

@@ -14,7 +14,7 @@ class BohIndicator:
         rospy.init_node("BoH_Indicator")
         self.Boh_pub = rospy.Publisher("Boh_location", Float32MultiArray, queue_size=100)
         rospy.Subscriber("/scan",LaserScan,self.LiDARCallback,queue_size=100)
-        rospy.logwarn("nya")
+        # rospy.logwarn("nya")
 
         # params
         self.myrate = rospy.Rate(loop_rate)
@@ -41,38 +41,38 @@ class BohIndicator:
         sumx = sum(x)
         sumy = sum(y)
         if not (sumx == 0 or sumy == 0):
-            rospy.logwarn("enter fitting")
+            # rospy.logwarn("enter fitting")
             sumx2 = sum([ix ** 2 for ix in x])
             sumy2 = sum([iy ** 2 for iy in y])
             sumxy = sum([ix * iy for (ix, iy) in zip(x, y)])
-            rospy.logwarn("pipi")
+            # rospy.logwarn("pipi")
             F = np.array([[sumx2, sumxy, sumx],
                             [sumxy, sumy2, sumy],
                             [sumx, sumy, len(x)]])
-            rospy.logwarn("pipi")
+            # rospy.logwarn("pipi")
 
             G = np.array([[-sum([ix ** 3 + ix*iy ** 2 for (ix, iy) in zip(x, y)])],
                             [-sum([ix ** 2 * iy + iy ** 3 for (ix, iy) in zip(x, y)])],
                             [-sum([ix ** 2 + iy ** 2 for (ix, iy) in zip(x, y)])]])
-            rospy.logwarn("pipi")
+            # rospy.logwarn("pipi")
             if np.linalg.det(F) == 0 :
-                rospy.logwarn("nyuuu")
+                # rospy.logwarn("nyuuu")
                 return (0,0)
             else:
                 I = np.linalg.inv(F)
-                rospy.logwarn("nya")
+                # rospy.logwarn("nya")
                 T = np.dot(I,G)
-                rospy.logwarn("pipi")
+                # rospy.logwarn("pipi")
 
                 cxe = float(T[0]/-2)
-                rospy.logwarn("nya")
+                # rospy.logwarn("nya")
                 cye = float(T[1]/-2)
-                rospy.logwarn("nya")
-                rospy.logwarn("pipi")
+                # rospy.logwarn("nya")
+                # rospy.logwarn("pipi")
                 # if cxe**2+cye**2-T[2] >= 0 :
                 # re = math.sqrt(cxe**2+cye**2-T[2])
-                rospy.logwarn("nya")
-                rospy.logwarn("pipi")
+                # rospy.logwarn("nya")
+                # rospy.logwarn("pipi")
 
                 return (cxe, cye)
         else :
@@ -118,39 +118,39 @@ class BohIndicator:
             self.pp_x = pub_x
             self.pp_y = pub_y
 
-        rospy.logwarn("gya")
+        # rospy.logwarn("gya")
         if pub_x == 0:
-            rospy.logwarn("gya0")
+            # rospy.logwarn("gya0")
             array.append(0)
             array.append(0)
         else :
-            rospy.logwarn("gya1")
+            # rospy.logwarn("gya1")
             array.append(pub_x + 0.260)
-            rospy.logwarn("gyagya")
+            # rospy.logwarn("gyagya")
             array.append(pub_y + 0.2405)
 
         my_msg = Float32MultiArray(data=array)
 
-        rospy.logwarn("gya1")
+        # rospy.logwarn("gya1")
         self.Boh_pub.publish(my_msg)
         rospy.loginfo(my_msg.data)
 
     def update(self):
         rospy.logwarn("enter update")
         while not rospy.is_shutdown():
-            rospy.logwarn("enter while")
+            # rospy.logwarn("enter while")
             if self.isCaptured:
-                rospy.logwarn("enter if")
+                # rospy.logwarn("enter if")
                 cxe,cye = self.circleFitting(self.x,self.y)
-                rospy.logwarn("bya")
+                # rospy.logwarn("bya")
                 self.x.clear()
-                rospy.logwarn("bya")
+                # rospy.logwarn("bya")
                 self.y.clear()
-                rospy.logwarn("bya")
+                # rospy.logwarn("bya")
                 self.isCaptured = False
-                rospy.logwarn("bya")
+                # rospy.logwarn("bya")
                 self.sendMsg(cxe,cye)
-                rospy.logwarn("bya")
+                # rospy.logwarn("bya")
 
             self.myrate.sleep()
 
@@ -158,11 +158,11 @@ class BohIndicator:
 if __name__ == "__main__" :
     rospy.logwarn("start!")
     try:
-        rospy.logwarn("wei")
+        # rospy.logwarn("wei")
         loop_rate = rospy.get_param("/BoH_indicator/loop_rate")
-        rospy.logwarn("wei")
+        # rospy.logwarn("wei")
         max_range = rospy.get_param("/BoH_indicator/max_range")
-        rospy.logwarn("wei")
+        # rospy.logwarn("wei")
         limit_angle = rospy.get_param("/BoH_indicator/limit_angle")
         func = BohIndicator(loop_rate, max_range, limit_angle)
 

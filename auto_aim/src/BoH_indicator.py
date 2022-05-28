@@ -82,16 +82,48 @@ class BohIndicator:
     def LiDARCallback(self,msg):
         self.x.clear()
         self.y.clear()
+        group_A_x = list()
+        group_A_y = list()
+        group_A_r = list()
+        group_B_x = list()
+        group_B_y = list()
+        group_B_r = list()
         rospy.logwarn("rcv msg")
         for num in range(len(msg.ranges)) :
             theta = msg.angle_min + num*msg.angle_increment
             r = msg.ranges[num]
             if r < self.MAX_RANGE and theta > -1 * self.LIMIT_ANGLE and theta < self.LIMIT_ANGLE:
+                if not self.isCaptured():
+                    group_A_x.append(r * math.cos(theta))
+                    group_A_y.append(r * math.sin(theta))
+                    group_A_r.append(r)
+                else:
+                    if abs(np.mean(group_A_r)-r) < 0.2:
+                        group_A_x.append(r * math.cos(theta))
+                        group_A_y.append(r * math.sin(theta))
+                        group_A_r.append(r)
+                    elif not group_B_x:
+                        group_B_x.append(r * math.cos(theta))
+                        group_B_y.append(r * math.sin(theta))
+                        group_B_r.append(r)
+                    else:
+                        if abs(np.mean(group_A_r)-r) < abs(np.mean(group_B_r)-r):
+                            group_A_x.append(r * math.cos(theta))
+                            group_A_y.append(r * math.sin(theta))
+                            group_A_r.append(r)
+                        else :
+                            group_B_x.append(r * math.cos(theta))
+                            group_B_y.append(r * math.sin(theta))
+                            group_B_r.append(r)                      
+                        
                 self.isCaptured = True
-                x_num = msg.ranges[num] * math.cos(msg.angle_min + num*msg.angle_increment)
-                y_num = msg.ranges[num] * math.sin(msg.angle_min + num*msg.angle_increment)
-                self.x.append(x_num)
-                self.y.append(y_num)
+        if len(group_A_r)>len(group_B_r):
+            self.x = group_A_x
+            self.y = group_A_y
+        else :
+            self.x = group_B_x
+            self.y = group_B_y
+
 
     def sendMsg(self,pub_x,pub_y):
         array=[]

@@ -11,9 +11,9 @@
         <arg name="control_frequency" value="$(arg control_frequency)" />
     </include>
     <include file="$(find auto_aim)/launch/BoH.launch">
-        <arg name="loop_rate" value="$(arg loopRate)" />
-        <arg name="max_range" value="$(arg maxRange)" />
-        <arg name="limit_angle" value="$(arg limitAngle)" />
+        <arg name="loopRate" value="$(arg loopRate)" />
+        <arg name="maxRange" value="$(arg maxRange)" />
+        <arg name="limitAngle" value="$(arg limitAngle)" />
     </include>
 
     <!-- laser_filter -->

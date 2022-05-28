@@ -8,6 +8,7 @@ import numpy as np
 class BohIndicator:
     def __init__(self,loop_rate,max_range,limit_angle):
         # init handles
+        
         rospy.logwarn([loop_rate, max_range, limit_angle])
         rospy.logwarn("enter init")
         rospy.init_node("BoH_Indicator")
@@ -27,6 +28,10 @@ class BohIndicator:
         self.isCaptured = False
         self.x = list()
         self.y = list()
+        self.past_x = 100
+        self.past_y = 100
+        self.pp_x = 0
+        self.pp_y = 0
         # rospy.logwarn("nya3")
 
         # methods
@@ -90,6 +95,29 @@ class BohIndicator:
 
     def sendMsg(self,pub_x,pub_y):
         array=[]
+        
+        if self.past_x == 100 or self.past_y == 100:
+            self.past_x = pub_x
+            self.past_y = pub_y
+            self.pp_x = pub_x
+            self.pp_y = pub_y
+        elif abs(pub_x - self.past_x)>1 or abs(pub_y - self.past_y) > 1:
+            if abs(self.pp_x - pub_x) < 0.5 and abs(self.pp_y - pub_y) < 0.5 :
+                self.past_x = pub_x
+                self.past_y = pub_y
+                self.pp_x = pub_x
+                self.pp_y = pub_y
+            else:
+                self.pp_x = pub_x
+                self.pp_y = pub_y
+                pub_x = self.past_x
+                pub_y = self.past_y
+        else :
+            self.past_x = pub_x
+            self.past_y = pub_y
+            self.pp_x = pub_x
+            self.pp_y = pub_y
+
         rospy.logwarn("gya")
         if pub_x == 0:
             rospy.logwarn("gya0")

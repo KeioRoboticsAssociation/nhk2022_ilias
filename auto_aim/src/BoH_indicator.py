@@ -127,7 +127,7 @@ class BohIndicator:
             # rospy.logwarn("gya1")
             array.append(pub_x + 0.260)
             # rospy.logwarn("gyagya")
-            array.append(pub_y + 0.2405)
+            array.append(pub_y + 0.3405)
 
         my_msg = Float32MultiArray(data=array)
 

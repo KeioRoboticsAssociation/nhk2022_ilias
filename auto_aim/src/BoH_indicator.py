@@ -93,7 +93,7 @@ class BohIndicator:
             theta = msg.angle_min + num*msg.angle_increment
             r = msg.ranges[num]
             if r < self.MAX_RANGE and theta > -1 * self.LIMIT_ANGLE and theta < self.LIMIT_ANGLE:
-                if not self.isCaptured():
+                if not self.isCaptured:
                     group_A_x.append(r * math.cos(theta))
                     group_A_y.append(r * math.sin(theta))
                     group_A_r.append(r)

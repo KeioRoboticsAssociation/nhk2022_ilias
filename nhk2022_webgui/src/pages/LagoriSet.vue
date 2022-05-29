@@ -10,16 +10,12 @@ const lagoriSetTopic = createTopic<{
 });
 
 type LagoriPostureType = "Vertical" | "Angled" | "Horizontal";
-const initialPosture: { label: string; value: LagoriPostureType } = {
-  label: "横",
-  value: "Horizontal",
-};
-const lagoriPostures = ref<{ label: string; value: LagoriPostureType }[]>([
-  initialPosture,
-  initialPosture,
-  initialPosture,
-  initialPosture,
-  initialPosture,
+const lagoriPostures = ref<LagoriPostureType[]>([
+  "Horizontal",
+  "Horizontal",
+  "Horizontal",
+  "Horizontal",
+  "Horizontal",
 ]);
 const options: { label: string; value: LagoriPostureType }[] = [
   { label: "横", value: "Horizontal" },
@@ -33,7 +29,7 @@ const send = () => {
     Angled: 1,
     Vertical: 2,
   };
-  const laroriPostureNums = lagoriPostures.value.map((e) => postures[e.value]);
+  const laroriPostureNums = lagoriPostures.value.map((e) => postures[e]);
 
   lagoriSetTopic.publish({
     data: laroriPostureNums,
@@ -42,29 +38,35 @@ const send = () => {
 </script>
 
 <template>
-  <q-page padding class="items-stretch column">
-    <div
-      class="col-10 row no-wrap justify-around items-start content-start q-px-lg"
-    >
-      <div
-        v-for="(item, index) in lagoriPostures"
-        :key="index"
-        style="width: 5rem"
-      >
-        <div class="text-subtitle1">{{ index + 1 }}</div>
-        <p>
-          <q-select
-            v-model="lagoriPostures[index]"
-            :options="options"
-            label="姿勢"
-            style="animation-duration: 10ms"
-          />
-        </p>
-      </div>
+  <q-page padding class="items-stretch row">
+    <div class="col-8">
+      <q-list separator>
+        <q-item
+          v-for="(item, index) in lagoriPostures"
+          :key="index"
+          class="q-pa-xs"
+        >
+          <q-item-section>
+            <span class="col-2 text-subtitle2">
+              {{ index + 1 }}
+            </span>
+          </q-item-section>
+          <q-item-section side>
+            <q-btn-toggle
+              v-model="lagoriPostures[index]"
+              toggle-color="primary"
+              text-color="grey-9"
+              :options="options"
+              class="col"
+            />
+          </q-item-section>
+        </q-item>
+      </q-list>
+
+      <q-btn color="primary" @click="send">ラゴリ状態セット</q-btn>
     </div>
     <div class="col">
       <q-space />
-      <q-btn @click="send">SEND!</q-btn>
     </div>
   </q-page>
 </template>

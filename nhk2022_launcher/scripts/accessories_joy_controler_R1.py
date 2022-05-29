@@ -148,26 +148,30 @@ class Rosconnector():
                 rospy.loginfo("move ball elevator")
 
     def msg_gen(self, msg):
-        # if msg.axes[5]:
-        # if(self.elevator_position>=0):
-        #     self.elevator_position = self.elevator_position + msg.axes[5] / 100
-        #     self.send_rogilink(HardId.ELEVATION_ANGLE.value,0x03,self.angle_position,self.elevator_position)
-        # else:
-        #     self.elevator_position = 0
-        #     rospy.loginfo("elevating too much")
-        # self.send_rogilink(HardId.ELEVATION_ANGLE.value,0x03,0,40*msg.axes[5])
+        if msg.axes[5]:
+            if(self.elevator_position >= 0):
+                self.elevator_position = self.elevator_position + \
+                    msg.axes[5] / 100
+                self.send_rogilink(HardId.ELEVATION_ANGLE.value,
+                                   0x03, self.angle_position, self.elevator_position)
+            else:
+                self.elevator_position = 0
+                rospy.loginfo("elevating too much")
+            # self.send_rogilink(HardId.ELEVATION_ANGLE.value,
+            #                    0x03, 0, 40*msg.axes[5])
 
         # rospy.loginfo("move elevation angle")
 
-        # if msg.axes[4]:
-        # if(self.angle_position>=0):
-        #     self.angle_position = self.angle_position - msg.axes[4] / 100
-        #     self.send_rogilink(HardId.TURNE_ANGLE.value,0x03,self.angle_position,self.elevator_position)
-        # else:
-        #     self.angle_position = 0
-        #     rospy.loginfo("turning too much")
-        self.send_rogilink(HardId.TURNE_ANGLE.value,
-                           0x03, -3*msg.axes[4], -20*msg.axes[5])
+        if msg.axes[4]:
+            if(self.angle_position >= 0 or self.angle_position < 1.3):
+                self.angle_position = self.angle_position - msg.axes[4] / 100
+                self.send_rogilink(HardId.TURNE_ANGLE.value, 0x03,
+                                   self.angle_position, self.elevator_position)
+            else:
+                self.angle_position = 0
+                rospy.loginfo("turning too much")
+        # self.send_rogilink(HardId.TURNE_ANGLE.value,
+        #                    0x03, -3*msg.axes[4], -20*msg.axes[5])
 
         # rospy.loginfo("move turn table angle")
         # rospy.loginfo("%f",self.angle_position)

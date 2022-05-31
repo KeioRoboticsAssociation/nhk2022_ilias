@@ -78,7 +78,6 @@
     </group>
 
     <!-- task_selector -->
-    <node pkg="nhk2022_launcher" type="task_selector_R2.py" name="task_selector_R2" output="screen"/>
     <node pkg="nhk2022_launcher" type="accessories_joy_controler_R2.py" name="accessories_joy_controler_R2" output="screen" />
     <node pkg="nhk2022_launcher" type="hardware_init_R2.py" name="hardware_init_R2" output="screen" />
 

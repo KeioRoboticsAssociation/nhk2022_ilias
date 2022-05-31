@@ -5,6 +5,7 @@ from enum import IntEnum
 from math import pi
 
 from std_msgs.msg import Empty
+from std_msgs.msg import Bool
 from struct import *
 from sensor_msgs.msg import Joy
 from rogi_link_msgs.msg import RogiLink
@@ -265,10 +266,11 @@ class Rosconnector():
                 rospy.logwarn("EMERGENCY STOP")
 
             if msg.buttons[9]:  # Options
-                # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
-                # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
-                # self.controler_id=3
-                rospy.loginfo("lagori catcher changed")
+                rospy.loginfo("teleop_mode")
+                # self.client.cancel_goal()
+                teleop_mode = Bool()
+                teleop_mode.data = False
+                self.teleopflag_pub.publish(teleop_mode)
 
             # if msg.buttons[10]:#PS
                 # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag

@@ -1,5 +1,6 @@
 #! /usr/bin/env python3
 
+from queue import Empty
 import rospy
 from enum import IntEnum
 
@@ -36,7 +37,9 @@ class Rosconnector():
     publish_command = RogiLink()
 
     def __init__(self):
-        self.serial_pub= rospy.Publisher("send_serial", RogiLink ,queue_size=100)
+        self.init_sub = rospy.Subscriber("hard_init", Empty, self.hardinit_callback)
+        self.serial_pub = rospy.Publisher("send_serial", RogiLink ,queue_size=100)
+        self.limit_pub = rospy.Subscriber("rcv_serial_11", RogiLink, self.limit_switch_callback)
         # self.connection_sub = rospy.Subscriber("connection_status", Bool ,self.connection_sub_callback)
         # self.emergency_stop_pub = rospy.Publisher('/emergency_stop_flag', Empty, queue_size=1)
 
@@ -69,6 +72,33 @@ class Rosconnector():
         rospy.loginfo("hardware initialization for R2 is complete")
 
 
+    def limit_switch_callback(self,msg):
+        if msg.data[0] == 0:
+            self.send_rogilink_b(HardId.LAGORI_E_MOTOR.value,0x02,0)
+            self.send_rogilink(HardId.LAGORI_E_MOTOR.value,0x09,0,0)
+        elif msg.data[0] == 1:
+            self.send_rogilink_b(HardId.LAGORI_E_MOTOR.value,0x02,0)
+            self.send_rogilink(HardId.LAGORI_E_MOTOR.value,0x09,-11,0)
+        elif msg.data[0] == 2:
+            self.send_rogilink_b(HardId.LAGORI_G_MOTOR.value,0x02,0)
+            self.send_rogilink(HardId.LAGORI_G_MOTOR.value,0x09,0,0)
+        elif msg.data[0] == 3:
+            self.send_rogilink_b(HardId.LAGORI_G_MOTOR.value,0x02,0)
+            self.send_rogilink(HardId.LAGORI_G_MOTOR.value,0x09,20,0)
+        else:
+            rospy.logerr("unknown limit switch pushed")
+
+
+    def hardinit_callback(self):
+        self.send_rogilink_b(HardId.LAGORI_E_MOTOR.value,0x02,3)
+        self.send_rogilink_b(HardId.LAGORI_G_MOTOR.value,0x02,3)
+        # self.send_rogilink_b(HardId.X_FEINT.value,0x02,3)
+
+        self.send_rogilink(HardId.LAGORI_E_MOTOR.value,0x06,0.1,0)
+        self.send_rogilink(HardId.LAGORI_G_MOTOR.value,0x06,-0.1,0)
+        # self.send_rogilink(HardId.X_FEINT.value,0x06,0.1,0)
+
+
 
 
 if __name__ == '__main__':
@@ -90,6 +120,8 @@ if __name__ == '__main__':
             r.sleep()
 
         Rosconnector.hardware_initialize()
+
+        rospy.spin()
 
     except rospy.ROSInterruptException:
         print("program interrupted before completion")

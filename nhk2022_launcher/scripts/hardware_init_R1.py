@@ -8,7 +8,7 @@ from enum import IntEnum
 
 from std_msgs.msg import Empty
 from struct import *
-from sensor_msgs.msg import Joy
+from std_msgs.msg import Float32MultiArray
 from rogi_link_msgs.msg import RogiLink
 from std_msgs.msg import Bool
 # from std_msgs.msg import Bool
@@ -42,8 +42,9 @@ class Rosconnector():
     publish_command = RogiLink()
 
     def __init__(self):
-        self.serial_pub = rospy.Publisher(
-            "send_serial", RogiLink, queue_size=100)
+        self.serial_pub = rospy.Publisher("send_serial", RogiLink, queue_size=100)
+        self.init_sub = rospy.Subscriber("hard_init", Empty, self.hardinit_callback)
+        self.limit_pub = rospy.Subscriber("rcv_serial_11", Float32MultiArray, self.limit_switch_callback)
         # self.connection_sub = rospy.Subscriber("connection_status", Bool ,self.connection_sub_callback)
         # self.emergency_stop_pub = rospy.Publisher('/emergency_stop_flag', Empty, queue_size=1)
 
@@ -69,11 +70,45 @@ class Rosconnector():
         self.send_rogilink_b(HardId.R_BALL, 0x02, 3)
         # self.send_rogilink_b(HardId.LAGORI_E_MOTOR.value,0x02,0)
         # self.send_rogilink_b(HardId.LAGORI_G_MOTOR.value,0x02,0)
-        # self.send_rogilink(HardId.ELEVATION_ANGLE,0x02,0)
-        # self.send_rogilink(HardId.TURN_ANGLE,0x02,0)
-        # self.send_rogilink(HardId.BALL_E_MOTOR,0x02,0)
+        self.send_rogilink_b(HardId.ELEVATION_ANGLE,0x02,3)
+        self.send_rogilink_b(HardId.TURN_ANGLE,0x02,3)
+        self.send_rogilink_b(HardId.BALL_E_MOTOR,0x02,0)
 
         rospy.loginfo("hardware initialization for R2 is complete")
+
+    def limit_switch_callback(self,msg):
+        if msg.data[0] == 0:
+            self.send_rogilink_b(HardId.ELEVATION_ANGLE,0x01,0)
+            self.send_rogilink_b(HardId.ELEVATION_ANGLE,0x02,3)
+            # self.send_rogilink(HardId.ELEVATION_ANGLE.value,0x09,0,0)
+            rospy.logerr("elevation angle limit")
+        elif msg.data[0] == 2:
+            self.send_rogilink_b(HardId.TURN_ANGLE,0x01,0)
+            self.send_rogilink_b(HardId.TURN_ANGLE,0x02,3)
+            # self.send_rogilink(HardId.TURN_ANGLE.value,0x09,-11,0)
+            rospy.logerr("angle limit")
+        elif msg.data[0] == 3:
+            self.send_rogilink_b(HardId.TURN_ANGLE.value,0x01,0)
+            self.send_rogilink_b(HardId.TURN_ANGLE.value,0x02,3)
+            # self.send_rogilink(HardId.TURN_ANGLE.value,0x09,0,0)
+            rospy.logerr("angle limit")
+        elif msg.data[0] == 4:
+            self.send_rogilink_b(HardId.BALL_E_MOTOR,0x01,0)
+            self.send_rogilink_b(HardId.BALL_E_MOTOR,0x02,0)
+            # self.send_rogilink(HardId.BALL_E_MOTOR.value,0x09,0,0)
+            rospy.logerr("ball elevator limit")
+        else:
+            rospy.logerr("unknown limit switch pushed")
+
+    def hardinit_callback(self , msg):
+        rospy.logerr("###################################################3")
+        self.send_rogilink_b(HardId.ELEVATION_ANGLE.value,0x02,3)
+        self.send_rogilink_b(HardId.TURN_ANGLE.value,0x02,3)
+        self.send_rogilink_b(HardId.BALL_E_MOTOR.value,0x02,3)
+
+        self.send_rogilink(HardId.ELEVATION_ANGLE.value,0x06,-0.3,0)
+        self.send_rogilink(HardId.TURN_ANGLE.value,0x06,-0.05,0)
+        self.send_rogilink(HardId.BALL_E_MOTOR.value,0x06,0.3,0)
 
 
 if __name__ == '__main__':
@@ -95,7 +130,10 @@ if __name__ == '__main__':
             rospy.loginfo_once("initialization waiting for serial connection")
             r.sleep()
 
-        Rosconnector.hardware_initialize()
+        while not rospy.is_shutdown():
+            Rosconnector.hardware_initialize()
+
+            rospy.spin()
 
     except rospy.ROSInterruptException:
         print("program interrupted before completion")

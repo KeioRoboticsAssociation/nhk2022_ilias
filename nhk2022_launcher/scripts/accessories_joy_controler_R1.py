@@ -149,30 +149,38 @@ class Rosconnector():
 
     def msg_gen(self, msg):
         if msg.axes[5]:
-            if(self.elevator_position >= 0):
-                self.elevator_position = self.elevator_position + \
-                    msg.axes[5] / 100
-                self.send_rogilink(HardId.ELEVATION_ANGLE.value,
-                                   0x03, self.angle_position, self.elevator_position)
-            else:
-                self.elevator_position = 0
-                rospy.loginfo("elevating too much")
+            # if(self.elevator_position >= 0):
+            #     self.elevator_position = self.elevator_position + \
+            #         msg.axes[5] / 100
+            #     self.send_rogilink(HardId.ELEVATION_ANGLE.value,
+            #                        0x03, self.angle_position, self.elevator_position)
+            # else:
+            #     self.elevator_position = 0
+            #     rospy.loginfo("elevating too much")
             # self.send_rogilink(HardId.ELEVATION_ANGLE.value,
             #                    0x03, 0, 40*msg.axes[5])
+            rospy.loginfo("elevation send")
+            self.send_rogilink(HardId.ELEVATION_ANGLE.value, 0x06, 0.6*msg.axes[5],0)
 
+        else:
+            self.send_rogilink(HardId.ELEVATION_ANGLE.value,0x06,0,0)
         # rospy.loginfo("move elevation angle")
 
         if msg.axes[4]:
-            if(self.angle_position >= 0 or self.angle_position < 1.3):
-                self.angle_position = self.angle_position - msg.axes[4] / 100
-                self.send_rogilink(HardId.TURNE_ANGLE.value, 0x03,
-                                   self.angle_position, self.elevator_position)
-            else:
-                self.angle_position = 0
-                rospy.loginfo("turning too much")
+            # if(self.angle_position >= 0 or self.angle_position < 1.3):
+            #     self.angle_position = self.angle_position - msg.axes[4] / 100
+            #     self.send_rogilink(HardId.TURNE_ANGLE.value, 0x03,
+            #                        self.angle_position, self.elevator_position)
+            # else:
+            #     self.angle_position = 0
+            #     rospy.loginfo("turning too much")
         # self.send_rogilink(HardId.TURNE_ANGLE.value,
         #                    0x03, -3*msg.axes[4], -20*msg.axes[5])
+            rospy.loginfo(f"turn send {self.angle_position}")
+            self.send_rogilink(HardId.TURNE_ANGLE.value, 0x06,0.1*msg.axes[4],0)
 
+        else:
+            self.send_rogilink(HardId.TURNE_ANGLE.value,0x06,0,0)
         # rospy.loginfo("move turn table angle")
         # rospy.loginfo("%f",self.angle_position)
 
@@ -204,12 +212,9 @@ class Rosconnector():
             if self.command_roller_speed < -self.max_roller_speed:
                 self.command_roller_speed = -self.max_roller_speed
         self.old_roller_speed = self.command_roller_speed
-        self.send_rogilink(HardId.R_BALL.value, 0x06,
-                           -self.command_roller_speed, 0)
-        self.send_rogilink(HardId.L_BALL.value, 0x06, -
-                           -self.command_roller_speed, 0)
+        self.send_rogilink(HardId.R_BALL.value, 0x06,-self.command_roller_speed, 0)
+        self.send_rogilink(HardId.L_BALL.value, 0x06,--self.command_roller_speed, 0)
         rospy.loginfo("%f", self.command_roller_speed)
-        #     rospy.loginfo("move elevation angle")
 
 
 if __name__ == '__main__':

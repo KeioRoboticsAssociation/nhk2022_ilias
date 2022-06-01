@@ -10,11 +10,12 @@
     <include file="$(find nhk2022_launcher)/launch/R1/bringup/bringup_R1.launch">
         <arg name="control_frequency" value="$(arg control_frequency)" />
     </include>
-    <include file="$(find auto_aim)/launch/BoH.launch">
+
+    <!-- <include file="$(find auto_aim)/launch/BoH.launch">
         <arg name="loop_rate" value="$(arg loopRate)" />
         <arg name="max_range" value="$(arg maxRange)" />
         <arg name="limit_angle" value="$(arg limitAngle)" />
-    </include>
+    </include> -->
 
     <!-- laser_filter -->
     <group if="$(arg use_laser_filter)">

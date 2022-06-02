@@ -74,34 +74,46 @@ class Rosconnector():
         self.send_rogilink_b(HardId.TURN_ANGLE,0x02,3)
         self.send_rogilink_b(HardId.BALL_E_MOTOR,0x02,0)
 
-        rospy.loginfo("hardware initialization for R2 is complete")
+        rospy.loginfo("hardware initialization for R1 is complete")
 
     def limit_switch_callback(self,msg):
         if msg.data[0] == 0:
-            self.send_rogilink_b(HardId.ELEVATION_ANGLE,0x01,0)
-            self.send_rogilink_b(HardId.ELEVATION_ANGLE,0x02,3)
+            self.send_rogilink_b(HardId.ELEVATION_ANGLE.value,0x01,0)
+            rospy.sleep(0.1)
+            self.send_rogilink_b(HardId.ELEVATION_ANGLE.value,0x02,3)
             # self.send_rogilink(HardId.ELEVATION_ANGLE.value,0x09,0,0)
             rospy.logerr("elevation angle limit")
         elif msg.data[0] == 2:
-            self.send_rogilink_b(HardId.TURN_ANGLE,0x01,0)
-            self.send_rogilink_b(HardId.TURN_ANGLE,0x02,3)
+            self.send_rogilink_b(HardId.TURN_ANGLE.value,0x01,0)
+            rospy.sleep(0.1)
+            self.send_rogilink_b(HardId.TURN_ANGLE.value,0x02,3)
             # self.send_rogilink(HardId.TURN_ANGLE.value,0x09,-11,0)
             rospy.logerr("angle limit")
         elif msg.data[0] == 3:
             self.send_rogilink_b(HardId.TURN_ANGLE.value,0x01,0)
+            rospy.sleep(0.1)
             self.send_rogilink_b(HardId.TURN_ANGLE.value,0x02,3)
             # self.send_rogilink(HardId.TURN_ANGLE.value,0x09,0,0)
             rospy.logerr("angle limit")
         elif msg.data[0] == 4:
-            self.send_rogilink_b(HardId.BALL_E_MOTOR,0x01,0)
-            self.send_rogilink_b(HardId.BALL_E_MOTOR,0x02,0)
+            self.send_rogilink_b(HardId.BALL_E_MOTOR.value,0x01,0)
+            rospy.sleep(0.1)
+            self.send_rogilink_b(HardId.BALL_E_MOTOR.value,0x02,0)
             # self.send_rogilink(HardId.BALL_E_MOTOR.value,0x09,0,0)
             rospy.logerr("ball elevator limit")
         else:
             rospy.logerr("unknown limit switch pushed")
 
     def hardinit_callback(self , msg):
-        rospy.logerr("###################################################3")
+
+        rospy.logwarn("hard init command")
+
+        self.send_rogilink_b(HardId.ELEVATION_ANGLE.value,0x01,0)
+        self.send_rogilink_b(HardId.TURN_ANGLE.value,0x01,0)
+        self.send_rogilink_b(HardId.BALL_E_MOTOR.value,0x01,0)
+
+        rospy.sleep(0.1) #なんか初期化した直後に反応しないので待ってみます。
+
         self.send_rogilink_b(HardId.ELEVATION_ANGLE.value,0x02,3)
         self.send_rogilink_b(HardId.TURN_ANGLE.value,0x02,3)
         self.send_rogilink_b(HardId.BALL_E_MOTOR.value,0x02,3)
@@ -113,7 +125,7 @@ class Rosconnector():
 
 if __name__ == '__main__':
     try:
-        rospy.init_node("hardware_init_R2")
+        rospy.init_node("hardware_init_R1")
         rospy.loginfo("initializing hardware")
         Rosconnector = Rosconnector()
 

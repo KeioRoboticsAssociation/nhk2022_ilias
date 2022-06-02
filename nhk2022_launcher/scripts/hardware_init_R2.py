@@ -7,6 +7,8 @@ from enum import IntEnum
 from struct import *
 from rogi_link_msgs.msg import RogiLink
 from std_msgs.msg import Bool
+from std_msgs.msg import Float32MultiArray
+from std_msgs.msg import Empty
 # from std_msgs.msg import Bool
 # from std_msgs.msg import Float32MultiArray
 
@@ -39,7 +41,7 @@ class Rosconnector():
     def __init__(self):
         self.init_sub = rospy.Subscriber("hard_init", Empty, self.hardinit_callback)
         self.serial_pub = rospy.Publisher("send_serial", RogiLink ,queue_size=100)
-        self.limit_pub = rospy.Subscriber("rcv_serial_11", RogiLink, self.limit_switch_callback)
+        self.limit_pub = rospy.Subscriber("rcv_serial_11", Float32MultiArray, self.limit_switch_callback)
         # self.connection_sub = rospy.Subscriber("connection_status", Bool ,self.connection_sub_callback)
         # self.emergency_stop_pub = rospy.Publisher('/emergency_stop_flag', Empty, queue_size=1)
 
@@ -74,28 +76,48 @@ class Rosconnector():
 
     def limit_switch_callback(self,msg):
         if msg.data[0] == 0:
+            rospy.logerr("lagori elevator pushed")
+            self.send_rogilink_b(HardId.LAGORI_E_MOTOR.value,0x01,0)
+            rospy.sleep(0.5)
             self.send_rogilink_b(HardId.LAGORI_E_MOTOR.value,0x02,0)
             self.send_rogilink(HardId.LAGORI_E_MOTOR.value,0x09,0,0)
         elif msg.data[0] == 1:
+            rospy.logerr("lagori elevator pushed")
+            self.send_rogilink_b(HardId.LAGORI_E_MOTOR.value,0x01,0)
+            rospy.sleep(0.5)
             self.send_rogilink_b(HardId.LAGORI_E_MOTOR.value,0x02,0)
-            self.send_rogilink(HardId.LAGORI_E_MOTOR.value,0x09,-11,0)
+            self.send_rogilink(HardId.LAGORI_E_MOTOR.value,0x09,-11.6,0)
         elif msg.data[0] == 2:
+            rospy.logerr("lagori hand pushed")
+            self.send_rogilink_b(HardId.LAGORI_G_MOTOR.value,0x01,0)
+            rospy.sleep(0.5)
             self.send_rogilink_b(HardId.LAGORI_G_MOTOR.value,0x02,0)
             self.send_rogilink(HardId.LAGORI_G_MOTOR.value,0x09,0,0)
         elif msg.data[0] == 3:
+            rospy.logerr("lagori hand pushed")
+            self.send_rogilink_b(HardId.LAGORI_G_MOTOR.value,0x01,0)
+            rospy.sleep(0.5)
             self.send_rogilink_b(HardId.LAGORI_G_MOTOR.value,0x02,0)
-            self.send_rogilink(HardId.LAGORI_G_MOTOR.value,0x09,20,0)
+            self.send_rogilink(HardId.LAGORI_G_MOTOR.value,0x09,18.58,0)
         else:
             rospy.logerr("unknown limit switch pushed")
 
 
-    def hardinit_callback(self):
+    def hardinit_callback(self, msg):
+
+        rospy.logwarn("hard init command")
+
+        self.send_rogilink_b(HardId.LAGORI_E_MOTOR.value,0x01,0)
+        self.send_rogilink_b(HardId.LAGORI_G_MOTOR.value,0x01,0)
+
+        rospy.sleep(0.1) #なんか初期化した直後に反応しないので待ってみます。
+
         self.send_rogilink_b(HardId.LAGORI_E_MOTOR.value,0x02,3)
         self.send_rogilink_b(HardId.LAGORI_G_MOTOR.value,0x02,3)
         # self.send_rogilink_b(HardId.X_FEINT.value,0x02,3)
 
-        self.send_rogilink(HardId.LAGORI_E_MOTOR.value,0x06,0.1,0)
-        self.send_rogilink(HardId.LAGORI_G_MOTOR.value,0x06,-0.1,0)
+        self.send_rogilink(HardId.LAGORI_E_MOTOR.value,0x06,-0.1,0)
+        self.send_rogilink(HardId.LAGORI_G_MOTOR.value,0x06,0.1,0)
         # self.send_rogilink(HardId.X_FEINT.value,0x06,0.1,0)
 
 
@@ -119,9 +141,10 @@ if __name__ == '__main__':
             rospy.loginfo_once("initialization waiting for serial connection")
             r.sleep()
 
-        Rosconnector.hardware_initialize()
+        while not rospy.is_shutdown():
+            Rosconnector.hardware_initialize()
 
-        rospy.spin()
+            rospy.spin()
 
     except rospy.ROSInterruptException:
         print("program interrupted before completion")

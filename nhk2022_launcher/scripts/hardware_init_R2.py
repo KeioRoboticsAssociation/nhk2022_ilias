@@ -86,7 +86,7 @@ class Rosconnector():
             self.send_rogilink_b(HardId.LAGORI_E_MOTOR.value,0x01,0)
             rospy.sleep(0.5)
             self.send_rogilink_b(HardId.LAGORI_E_MOTOR.value,0x02,0)
-            self.send_rogilink(HardId.LAGORI_E_MOTOR.value,0x09,-11.6,0)
+            self.send_rogilink(HardId.LAGORI_E_MOTOR.value,0x09,-11,0)
         elif msg.data[0] == 2:
             rospy.logerr("lagori hand pushed")
             self.send_rogilink_b(HardId.LAGORI_G_MOTOR.value,0x01,0)
@@ -98,7 +98,7 @@ class Rosconnector():
             self.send_rogilink_b(HardId.LAGORI_G_MOTOR.value,0x01,0)
             rospy.sleep(0.5)
             self.send_rogilink_b(HardId.LAGORI_G_MOTOR.value,0x02,0)
-            self.send_rogilink(HardId.LAGORI_G_MOTOR.value,0x09,18.58,0)
+            self.send_rogilink(HardId.LAGORI_G_MOTOR.value,0x09,18,0)
         else:
             rospy.logerr("unknown limit switch pushed")
 

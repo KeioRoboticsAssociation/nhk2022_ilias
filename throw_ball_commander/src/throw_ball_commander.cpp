@@ -19,7 +19,7 @@ Throw_Ball_Commander::Throw_Ball_Commander(ros::NodeHandle &_nh, int &_loop_rate
     // init subscriver
     sub_emergence = nh.subscribe("/emergency_stop_flag", 1, &Throw_Ball_Commander::emergence_callback, this);
     sub_connection = nh.subscribe("/connection_status", 1, &Throw_Ball_Commander::connection_callback, this);
-    sub_target = nh.subscribe("/target_location",1,&Throw_Ball_Commander::target_callback, this);
+    sub_target = nh.subscribe("/BoH_location",1,&Throw_Ball_Commander::target_callback, this);
     sub_shot = nh.subscribe("/shot_flag",1,&Throw_Ball_Commander::shot_callback, this);
     sub_cocking = nh.subscribe("/rcv_serial_0E", 1, &Throw_Ball_Commander::cocking_callback, this);
     sub_reload = nh.subscribe("/bullet_flag", 1, &Throw_Ball_Commander::reload_callback, this);

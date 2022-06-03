@@ -8,7 +8,7 @@ import numpy as np
 class BohIndicator:
     def __init__(self,loop_rate,max_range,limit_angle):
         # init handles
-        
+
         rospy.logwarn([loop_rate, max_range, limit_angle])
         rospy.logwarn("enter init")
         rospy.init_node("BoH_Indicator")
@@ -92,7 +92,7 @@ class BohIndicator:
         for num in range(len(msg.ranges)) :
             theta = msg.angle_min + num*msg.angle_increment
             r = msg.ranges[num]
-            if r < self.MAX_RANGE and theta > -1 * self.LIMIT_ANGLE and theta < self.LIMIT_ANGLE:
+            if r > 0.2 and r < self.MAX_RANGE and theta > -1 * self.LIMIT_ANGLE and theta < self.LIMIT_ANGLE:
                 if not self.isCaptured:
                     group_A_x.append(r * math.cos(theta))
                     group_A_y.append(r * math.sin(theta))
@@ -114,8 +114,8 @@ class BohIndicator:
                         else :
                             group_B_x.append(r * math.cos(theta))
                             group_B_y.append(r * math.sin(theta))
-                            group_B_r.append(r)                      
-                        
+                            group_B_r.append(r)
+
                 self.isCaptured = True
         if len(group_A_r)>len(group_B_r):
             self.x = group_A_x
@@ -127,7 +127,7 @@ class BohIndicator:
 
     def sendMsg(self,pub_x,pub_y):
         array=[]
-        
+
         if self.past_x == 100 or self.past_y == 100:
             self.past_x = pub_x
             self.past_y = pub_y

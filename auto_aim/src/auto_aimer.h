@@ -17,6 +17,9 @@ const char TRN_MT = 0x10;
 
 const float GEAR_PROPORTION = 6;
 const float ELV_GAIN = 0;
+const float misalignment = -20;
+float MAX_ELV = 20; //仰角最大値
+float MAX_TRN = 60; //振り角最大値
 
 class Auto_Aimer
 {
@@ -45,7 +48,7 @@ class Auto_Aimer
         int loop_rate;                  //looprate
         int lost_time_threshold;        //しきい値
 
-    //timer
+        // timer
         std::chrono::system_clock::time_point last_sub_vel_time;
 
     //variables
@@ -61,12 +64,11 @@ class Auto_Aimer
     //flags
         bool emergency_stop_flag;       //緊急停止
         bool connection_flag;           //接続
+        bool teleop_flag;               //trueで手動
 
-    //methods
-        //initializers
-        void init_drivers();
-        void init_variables();
-        void init_flags();
+        // methods
+        // initializers
+        void init();
 
         //callbacks
         void emergence_callback(const std_msgs::Empty::ConstPtr &msg);
@@ -76,10 +78,8 @@ class Auto_Aimer
         void joy_callback(const sensor_msgs::Joy::ConstPtr &msg);
 
         // others
-        bool isSubscribed();
         void publishMsg();
         void autoAimer();
         void handAimer();
-        void reset();
         void update();
 };

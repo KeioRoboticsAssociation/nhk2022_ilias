@@ -1,5 +1,6 @@
 <launch>
     <arg name="loopRate" default="30"/>
+    <arg name="lost_time_threshold" default="500"/>
     <arg name="maxRange" default="3"/>
     <arg name="limitAngle" default = "0.523333"/>
 
@@ -7,5 +8,9 @@
         <param name="loop_rate" value="$(arg loopRate)"/>
         <param name="max_range" value="$(arg maxRange)"/>
         <param name="limit_angle" value="$(arg limitAngle)"/>
+    </node>
+    <node name="auto_aimer" pkg="aut_aim" type="auto_aimer">
+        <param name="loop_rate" value="$(arg loopRate)" />
+        <param name="lost_time_threshold" value="$(arg lost_time_threshold)" />
     </node>
 </launch>

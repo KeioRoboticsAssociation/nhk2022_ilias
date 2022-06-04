@@ -116,14 +116,14 @@ class Rosconnector():
         if self.limit_switch_array[0]==1:
             rospy.logwarn("elevation")
             self.send_rogilink_b(HardId.ELEVATION_ANGLE.value,0x01,0)
-            rospy.sleep(0.5)
+            rospy.sleep(0.1)
             self.send_rogilink_b(HardId.ELEVATION_ANGLE.value,0x02,3)
             self.send_rogilink(HardId.ELEVATION_ANGLE.value,0x06,-0.3,0)
 
         if self.limit_switch_array[2]==1 and self.limit_switch_array[3]==1:
             rospy.logwarn("turn")
             self.send_rogilink_b(HardId.TURN_ANGLE.value,0x01,0)
-            rospy.sleep(0.5)
+            rospy.sleep(0.1)
             self.send_rogilink_b(HardId.TURN_ANGLE.value,0x02,3)
             self.send_rogilink(HardId.TURN_ANGLE.value,0x06,-0.1,0)
 

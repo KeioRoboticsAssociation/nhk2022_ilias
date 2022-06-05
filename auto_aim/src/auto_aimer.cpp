@@ -31,7 +31,7 @@ Auto_Aimer::Auto_Aimer(ros::NodeHandle &_nh, int &_loop_rate, int &_lost_time_th
     sub_emergence = nh.subscribe("/emergency_stop_flag", 1, &Auto_Aimer::emergence_callback, this);
     sub_connection = nh.subscribe("/connection_status", 1, &Auto_Aimer::connection_callback, this);
     sub_teleop = nh.subscribe("/teleop_flag", 1, &Auto_Aimer::teleop_callback, this);
-    sub_target = nh.subscribe("/target_location", 1, &Auto_Aimer::target_callback, this);
+    sub_target = nh.subscribe("/BoH_location", 1, &Auto_Aimer::target_callback, this);
     sub_joy = nh.subscribe("joy", 1, &Auto_Aimer::joy_callback, this);
 
     last_sub_vel_time = std::chrono::system_clock::now();
@@ -65,10 +65,10 @@ void Auto_Aimer::teleop_callback(const std_msgs::Bool::ConstPtr &msg)
 {
     teleop_flag = msg->data;
 }
-void Auto_Aimer::target_callback(const geometry_msgs::Twist::ConstPtr &msg)
+void Auto_Aimer::target_callback(const std_msgs::Float32MultiArray &msg)
 {
-    target_x = msg->linear.x;
-    target_y = msg->linear.y;
+    target_x = msg.data[0];
+    target_y = msg.data[1];
 
     target_distance = sqrt(target_x * target_x + target_y * target_y);
     target_theta = atan(target_y / target_x);
@@ -78,7 +78,7 @@ void Auto_Aimer::target_callback(const geometry_msgs::Twist::ConstPtr &msg)
 
 void Auto_Aimer::joy_callback(const sensor_msgs::Joy::ConstPtr &msg)
 {
-    cmd_ELV += msg->axes[5]/25;
+    cmd_ELV += msg->axes[5]/10;
     cmd_TRN += msg->axes[4]/360;
     // ROS_INFO("nya : %f,%f",cmd_ELV,cmd_TRN);
 }
@@ -98,14 +98,14 @@ void Auto_Aimer::publishMsg()
     *(float *)(&cmd_msg.data[0]) = cmd_TRN*GEAR_PROPORTION;
     aim_pub.publish(cmd_msg);
 
-    crt_cmd.data[0] = cmd_TRN;
+    crt_cmd.data[0] = cmd_TRN*GEAR_PROPORTION;
     crt_cmd.data[1] = cmd_ELV;
     cmd_pub.publish(crt_cmd);
 }
 void Auto_Aimer::autoAimer()
 {
     cmd_ELV = target_distance * ELV_GAIN;
-    cmd_TRN = target_theta - misalignment;
+    cmd_TRN = target_theta / 6.28318530718 - misalignment;
     if (cmd_ELV < 0)
         cmd_ELV = 0;
     else if (cmd_ELV > MAX_ELV)

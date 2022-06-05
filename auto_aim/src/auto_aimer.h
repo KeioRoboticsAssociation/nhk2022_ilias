@@ -17,9 +17,9 @@ const char TRN_MT = 0x10;
 
 const float GEAR_PROPORTION = 6;
 const float ELV_GAIN = 0;
-const float misalignment = -30;
+const float misalignment = -0.083333333333333;
 float MAX_ELV = 20; //仰角最大値
-float MAX_TRN = 0.138; //振り角最大値
+float MAX_TRN = 0.222222222222222; //振り角最大値
 
 class Auto_Aimer
 {
@@ -75,7 +75,7 @@ class Auto_Aimer
         void emergence_callback(const std_msgs::Empty::ConstPtr &msg);
         void connection_callback(const std_msgs::Bool::ConstPtr &msg);
         void teleop_callback(const std_msgs::Bool::ConstPtr &msg);
-        void target_callback(const geometry_msgs::Twist::ConstPtr &msg);
+        void target_callback(const std_msgs::Float32MultiArray &msg);
         void joy_callback(const sensor_msgs::Joy::ConstPtr &msg);
 
         // others

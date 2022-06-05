@@ -49,7 +49,7 @@ class Rosconnector():
     old_roller_speed: float = 0
     controller_roller_speed: float = 0
     command_roller_speed: float = 0
-    max_roller_speed: float = 0.4
+    max_roller_speed: float = 0.375
     acc_lim = max_roller_speed / 3
     joy_msg = Joy()
     joy_msg.axes = {0}

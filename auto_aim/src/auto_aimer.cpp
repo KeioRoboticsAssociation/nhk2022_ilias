@@ -78,8 +78,8 @@ void Auto_Aimer::target_callback(const geometry_msgs::Twist::ConstPtr &msg)
 
 void Auto_Aimer::joy_callback(const sensor_msgs::Joy::ConstPtr &msg)
 {
-    cmd_ELV += msg->buttons[0]/50;
-    cmd_TRN += msg->buttons[1];
+    cmd_ELV += msg->buttons[5]/50;
+    cmd_TRN += msg->buttons[4];
 }
 
 void Auto_Aimer::publishMsg()

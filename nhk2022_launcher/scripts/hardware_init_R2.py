@@ -38,16 +38,22 @@ class Rosconnector():
 
     publish_command = RogiLink()
     limit_switch_array = [0] *8
+    current_command_position = [0]*2 #1:angle 2:elevation
 
     def __init__(self):
         self.init_sub = rospy.Subscriber("hard_init", Empty, self.hardinit_callback)
         self.serial_pub = rospy.Publisher("send_serial", RogiLink ,queue_size=100)
         self.limit_pub = rospy.Subscriber("rcv_serial_11", Float32MultiArray, self.limit_switch_callback)
+        self.current_sub = rospy.Subscriber("current_command", Float32MultiArray, self.current_sub_callback)
         # self.connection_sub = rospy.Subscriber("connection_status", Bool ,self.connection_sub_callback)
         # self.emergency_stop_pub = rospy.Publisher('/emergency_stop_flag', Empty, queue_size=1)
 
     def connection_sub_callback(self, msg):
         self.connections_flag = msg.data
+
+    def current_sub_callback(self,msg):
+        for i in range(2):
+            self.current_command_position[i] = msg.data[i]
 
     def send_rogilink(self,hardid,commandid,data_0,data_1):
         self.publish_command.id=int(hardid) << 6 | commandid
@@ -88,7 +94,7 @@ class Rosconnector():
                 self.send_rogilink_b(HardId.LAGORI_E_MOTOR.value,0x01,0)
                 rospy.sleep(0.1)
                 self.send_rogilink_b(HardId.LAGORI_E_MOTOR.value,0x02,0)
-                self.send_rogilink(HardId.LAGORI_E_MOTOR.value,0x09,-11,0)
+                self.send_rogilink(HardId.LAGORI_E_MOTOR.value,0x09,self.current_command_position[0],0)
             elif msg.data[1] == 2:
                 rospy.logerr("lagori hand 0 pushed")
                 self.send_rogilink_b(HardId.LAGORI_G_MOTOR.value,0x01,0)
@@ -100,7 +106,7 @@ class Rosconnector():
                 self.send_rogilink_b(HardId.LAGORI_G_MOTOR.value,0x01,0)
                 rospy.sleep(0.1)
                 self.send_rogilink_b(HardId.LAGORI_G_MOTOR.value,0x02,0)
-                self.send_rogilink(HardId.LAGORI_G_MOTOR.value,0x09,18,0)
+                self.send_rogilink(HardId.LAGORI_G_MOTOR.value,0x09,self.current_command_position[1],0)
             else:
                 rospy.logerr("unknown limit switch pushed")
         else:

@@ -25,6 +25,7 @@ Auto_Aimer::Auto_Aimer(ros::NodeHandle &_nh, int &_loop_rate, int &_lost_time_th
 
     // init publisher
     aim_pub = nh.advertise<rogi_link_msgs::RogiLink>("send_serial", 100);
+    cmd_pub = nh.advertise<std_msgs::Float32MultiArray>("current_cmd", 100);
 
     // init subscriber
     sub_emergence = nh.subscribe("/emergency_stop_flag", 1, &Auto_Aimer::emergence_callback, this);
@@ -77,13 +78,18 @@ void Auto_Aimer::target_callback(const geometry_msgs::Twist::ConstPtr &msg)
 
 void Auto_Aimer::joy_callback(const sensor_msgs::Joy::ConstPtr &msg)
 {
-    cmd_ELV += msg->buttons[0]/50;
-    cmd_TRN += msg->buttons[1];
+    cmd_ELV += msg->axes[5]/25;
+    cmd_TRN += msg->axes[4]/360;
+    // ROS_INFO("nya : %f,%f",cmd_ELV,cmd_TRN);
 }
 
 void Auto_Aimer::publishMsg()
 {
     rogi_link_msgs::RogiLink cmd_msg;
+    std_msgs::Float32MultiArray crt_cmd;
+    crt_cmd.data.resize(2);
+    ROS_INFO("auto_aimer : %f, %f" ,cmd_ELV, cmd_TRN * GEAR_PROPORTION);
+
     cmd_msg.id = ELV_MT << 6 | 0x03;
     *(float *)(&cmd_msg.data[0]) = cmd_ELV;
     aim_pub.publish(cmd_msg);
@@ -91,6 +97,10 @@ void Auto_Aimer::publishMsg()
     cmd_msg.id = TRN_MT << 6 | 0x03;
     *(float *)(&cmd_msg.data[0]) = cmd_TRN*GEAR_PROPORTION;
     aim_pub.publish(cmd_msg);
+
+    crt_cmd.data[0] = cmd_TRN;
+    crt_cmd.data[1] = cmd_ELV;
+    cmd_pub.publish(crt_cmd);
 }
 void Auto_Aimer::autoAimer()
 {
@@ -102,21 +112,29 @@ void Auto_Aimer::autoAimer()
         cmd_ELV = MAX_ELV;
 
     if (cmd_TRN < 0)
-        cmd_TRN;
+        cmd_TRN = 0;
     else if (cmd_TRN > MAX_TRN)
         cmd_TRN = MAX_TRN;
 }
 void Auto_Aimer::handAimer()
 {
     if(cmd_ELV<0)
+    {
         cmd_ELV = 0;
+    }
     else if(cmd_ELV>MAX_ELV)
+    {
         cmd_ELV = MAX_ELV;
-    
+    }
+
     if(cmd_TRN<0)
-        cmd_TRN;
+    {
+        cmd_TRN = 0;
+    }
     else if(cmd_TRN>MAX_TRN)
+    {
         cmd_TRN = MAX_TRN;
+    }
 }
 
 void Auto_Aimer::update()

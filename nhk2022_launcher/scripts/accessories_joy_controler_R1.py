@@ -7,8 +7,8 @@ from std_msgs.msg import Empty
 from struct import *
 from sensor_msgs.msg import Joy
 from rogi_link_msgs.msg import RogiLink
-# from std_msgs.msg import Bool
-# from std_msgs.msg import Float32MultiArray
+from std_msgs.msg import Bool
+from std_msgs.msg import Float32MultiArray
 
 loop_rate = 10  # joyノードから出る/joyのスピードに合わせてください。本当にごめんなさい
 
@@ -55,6 +55,7 @@ class Rosconnector():
     joy_msg.axes = {0}
     joy_msg.buttons = {0}
     sub_flag = False
+    teleop_flag = True
 
     def __init__(self):
         self.joy_sub = rospy.Subscriber("joy", Joy, self.Joycallback)
@@ -62,6 +63,8 @@ class Rosconnector():
             "send_serial", RogiLink, queue_size=100)
         self.emergency_stop_pub = rospy.Publisher(
             '/emergency_stop_flag', Empty, queue_size=1)
+        self.teleop_flag_pub = rospy.Publisher("teleop_flag",Bool,queue_size=1)
+        self.hardinit_flag_pub = rospy.Publisher("hard_init",Empty,queue_size=1)
 
     def send_rogilink(self, hardid, commandid, data_0, data_1):
         self.publish_command.id = int(hardid) << 6 | commandid
@@ -79,108 +82,102 @@ class Rosconnector():
                 self.send_rogilink(HardId.SHOT_SERVO.value, 0x04, 0, 0)
                 rospy.loginfo("reload")
 
-            if msg.buttons[1]:  # O
+            if msg.buttons[1]:  # A
                 self.send_rogilink(HardId.SHOT_SERVO.value, 0x08, 0, 0)
                 rospy.loginfo("shoot")
 
-            if msg.buttons[2]:  # <|
+            if msg.buttons[2]:  # B
                 # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
                 # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
                 # self.controler_id=3
                 rospy.loginfo("lagori catcher changed")
 
-            if msg.buttons[3]:  # <>
+            if msg.buttons[3]:  # Y
+                # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
+                # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
+                # self.controler_id=3
+                rospy.loginfo("lagori catcher changed")
+
+            if msg.buttons[4]:  # l1
                 # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
                 # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
                 # self.controler_id=3
                 rospy.loginfo("lagori catcher changed")
 
             if msg.buttons[5]:  # R1
-                # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
-                # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
-                # self.controler_id=3
-                rospy.loginfo("lagori catcher changed")
+                self.send_rogilink(HardId.BALL_E_MOTOR.value, 0x03, -13.5, 0)
+                self.send_rogilink(HardId.SHOT_SERVO.value, 0x07, 0, 0)
+
+                rospy.loginfo("move ball elevator")
+
+            if msg.buttons[6]: # L2
+                self.teleop_flag = not self.teleop_flag
+                self.teleop_flag_pub.publish(self.teleop_flag)
+                rospy.loginfo("teleop flag %s",self.teleop_flag)
 
             if msg.buttons[7]:  # R2
-                # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
-                # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
-                # self.controler_id=3
-                rospy.loginfo("lagori catcher changed")
+                self.send_rogilink(HardId.BALL_E_MOTOR.value, 0x03, 0, 0)
 
-            if msg.buttons[8]:  # Share back
+                rospy.loginfo("move ball elevator")
+
+            if msg.buttons[8]:  # back
                 emergency_msg = Empty()
                 self.emergency_stop_pub.publish(emergency_msg)
                 rospy.logwarn("EMERGENCY STOP")
 
             if msg.buttons[9]:  # Options
+                # emptyflag=Empty()
+                self.hardinit_flag_pub.publish()
+                rospy.logwarn("HARDINIT")
+
+
+            # if msg.buttons[10]:#Leftpush
                 # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
                 # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
                 # self.controler_id=3
-                rospy.loginfo("lagori catcher changed")
+                # rospy.loginfo("lagori catcher changed")
 
-            # if msg.buttons[10]:#PS
-                # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
-                # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
-                # self.controler_id=3
-                rospy.loginfo("lagori catcher changed")
-
-            # if msg.buttons[11]:#Leftpush
-                # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
-                # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
-                # self.controler_id=3
-                rospy.loginfo("lagori catcher changed")
-
-            # if msg.buttons[12]:#Rightpush
+            # if msg.buttons[11]:#Rightpush
             #     # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
             #     # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
             #     # self.controler_id=3
-                rospy.loginfo("lagori catcher changed")
+                # rospy.loginfo("lagori catcher changed")
 
-            if msg.buttons[5]:  # L1
-                self.send_rogilink(HardId.BALL_E_MOTOR.value, 0x03, -13.7, 0)
-                self.send_rogilink(HardId.SHOT_SERVO.value, 0x07, 0, 0)
-
-                rospy.loginfo("move ball elevator")
-
-            if msg.buttons[7]:  # L2
-                self.send_rogilink(HardId.BALL_E_MOTOR.value, 0x03, 0, 0)
-
-                rospy.loginfo("move ball elevator")
 
     def msg_gen(self, msg):
-        if msg.axes[5]:
-            # if(self.elevator_position >= 0):
-            #     self.elevator_position = self.elevator_position + \
-            #         msg.axes[5] / 100
-            #     self.send_rogilink(HardId.ELEVATION_ANGLE.value,
-            #                        0x03, self.angle_position, self.elevator_position)
-            # else:
-            #     self.elevator_position = 0
-            #     rospy.loginfo("elevating too much")
-            # self.send_rogilink(HardId.ELEVATION_ANGLE.value,
-            #                    0x03, 0, 40*msg.axes[5])
-            rospy.loginfo("elevation send")
-            self.send_rogilink(HardId.ELEVATION_ANGLE.value, 0x06, 0.6*msg.axes[5],0)
+        # if msg.axes[5]:
+        #     # if(self.elevator_position >= 0):
+        #     #     self.elevator_position = self.elevator_position + \
+        #     #         msg.axes[5] / 100
+        #     #     self.send_rogilink(HardId.ELEVATION_ANGLE.value,
+        #     #                        0x03, self.angle_position, self.elevator_position)
+        #     # else:
+        #     #     self.elevator_position = 0
+        #     #     rospy.loginfo("elevating too much")
+        #     # self.send_rogilink(HardId.ELEVATION_ANGLE.value,
+        #     #                    0x03, 0, 40*msg.axes[5])
+        #     rospy.loginfo("elevation send")
+        #     self.send_rogilink(HardId.ELEVATION_ANGLE.value, 0x06, 0.6*msg.axes[5],0)
 
-        else:
-            self.send_rogilink(HardId.ELEVATION_ANGLE.value,0x06,0,0)
-        # rospy.loginfo("move elevation angle")
+        # else:
+        #     self.send_rogilink(HardId.ELEVATION_ANGLE.value,0x06,0,0)
+        # # rospy.loginfo("move elevation angle")
 
-        if msg.axes[4]:
-            # if(self.angle_position >= 0 or self.angle_position < 1.3):
-            #     self.angle_position = self.angle_position - msg.axes[4] / 100
-            #     self.send_rogilink(HardId.TURNE_ANGLE.value, 0x03,
-            #                        self.angle_position, self.elevator_position)
-            # else:
-            #     self.angle_position = 0
-            #     rospy.loginfo("turning too much")
-        # self.send_rogilink(HardId.TURNE_ANGLE.value,
-        #                    0x03, -3*msg.axes[4], -20*msg.axes[5])
-            rospy.loginfo(f"turn send {self.angle_position}")
-            self.send_rogilink(HardId.TURNE_ANGLE.value, 0x06,0.1*msg.axes[4],0)
+        # if msg.axes[4]:
+        #     # if(self.angle_position >= 0 or self.angle_position < 1.3):
+        #     #     self.angle_position = self.angle_position - msg.axes[4] / 100
+        #     #     self.send_rogilink(HardId.TURNE_ANGLE.value, 0x03,
+        #     #                        self.angle_position, self.elevator_position)
+        #     # else:
+        #     #     self.angle_position = 0
+        #     #     rospy.loginfo("turning too much")
+        # # self.send_rogilink(HardId.TURNE_ANGLE.value,
+        # #                    0x03, -3*msg.axes[4], -20*msg.axes[5])
+        #     rospy.loginfo(f"turn send {self.angle_position}")
+        #     self.send_rogilink(HardId.TURNE_ANGLE.value, 0x06,0.1*msg.axes[4],0)
 
-        else:
-            self.send_rogilink(HardId.TURNE_ANGLE.value,0x06,0,0)
+        # else:
+        #     self.send_rogilink(HardId.TURNE_ANGLE.value,0x06,0,0)
         # rospy.loginfo("move turn table angle")
         # rospy.loginfo("%f",self.angle_position)
 

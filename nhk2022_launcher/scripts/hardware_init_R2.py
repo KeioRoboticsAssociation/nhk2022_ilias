@@ -119,7 +119,7 @@ class Rosconnector():
             self.send_rogilink_b(HardId.LAGORI_E_MOTOR.value,0x02,3)
             self.send_rogilink(HardId.LAGORI_E_MOTOR.value,0x06,-0.1,0)
 
-        if self.limit_switch_array[2]==1 and self.limit_switch_array[3]==1:
+        if self.limit_switch_array[2]==1:
             self.send_rogilink_b(HardId.LAGORI_G_MOTOR.value,0x01,0)
             rospy.sleep(0.1) #なんか初期化した直後に反応しないので待ってみます。
             self.send_rogilink_b(HardId.LAGORI_G_MOTOR.value,0x02,3)

@@ -54,18 +54,16 @@
         </node>
     </group> -->
 
-    <node pkg="ira_laser_tools" name="laserscan_multi_merger" type="laserscan_multi_merger" >
+    <!-- <node pkg="ira_laser_tools" name="laserscan_multi_merger" type="laserscan_multi_merger" >
         <param name="merged_scan_frame" value="base_link"/>
         <param name="merged_pcd_topic_name" value="/merged_cloud"/>
         <param name="merged_scan_topic_name" value="/merged_scan"/>
-        <param name="scan0_topic_name" value ="/laser1_inv " /><!-- LIST OF THE LASER SCAN TOPICS TO SUBSCRIBE -->
-        <param name="scan1_topic_name" value ="/laser2_inv " /><!-- LIST OF THE LASER SCAN TOPICS TO SUBSCRIBE -->
+        <param name="scan0_topic_name" value ="/laser1_inv " />
+        <param name="scan1_topic_name" value ="/laser2_inv " />
         <param name="merged_angle_min" value="-3.14"/>
         <param name="merged_angle_max" value="3.14"/>
         <param name="merged_angle_increment" value="0.01745329238474369"/>
         <param name="merged_scan_time" value="0.06666667014360428"/>
-        <!-- <param name="range_min" value="0.30"/> -->
-        <!-- <param name="range_max" value="50.0"/> -->
-    </node>
+    </node> -->
 
 </launch>

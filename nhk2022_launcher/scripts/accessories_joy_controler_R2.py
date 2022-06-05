@@ -52,6 +52,7 @@ class Rosconnector():
     pile_status = [0]*5
     lagori_number = 0
     catch_flag=0
+    pile_send = [0]*2 #0:hight 1:grab
 
     def __init__(self):
         self.joy_sub = rospy.Subscriber("joy", Joy, self.Joycallback)
@@ -65,6 +66,7 @@ class Rosconnector():
             "pile_status", UInt8MultiArray, self.pile_status_callback)
         self.lagori_number_sub = rospy.Subscriber(
             "lagori_number", UInt8, self.lagori_number_callback)
+        self.hardinit_pub = rospy.Publisher("hard_init", Empty, queue_size=1)
 
     def send_rogilink(self, hardid, commandid, data_0, data_1):
         self.publish_command.id = int(hardid) << 6 | commandid
@@ -98,145 +100,144 @@ class Rosconnector():
 
     def pile_commander(self, msg):
         rospy.loginfo("pile")
-        pile_status = [0]*2 #0:hight 1:grab
         if msg=="catch":
             self.catch_flag = not self.catch_flag
 
             if self.catch_flag==0:#closed
                 if self.lagori_number==1:
-                    pile_status[1]=-3.1
+                    self.pile_send[1]=-3.1
 
                 elif self.lagori_number==2:
-                    pile_status[1]=-4.65
+                    self.pile_send[1]=-4.65
 
                 elif self.lagori_number==3:
-                    pile_status[1]=-6.1
+                    self.pile_send[1]=-6.1
 
                 elif self.lagori_number==4:
-                    pile_status[1]=-7.8
+                    self.pile_send[1]=-7.8
 
                 elif self.lagori_number==5:
-                    pile_status[1]=-9.36
+                    self.pile_send[1]=-9.36
 
             else:
                 if self.lagori_number==1:
-                    pile_status[1]=-8
+                    self.pile_send[1]=-8
 
                 elif self.lagori_number==2:
-                    pile_status[1]=-8.2
+                    self.pile_send[1]=-8.2
 
                 elif self.lagori_number==3:
-                    pile_status[1]=-9.4
+                    self.pile_send[1]=-9.4
 
                 elif self.lagori_number==4:
-                    pile_status[1]=-10
+                    self.pile_send[1]=-10
 
                 elif self.lagori_number==5:
-                    pile_status[1]=-11
+                    self.pile_send[1]=-11
 
         elif msg=="low":
             if self.lagori_number==1:
                 if self.pile_status[self.lagori_number-1]==0:#flat
-                    pile_status[0]=0
+                    self.pile_send[0]=0
 
                 elif self.pile_status[self.lagori_number-1]==1:#angle
-                    pile_status[0]=0
+                    self.pile_send[0]=0
 
                 elif self.pile_status[self.lagori_number-1]==2:#perpendicular
-                    pile_status[0]=0
+                    self.pile_send[0]=0
 
             elif self.lagori_number==2:
                 if self.pile_status[self.lagori_number-1]==0:#flat
-                    pile_status[0]=0
+                    self.pile_send[0]=0
 
                 elif self.pile_status[self.lagori_number-1]==1:#angle
-                    pile_status[0]=0
+                    self.pile_send[0]=0
 
                 elif self.pile_status[self.lagori_number-1]==2:#perpendicular
-                    pile_status[0]=0
+                    self.pile_send[0]=0
 
             elif self.lagori_number==3:
                 if self.pile_status[self.lagori_number-1]==0:#flat
-                    pile_status[0]=0
+                    self.pile_send[0]=0
 
                 elif self.pile_status[self.lagori_number-1]==1:#angle
-                    pile_status[0]=0
+                    self.pile_send[0]=0
 
                 elif self.pile_status[self.lagori_number-1]==2:#perpendicular
-                    pile_status[0]=0
+                    self.pile_send[0]=0
 
             elif self.lagori_number==4:
                 if self.pile_status[self.lagori_number-1]==0:#flat
-                    pile_status[0]=0
+                    self.pile_send[0]=0
 
                 elif self.pile_status[self.lagori_number-1]==1:#angle
-                    pile_status[0]=0
+                    self.pile_send[0]=0
 
                 elif self.pile_status[self.lagori_number-1]==2:#perpendicular
-                    pile_status[0]=0
+                    self.pile_send[0]=0
 
             elif self.lagori_number==5:
                 if self.pile_status[self.lagori_number-1]==0:#flat
-                    pile_status[0]=0
+                    self.pile_send[0]=0
 
                 elif self.pile_status[self.lagori_number-1]==1:#angle
-                    pile_status[0]=0
+                    self.pile_send[0]=0
 
                 elif self.pile_status[self.lagori_number-1]==2:#perpendicular
-                    pile_status[0]=0
+                    self.pile_send[0]=0
 
         elif msg=="high":
             if self.lagori_number==1:
                 if self.pile_status[self.lagori_number-1]==0:#flat
-                    pile_status[0]=0
+                    self.pile_send[0]=0
 
                 elif self.pile_status[self.lagori_number-1]==1:#angle
-                    pile_status[0]=0
+                    self.pile_send[0]=0
 
                 elif self.pile_status[self.lagori_number-1]==2:#perpendicular
-                    pile_status[0]=0
+                    self.pile_send[0]=0
 
             elif self.lagori_number==2:
                 if self.pile_status[self.lagori_number-1]==0:#flat
-                    pile_status[0]=0
+                    self.pile_send[0]=0
 
                 elif self.pile_status[self.lagori_number-1]==1:#angle
-                    pile_status[0]=0
+                    self.pile_send[0]=0
 
                 elif self.pile_status[self.lagori_number-1]==2:#perpendicular
-                    pile_status[0]=0
+                    self.pile_send[0]=0
 
             elif self.lagori_number==3:
                 if self.pile_status[self.lagori_number-1]==0:#flat
-                    pile_status[0]=0
+                    self.pile_send[0]=0
 
                 elif self.pile_status[self.lagori_number-1]==1:#angle
-                    pile_status[0]=0
+                    self.pile_send[0]=0
 
                 elif self.pile_status[self.lagori_number-1]==2:#perpendicular
-                    pile_status[0]=0
+                    self.pile_send[0]=0
 
             elif self.lagori_number==4:
                 if self.pile_status[self.lagori_number-1]==0:#flat
-                    pile_status[0]=0
+                    self.pile_send[0]=0
 
                 elif self.pile_status[self.lagori_number-1]==1:#angle
-                    pile_status[0]=0
+                    self.pile_send[0]=0
 
                 elif self.pile_status[self.lagori_number-1]==2:#perpendicular
-                    pile_status[0]=0
+                    self.pile_send[0]=0
 
             elif self.lagori_number==5:
                 if self.pile_status[self.lagori_number-1]==0:#flat
-                    pile_status[0]=0
+                    self.pile_send[0]=13
 
                 elif self.pile_status[self.lagori_number-1]==1:#angle
-                    pile_status[0]=0
+                    self.pile_send[0]=0
 
                 elif self.pile_status[self.lagori_number-1]==2:#perpendicular
-                    pile_status[0]=0
+                    self.pile_send[0]=0
 
-        self.rogi_sender(pile_status[0],pile_status[1])
+        self.rogi_sender(self.pile_send[0],self.pile_send[1])
 
 
 
@@ -307,11 +308,13 @@ class Rosconnector():
                 rospy.logwarn("EMERGENCY STOP")
 
             if msg.buttons[9]:  # Options
-                rospy.loginfo("teleop_mode")
-                # self.client.cancel_goal()
-                teleop_mode = Bool()
-                teleop_mode.data = False
-                self.teleopflag_pub.publish(teleop_mode)
+                # rospy.loginfo("teleop_mode")
+                # # self.client.cancel_goal()
+                # teleop_mode = Bool()
+                # teleop_mode.data = False
+                # self.teleopflag_pub.publish(teleop_mode)
+                self.hardinit_pub.publish()
+                rospy.loginfo("hard init")
 
             if msg.buttons[10]:#PS
                 # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
@@ -328,7 +331,7 @@ class Rosconnector():
                 rospy.loginfo("coordinate angle pi/4")
 
         if msg.axes[7]:
-            if(self.elevator_position > 0):
+            if(self.elevator_position >= 0):
                 self.elevator_position = self.elevator_position + msg.axes[7] / 50
             else:
                 self.elevator_position = 0
@@ -337,7 +340,7 @@ class Rosconnector():
             rospy.loginfo("move elevator %f",self.elevator_position)
 
         if msg.axes[6]:
-            if(self.grab_position < 0):
+            if(self.grab_position <= 0):
                 self.grab_position = self.grab_position - msg.axes[6] / 50
             else:
                 self.grab_position = 0

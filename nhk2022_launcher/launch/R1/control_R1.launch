@@ -25,11 +25,7 @@
     </group>
 
     <!-- task_selector -->
-    <node pkg="nhk2022_launcher" type="task_selector_R1.py" name="task_selector_R1" output="screen"/>
-
-    <!-- <node pkg="nhk2022_launcher" type="accessories_joy_controler_R1.py" name="accessories_joy_controler_R1" output="screen" /> -->
-
-
+    <node pkg="nhk2022_launcher" type="accessories_joy_controler_R1.py" name="accessories_joy_controler_R1" output="screen" />
     <node pkg="nhk2022_launcher" type="hardware_init_R1.py" name="hardware_init_R1" output="screen" />
 
     <!-- <node pkg="rogilink_converter" name="rogilink_converter" type="rogilink_converter" output="screen" /> -->

@@ -209,6 +209,6 @@ include_directories(
 # catkin_add_nosetests(test)
 
 
-add_executable(auto_aim src/auto_aimer.cpp)
-target_link_libraries(auto_aim ${catkin_LIBRARIES})
-add_dependencies(auto_aim ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_executable(auto_aimer src/auto_aimer.cpp)
+target_link_libraries(auto_aimer ${catkin_LIBRARIES})
+add_dependencies(auto_aimer ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})

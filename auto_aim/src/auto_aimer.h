@@ -19,7 +19,7 @@ const float GEAR_PROPORTION = 6;
 const float ELV_GAIN = 0;
 const float misalignment = -30;
 float MAX_ELV = 20; //仰角最大値
-float MAX_TRN = 50; //振り角最大値
+float MAX_TRN = 0.138; //振り角最大値
 
 class Auto_Aimer
 {
@@ -32,7 +32,7 @@ class Auto_Aimer
     private:
     //handle
         ros::NodeHandle &nh;
-    
+
     //publisher
         ros::Publisher aim_pub;
         ros::Publisher cmd_pub;

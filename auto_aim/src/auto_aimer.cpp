@@ -79,7 +79,8 @@ void Auto_Aimer::target_callback(const geometry_msgs::Twist::ConstPtr &msg)
 void Auto_Aimer::joy_callback(const sensor_msgs::Joy::ConstPtr &msg)
 {
     cmd_ELV += msg->axes[5]/50;
-    cmd_TRN += msg->axes[4]/36;
+    cmd_TRN += msg->axes[4]/360;
+    // ROS_INFO("nya : %f,%f",cmd_ELV,cmd_TRN);
 }
 
 void Auto_Aimer::publishMsg()
@@ -111,7 +112,7 @@ void Auto_Aimer::autoAimer()
         cmd_ELV = MAX_ELV;
 
     if (cmd_TRN < 0)
-        cmd_TRN;
+        cmd_TRN = 0;
     else if (cmd_TRN > MAX_TRN)
         cmd_TRN = MAX_TRN;
 }
@@ -128,7 +129,7 @@ void Auto_Aimer::handAimer()
 
     if(cmd_TRN<0)
     {
-        cmd_TRN;
+        cmd_TRN = 0;
     }
     else if(cmd_TRN>MAX_TRN)
     {

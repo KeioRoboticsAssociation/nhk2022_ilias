@@ -86,7 +86,7 @@ void Auto_Aimer::publishMsg()
 {
     rogi_link_msgs::RogiLink cmd_msg;
     std_msgs::Float32MultiArray crt_cmd;
-
+    ROS_INFO("auto_aimer : %f, %f" ,cmd_ELV, cmd_TRN * GEAR_PROPORTION);
     cmd_msg.id = ELV_MT << 6 | 0x03;
     *(float *)(&cmd_msg.data[0]) = cmd_ELV;
     aim_pub.publish(cmd_msg);

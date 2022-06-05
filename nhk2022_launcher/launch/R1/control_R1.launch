@@ -10,6 +10,7 @@
     <include file="$(find nhk2022_launcher)/launch/R1/bringup/bringup_R1.launch">
         <arg name="control_frequency" value="$(arg control_frequency)" />
     </include>
+
     <include file="$(find auto_aim)/launch/BoH.launch">
         <arg name="loopRate" value="$(arg loopRate)" />
         <arg name="maxRange" value="$(arg maxRange)" />
@@ -26,12 +27,12 @@
     <!-- task_selector -->
     <node pkg="nhk2022_launcher" type="task_selector_R1.py" name="task_selector_R1" output="screen"/>
 
-    <node pkg="nhk2022_launcher" type="accessories_joy_controler_R1.py" name="accessories_joy_controler_R1" output="screen" />
+    <!-- <node pkg="nhk2022_launcher" type="accessories_joy_controler_R1.py" name="accessories_joy_controler_R1" output="screen" /> -->
 
 
     <node pkg="nhk2022_launcher" type="hardware_init_R1.py" name="hardware_init_R1" output="screen" />
 
-    <node pkg="rogilink_converter" name="rogilink_converter" type="rogilink_converter" output="screen" />
+    <!-- <node pkg="rogilink_converter" name="rogilink_converter" type="rogilink_converter" output="screen" /> -->
 
     <!-- WebGUI -->
     <!-- <include file="$(find nhk2022_webgui)/launch/server.launch">

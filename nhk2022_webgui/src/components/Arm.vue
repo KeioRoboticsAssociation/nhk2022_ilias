@@ -5,43 +5,29 @@ import { createTopic } from "../script/rosHook";
 
 import Card from "./Card.vue";
 
-const elevatorTopic = createTopic<{
+const lagoriNumberTopic = createTopic<{
   data: number;
 }>({
-  name: "/auto_elev",
-  messageType: "std_msgs::Float32",
-});
-const grabTopic = createTopic<{
-  data: number;
-}>({
-  name: "/auto_grab",
-  messageType: "std_msgs::Float32",
+  name: "/lagori_number",
+  messageType: "std_msgs::UInt8",
 });
 
-const ragoriSize = ref<1 | 2 | 3 | 4 | 5>(5);
-const ragoriVH = ref<"vertical" | "horizontal">("vertical");
+const lagoriSize = ref<0 | 1 | 2 | 3 | 4 | 5>(5);
 
 const setArm = () => {
-  const grabTable = [20, 30, 40, 50, 60];
-  const elevatorVerticalTable = [2, 3, 4, 5, 6];
-  const elevatorHorizontal = 1;
-
-  grabTopic.publish({ data: grabTable[ragoriSize.value] });
-
-  const elevatorPosition =
-    ragoriVH.value === "horizontal"
-      ? elevatorHorizontal
-      : elevatorVerticalTable[ragoriSize.value];
-  elevatorTopic.publish({ data: elevatorPosition });
+  console.log("publish");
+  lagoriNumberTopic.publish({
+    data: lagoriSize.value,
+  });
 };
 </script>
 
 <template>
   <Card title="アーム選択">
     <div>
-      <div class="text-subtitle1">ラゴリサイズ: {{ ragoriSize }}</div>
+      <div class="text-subtitle1">ラゴリサイズ: {{ lagoriSize }}</div>
       <q-btn-toggle
-        v-model="ragoriSize"
+        v-model="lagoriSize"
         toggle-color="primary"
         :options="[
           { label: '1', value: 1 },
@@ -50,23 +36,20 @@ const setArm = () => {
           { label: '4', value: 4 },
           { label: '5', value: 5 },
         ]"
+        size="lg"
+        style="text-align: center"
+        @update:model-value="setArm"
       ></q-btn-toggle>
-    </div>
-
-    <div class="q-my-sm">
-      <div class="text-subtitle1">向き:</div>
-      <q-btn-toggle
-        v-model="ragoriVH"
-        toggle-color="primary"
-        :options="[
-          { label: '縦', value: 'vertical' },
-          { label: '横', value: 'horizontal' },
-        ]"
-      />
-    </div>
-
-    <div class="q-mt-lg">
-      <q-btn style="width: 100%" @click="setArm">send!</q-btn>
+      <q-btn
+        @click="
+          () => {
+            lagoriSize = 0;
+            setArm();
+          }
+        "
+      >
+        Reset
+      </q-btn>
     </div>
   </Card>
 </template>

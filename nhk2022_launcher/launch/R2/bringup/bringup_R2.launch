@@ -32,7 +32,7 @@
 
         <!-- hardware boot -->
         <include file="$(find nhk2022_launcher)/launch/R2/bringup/sensor_activate_R2.launch"/>
-        <node pkg="serial_ros" name="rogi_link" type="rogi_link_node" output="screen" respawn="true">
+        <node pkg="serial_ros" name="rogi_link" type="rogi_link_node" respawn="true">
             <!-- <param name="looprate" value="$(arg  control_frequency)"/> -->
             <param name="control_frequency" value="200"/>
             <param name="port" value="/dev/ttyUSB0"/>
@@ -68,7 +68,7 @@
             <param name="tf_pub" value="true"/>
         </node>
 
-        <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig) -f odom" required="true" />
+        <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig) -f odom" required="true" /> -->
     </group>
 
     <!-- Joy controller -->

@@ -1,14 +1,14 @@
 <launch>
     <!-- params -->
-    <arg name="mode" default="simulation"/>
+    <arg name="mode" default="real"/>
     <arg name="control_frequency" default="50" />
     <arg name="base_frame_id" default="base_link" />
     <arg name="use_ekf_localization" default="false"/>
     <arg name="localization_method" default="odom"/>
 
     <!-- important config of bezier_path_planning_pursuit -->
-    <arg name="acc_lim_xy" default="1.0" />
-    <arg name="max_vel_xy" default="2.0" />
+    <arg name="acc_lim_xy" default="1.5" />
+    <arg name="max_vel_xy" default="3.5" />
     <!--3.0-->
     <arg name="acc_lim_theta" default="3.14" />
     <arg name="max_vel_theta" default="3.14" />
@@ -78,7 +78,6 @@
     </group>
 
     <!-- task_selector -->
-    <node pkg="nhk2022_launcher" type="task_selector_R2.py" name="task_selector_R2" output="screen"/>
     <node pkg="nhk2022_launcher" type="accessories_joy_controler_R2.py" name="accessories_joy_controler_R2" output="screen" />
     <node pkg="nhk2022_launcher" type="hardware_init_R2.py" name="hardware_init_R2" output="screen" />
 

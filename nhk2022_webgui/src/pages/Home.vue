@@ -13,6 +13,9 @@
         <q-btn>
           <router-link to="/DebugR2">DebugR2</router-link>
         </q-btn>
+        <q-btn>
+          <router-link to="/LagoriSet">LagoriSet</router-link>
+        </q-btn>
       </div>
       <div class="col"></div>
     </div>

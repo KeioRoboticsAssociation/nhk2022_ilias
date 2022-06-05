@@ -9,7 +9,8 @@
         <param name="max_range" value="$(arg maxRange)"/>
         <param name="limit_angle" value="$(arg limitAngle)"/>
     </node>
-    <node name="auto_aimer" pkg="auto_aim" type="auto_aimer">
+
+    <node name="auto_aimer" pkg="auto_aim" type="auto_aimer" output = "screen">
         <param name="loop_rate" value="$(arg loopRate)" />
         <param name="lost_time_threshold" value="$(arg lost_time_threshold)" />
     </node>

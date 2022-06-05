@@ -3,7 +3,7 @@
     <arg name="use_laser_filter" default="false"/>
 
     <arg name="loopRate" default="30" />
-    <arg name="maxRange" default="8" />
+    <arg name="maxRange" default="3" />
     <arg name="limitAngle" default="0.523333" />
 
     <!-- bringup -->
@@ -11,11 +11,11 @@
         <arg name="control_frequency" value="$(arg control_frequency)" />
     </include>
 
-    <!-- <include file="$(find auto_aim)/launch/BoH.launch">
-        <arg name="loop_rate" value="$(arg loopRate)" />
-        <arg name="max_range" value="$(arg maxRange)" />
-        <arg name="limit_angle" value="$(arg limitAngle)" />
-    </include> -->
+    <include file="$(find auto_aim)/launch/BoH.launch">
+        <arg name="loopRate" value="$(arg loopRate)" />
+        <arg name="maxRange" value="$(arg maxRange)" />
+        <arg name="limitAngle" value="$(arg limitAngle)" />
+    </include>
 
     <!-- laser_filter -->
     <group if="$(arg use_laser_filter)">

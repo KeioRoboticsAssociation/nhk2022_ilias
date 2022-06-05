@@ -1,5 +1,6 @@
 #! /usr/bin/env python3
 
+from asyncio import current_task
 import rospy
 from enum import IntEnum
 from math import pi
@@ -11,7 +12,7 @@ from sensor_msgs.msg import Joy
 from rogi_link_msgs.msg import RogiLink
 from std_msgs.msg import Float32,UInt8MultiArray,UInt8
 # from std_msgs.msg import Bool
-# from std_msgs.msg import Float32MultiArray
+from std_msgs.msg import Float32MultiArray
 
 
 class HardId(IntEnum):
@@ -65,6 +66,8 @@ class Rosconnector():
             "pile_status", UInt8MultiArray, self.pile_status_callback)
         self.lagori_number_sub = rospy.Subscriber(
             "lagori_number", UInt8, self.lagori_number_callback)
+        self.current_pub = rospy.Publisher("current_command", Float32MultiArray, queue_size=1)
+        self.hardinit_flag_pub = rospy.Publisher("hard_init",Empty,queue_size=1)
 
     def send_rogilink(self, hardid, commandid, data_0, data_1):
         self.publish_command.id = int(hardid) << 6 | commandid
@@ -238,6 +241,12 @@ class Rosconnector():
 
         self.rogi_sender(pile_status[0],pile_status[1])
 
+        publish_buffer = Float32MultiArray
+
+        for p in pile_status:
+            publish_buffer.append(p)
+
+        self.current_pub.publish(publish_buffer)
 
 
     def rogi_sender(self, elevator_command, grab_command):
@@ -307,11 +316,13 @@ class Rosconnector():
                 rospy.logwarn("EMERGENCY STOP")
 
             if msg.buttons[9]:  # Options
-                rospy.loginfo("teleop_mode")
-                # self.client.cancel_goal()
-                teleop_mode = Bool()
-                teleop_mode.data = False
-                self.teleopflag_pub.publish(teleop_mode)
+                # rospy.loginfo("teleop_mode")
+                # # self.client.cancel_goal()
+                # teleop_mode = Bool()
+                # teleop_mode.data = False
+                # self.teleopflag_pub.publish(teleop_mode)
+                self.hardinit_flag_pub.publish()
+                rospy.logwarn("hard init")
 
             if msg.buttons[10]:#PS
                 # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
@@ -328,7 +339,7 @@ class Rosconnector():
                 rospy.loginfo("coordinate angle pi/4")
 
         if msg.axes[7]:
-            if(self.elevator_position > 0):
+            if(self.elevator_position >= 0):
                 self.elevator_position = self.elevator_position + msg.axes[7] / 50
             else:
                 self.elevator_position = 0
@@ -337,7 +348,7 @@ class Rosconnector():
             rospy.loginfo("move elevator %f",self.elevator_position)
 
         if msg.axes[6]:
-            if(self.grab_position < 0):
+            if(self.grab_position <= 0):
                 self.grab_position = self.grab_position - msg.axes[6] / 50
             else:
                 self.grab_position = 0
@@ -345,6 +356,7 @@ class Rosconnector():
             self.send_rogilink(HardId.LAGORI_G_MOTOR.value,0x03, self.grab_position, 0)
             rospy.loginfo("move gripper %f",self.grab_position)
 
+        rospy
 
 
 

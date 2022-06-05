@@ -25,6 +25,7 @@ Auto_Aimer::Auto_Aimer(ros::NodeHandle &_nh, int &_loop_rate, int &_lost_time_th
 
     // init publisher
     aim_pub = nh.advertise<rogi_link_msgs::RogiLink>("send_serial", 100);
+    cmd_pub = nh.advertise<std_msgs::Float32MultiArray>("current_cmd", 100);
 
     // init subscriber
     sub_emergence = nh.subscribe("/emergency_stop_flag", 1, &Auto_Aimer::emergence_callback, this);
@@ -84,6 +85,8 @@ void Auto_Aimer::joy_callback(const sensor_msgs::Joy::ConstPtr &msg)
 void Auto_Aimer::publishMsg()
 {
     rogi_link_msgs::RogiLink cmd_msg;
+    std_msgs::Float32MultiArray crt_cmd;
+
     cmd_msg.id = ELV_MT << 6 | 0x03;
     *(float *)(&cmd_msg.data[0]) = cmd_ELV;
     aim_pub.publish(cmd_msg);
@@ -91,6 +94,10 @@ void Auto_Aimer::publishMsg()
     cmd_msg.id = TRN_MT << 6 | 0x03;
     *(float *)(&cmd_msg.data[0]) = cmd_TRN*GEAR_PROPORTION;
     aim_pub.publish(cmd_msg);
+
+    crt_cmd.data[0] = cmd_TRN;
+    crt_cmd.data[1] = cmd_ELV;
+    cmd_pub.publish(crt_cmd);
 }
 void Auto_Aimer::autoAimer()
 {

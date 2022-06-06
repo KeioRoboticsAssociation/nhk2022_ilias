@@ -70,7 +70,7 @@ const bohSend = (value: number | null) => {
 <template>
   <q-page padding class="items-stretch row">
     <div class="col q-pa-sm">
-      <p class="text-subtitle1">BoH位置(未実装)</p>
+      <p class="text-subtitle1">BoH位置</p>
       <div class="row justify-center">
         <q-slider
           v-model="bohPosition"
@@ -108,7 +108,7 @@ const bohSend = (value: number | null) => {
         </q-item>
       </q-list>
 
-      <section class="row justify-end q-ma-sm">
+      <section class="row justify-end q-mt-sm">
         <q-btn color="primary" class="on-right" @click="send">
           ラゴリ状態セット
         </q-btn>

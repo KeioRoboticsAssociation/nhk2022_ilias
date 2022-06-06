@@ -19,7 +19,7 @@ const sendEmergency = () => {
 </script>
 
 <template>
-  <q-layout view="hHh lpR fFf" class="fullscreen">
+  <q-layout view="hHh lpR fFf" style="width: 100%">
     <q-header elevated class="bg-primary text-white">
       <q-toolbar>
         <q-toolbar-title>

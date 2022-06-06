@@ -49,7 +49,21 @@ const send = () => {
 const bohPosition = ref<number>(0);
 
 const bohSend = (value: number | null) => {
-  // console.log(value);
+  if (value == null) return;
+  const bohTopic = createTopic<{
+    id: number;
+    data: number[];
+  }>({
+    name: "/send_serial",
+    messageType: "rogi_link_msgs/RogiLink",
+  });
+  const buffer = Array.from(
+    new Uint8Array(new Float32Array([value, 0]).buffer)
+  );
+  bohTopic.publish({
+    id: 0x0c,
+    data: buffer,
+  });
 };
 </script>
 
@@ -94,7 +108,7 @@ const bohSend = (value: number | null) => {
         </q-item>
       </q-list>
 
-      <section class="row justify-end q-ma-sm fixed-bottom">
+      <section class="row justify-end q-ma-sm">
         <q-btn color="primary" class="on-right" @click="send">
           ラゴリ状態セット
         </q-btn>

@@ -73,6 +73,7 @@ void Auto_Aimer::target_callback(const std_msgs::Float32MultiArray &msg)
     target_distance = sqrt(target_x * target_x + target_y * target_y);
     target_theta = atan(target_y / target_x);
 
+    ROS_INFO("dist:%f,theta:%f",target_distance,target_theta);
     last_sub_vel_time = std::chrono::system_clock::now();
 }
 

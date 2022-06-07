@@ -3,10 +3,15 @@ import { ref } from "vue";
 import { createTopic } from "../script/rosHook";
 
 const lagoriSetTopic = createTopic<{
+  layout: {
+    dim: [];
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    data_offset: 0;
+  };
   data: number[];
 }>({
   name: "/pile_status",
-  messageType: "std_msgs::UInt8MultiArray",
+  messageType: "std_msgs/UInt8MultiArray",
 });
 
 type LagoriPostureType = "Vertical" | "Angled" | "Horizontal";
@@ -32,13 +37,53 @@ const send = () => {
   const laroriPostureNums = lagoriPostures.value.map((e) => postures[e]);
 
   lagoriSetTopic.publish({
+    layout: {
+      dim: [],
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      data_offset: 0,
+    },
     data: laroriPostureNums,
+  });
+};
+
+const bohPosition = ref<number>(0);
+
+const bohSend = (value: number | null) => {
+  if (value == null) return;
+  const bohTopic = createTopic<{
+    id: number;
+    data: number[];
+  }>({
+    name: "/send_serial",
+    messageType: "rogi_link_msgs/RogiLink",
+  });
+  const buffer = Array.from(
+    new Uint8Array(new Float32Array([value, 0]).buffer)
+  );
+  bohTopic.publish({
+    id: 0x0c,
+    data: buffer,
   });
 };
 </script>
 
 <template>
   <q-page padding class="items-stretch row">
+    <div class="col q-pa-sm">
+      <p class="text-subtitle1">BoH位置</p>
+      <div class="row justify-center">
+        <q-slider
+          v-model="bohPosition"
+          :min="0"
+          :max="10"
+          :step="0.05"
+          vertical
+          reverse
+          label-always
+          @update:model-value="bohSend"
+        />
+      </div>
+    </div>
     <div class="col-8">
       <q-list separator>
         <q-item
@@ -63,10 +108,11 @@ const send = () => {
         </q-item>
       </q-list>
 
-      <q-btn color="primary" @click="send">ラゴリ状態セット</q-btn>
-    </div>
-    <div class="col">
-      <q-space />
+      <section class="row justify-end q-mt-sm">
+        <q-btn color="primary" class="on-right" @click="send">
+          ラゴリ状態セット
+        </q-btn>
+      </section>
     </div>
   </q-page>
 </template>

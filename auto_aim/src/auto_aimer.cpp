@@ -105,7 +105,7 @@ void Auto_Aimer::publishMsg()
 }
 void Auto_Aimer::autoAimer()
 {
-    cmd_ELV = -0.4475 * pow(target_distance, 6) + 5.2814 * pow(target_distance, 5) - 24.424 * pow(target_distance, 4) + 56.043 * pow(target_distance, 3) - 67.331 * pow(target_distance, 2) + 44.159 * target_distance - 10.077;
+    cmd_ELV = -0.4475 * pow(target_distance, 6) + 5.2814 * pow(target_distance, 5) - 24.424 * pow(target_distance, 4) + 56.043 * pow(target_distance, 3) - 67.331 * pow(target_distance, 2) + 44.159 * target_distance - 10.077+offset;
     cmd_TRN = target_theta / 6.28318530718 - misalignment;
     if (cmd_ELV < 0)
         cmd_ELV = 0;

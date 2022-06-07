@@ -18,6 +18,7 @@ const char TRN_MT = 0x10;
 const float GEAR_PROPORTION = 10;
 const float ELV_GAIN = 0;
 const float misalignment = -0.08333;
+const float offset = 0.18;
 float MAX_ELV = 20; //仰角最大値
 float MAX_TRN = 0.222222222222222; //振り角最大値
 

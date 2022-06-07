@@ -77,6 +77,7 @@ class Rosconnector():
         # self.send_rogilink(HardId.ELEVATION_ANGLE,0x02,0)
         # self.send_rogilink(HardId.TURN_ANGLE,0x02,0)
         # self.send_rogilink(HardId.BALL_E_MOTOR,0x02,0)
+        self.send_rogilink_b(HardId.X_FEINT.value,0x02,0)
 
         rospy.loginfo("hardware initialization for R2 is complete")
 
@@ -107,6 +108,14 @@ class Rosconnector():
                 rospy.sleep(0.1)
                 self.send_rogilink_b(HardId.LAGORI_G_MOTOR.value,0x02,0)
                 self.send_rogilink(HardId.LAGORI_G_MOTOR.value,0x09,self.current_command_position[1],0)
+
+            elif msg.data[1] == 4:
+                rospy.logerr("lagori hand high pushed")
+                self.send_rogilink_b(HardId.X_FEINT.value,0x01,0)
+                rospy.sleep(0.1)
+                self.send_rogilink_b(HardId.X_FEINT.value,0x02,0)
+                self.send_rogilink(HardId.X_FEINT.value,0x09,0,0)
+
             else:
                 rospy.logerr("unknown limit switch pushed")
         else:
@@ -131,9 +140,10 @@ class Rosconnector():
             self.send_rogilink_b(HardId.LAGORI_G_MOTOR.value,0x02,3)
             self.send_rogilink(HardId.LAGORI_G_MOTOR.value,0x06,0.3,0)
 
-
-        # self.send_rogilink_b(HardId.X_FEINT.value,0x02,3)
-        # self.send_rogilink(HardId.X_FEINT.value,0x06,0.1,0)
+        if self.limit_switch_array[4]==1:
+            self.send_rogilink_b(HardId.X_FEINT.value,0x01,0)
+            self.send_rogilink_b(HardId.X_FEINT.value,0x02,3)
+            self.send_rogilink(HardId.X_FEINT.value,0x06,0.1,0)
 
 
 

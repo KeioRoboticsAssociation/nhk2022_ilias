@@ -13,12 +13,11 @@
     <node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args=" 0 0 0 0 0 0 map base_link 10" />
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
 
-    <include file="$(find nhk2022_launcher)/launch/R1/bringup/sensor_activate_R1.launch"/>
+    <!-- <include file="$(find nhk2022_launcher)/launch/R1/bringup/sensor_activate_R1.launch"/> -->
 
     <!-- serial nodes -->
 
     <node pkg="serial_ros" name="rogi_link" type="rogi_link_node"  respawn="true">
-        <!-- <param name="looprate" value="$(arg  control_frequency)"/> -->
         <param name="control_frequency" value="200"/>
         <param name="port" value="/dev/ttyUSB0"/>
     </node>

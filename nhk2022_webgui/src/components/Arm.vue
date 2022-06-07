@@ -36,10 +36,12 @@ const setArm = () => {
           { label: '4', value: 4 },
           { label: '5', value: 5 },
         ]"
-        size="lg"
+        size="xl"
+        spread
         style="text-align: center"
         @update:model-value="setArm"
       ></q-btn-toggle>
+      <q-space class="q-my-md" />
       <q-btn
         @click="
           () => {

@@ -10,14 +10,14 @@
     </node>
 
     <!-- camera -->
-    <node name="head_camera" pkg="usb_cam" type="usb_cam_node">
+    <!-- <node name="head_camera" pkg="usb_cam" type="usb_cam_node">
         <param name="video_device" value="/dev/video3"/>
         <param name="pixel_format" value="yuyv" />
         <param name="image_width" value="640" />
         <param name="image_height" value="480" />
-    </node>
+    </node> -->
 
-    <node pkg="web_video_server" type="web_video_server" name="web_video_server" />
+    <!-- <node pkg="web_video_server" type="web_video_server" name="web_video_server" /> -->
 
 
     <!--LiDAR-->
@@ -30,44 +30,40 @@
     <param name="angle_compensate" type="bool" value="true"/> -->
 
     <!-- sick -->
-    <group ns="lidar1">
+    <!-- <group ns="lidar1">
         <include file="$(find sick_scan)/launch/sick_tim_5xx.launch">
             <arg name="frame_id" value="laser1" />
             <arg name="hostname" value="192.168.0.80"/>
         </include>
 
         <node pkg="invert_laser" type="invert_laser_node" name="invert_laser_1">
-            <!-- <param name="out_frame" value="laser1"/> -->
             <remap from="/scan" to="/lidar1/scan"/>
             <remap  from="/scan_inv" to="/laser1_inv"/>
         </node>
-    </group>
+    </group> -->
 
-    <group ns="lidar2">
+    <!-- <group ns="lidar2">
         <include file="$(find sick_scan)/launch/sick_tim_5xx.launch">
             <arg name="frame_id" value="laser2" />
             <arg name="hostname" value="192.168.0.81"/>
         </include>
 
         <node pkg="invert_laser" type="invert_laser_node" name="invert_laser_2">
-            <!-- <param name="out_frame" value="laser2"/> -->
             <remap from="/scan" to="/lidar2/scan"/>
             <remap  from="/scan_inv" to="/laser2_inv"/>
         </node>
-    </group>
+    </group> -->
 
-    <node pkg="ira_laser_tools" name="laserscan_multi_merger" type="laserscan_multi_merger" >
+    <!-- <node pkg="ira_laser_tools" name="laserscan_multi_merger" type="laserscan_multi_merger" >
         <param name="merged_scan_frame" value="base_link"/>
         <param name="merged_pcd_topic_name" value="/merged_cloud"/>
         <param name="merged_scan_topic_name" value="/merged_scan"/>
-        <param name="scan0_topic_name" value ="/laser1_inv " /><!-- LIST OF THE LASER SCAN TOPICS TO SUBSCRIBE -->
-        <param name="scan1_topic_name" value ="/laser2_inv " /><!-- LIST OF THE LASER SCAN TOPICS TO SUBSCRIBE -->
+        <param name="scan0_topic_name" value ="/laser1_inv " />
+        <param name="scan1_topic_name" value ="/laser2_inv " />
         <param name="merged_angle_min" value="-3.14"/>
         <param name="merged_angle_max" value="3.14"/>
         <param name="merged_angle_increment" value="0.01745329238474369"/>
         <param name="merged_scan_time" value="0.06666667014360428"/>
-        <!-- <param name="range_min" value="0.30"/> -->
-        <!-- <param name="range_max" value="50.0"/> -->
-    </node>
+    </node> -->
 
 </launch>

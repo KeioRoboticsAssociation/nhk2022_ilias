@@ -60,8 +60,10 @@ const bohSend = (value: number | null) => {
   const buffer = Array.from(
     new Uint8Array(new Float32Array([value, 0]).buffer)
   );
+  // eslint-disable-next-line no-bitwise
+  const canId = (0x0c << 6) | 0x03;
   bohTopic.publish({
-    id: 0x0c,
+    id: canId,
     data: buffer,
   });
 };

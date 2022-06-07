@@ -124,7 +124,7 @@ class Rosconnector():
             self.send_rogilink_b(HardId.ELEVATION_ANGLE.value,0x01,0)
             rospy.sleep(0.1)
             self.send_rogilink_b(HardId.ELEVATION_ANGLE.value,0x02,3)
-            self.send_rogilink(HardId.ELEVATION_ANGLE.value,0x06,-0.3,0)
+            self.send_rogilink(HardId.ELEVATION_ANGLE.value,0x06,-0.5,0)
             rospy.logwarn("hard init command")
 
         if self.limit_switch_array[2]==1:

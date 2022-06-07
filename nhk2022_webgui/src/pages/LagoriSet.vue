@@ -74,8 +74,8 @@ const bohSend = (value: number | null) => {
       <div class="row justify-center">
         <q-slider
           v-model="bohPosition"
-          :min="0"
-          :max="10"
+          :min="-6.85"
+          :max="0"
           :step="0.05"
           vertical
           reverse

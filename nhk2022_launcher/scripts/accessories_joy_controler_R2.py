@@ -56,6 +56,7 @@ class Rosconnector():
     pile_send = [0]*2 #0:hight 1:grab
 
     def __init__(self):
+        self.current_pub = rospy.Publisher("current_command", Float32MultiArray, queue_size=1)
         self.joy_sub = rospy.Subscriber("joy", Joy, self.Joycallback)
         self.serial_pub = rospy.Publisher(
             "send_serial", RogiLink, queue_size=1)
@@ -67,7 +68,6 @@ class Rosconnector():
             "pile_status", UInt8MultiArray, self.pile_status_callback)
         self.lagori_number_sub = rospy.Subscriber(
             "lagori_number", UInt8, self.lagori_number_callback)
-        self.current_pub = rospy.Publisher("current_command", Float32MultiArray, queue_size=1)
         self.hardinit_flag_pub = rospy.Publisher("hard_init",Empty,queue_size=1)
 
     def send_rogilink(self, hardid, commandid, data_0, data_1):

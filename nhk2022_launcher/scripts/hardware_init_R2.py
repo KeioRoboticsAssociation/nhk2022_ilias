@@ -125,7 +125,7 @@ class Rosconnector():
     def hardinit_callback(self, msg):
 
         rospy.logwarn("hard init command")
-        # rospy.loginfo("%d,%d,%d,%d,%d,%d,%d,%d",self.limit_switch_array[0],self.limit_switch_array[1],self.limit_switch_array[2],self.limit_switch_array[3],self.limit_switch_array[4],self.limit_switch_array[5],self.limit_switch_array[6],self.limit_switch_array[7])
+        rospy.loginfo("%d,%d,%d,%d,%d,%d,%d,%d",self.limit_switch_array[0],self.limit_switch_array[1],self.limit_switch_array[2],self.limit_switch_array[3],self.limit_switch_array[4],self.limit_switch_array[5],self.limit_switch_array[6],self.limit_switch_array[7])
 
         if self.limit_switch_array[0]==1 and self.limit_switch_array[1]==1:
             rospy.logwarn("elevation")
@@ -142,6 +142,7 @@ class Rosconnector():
 
         if self.limit_switch_array[4]==1:
             self.send_rogilink_b(HardId.X_FEINT.value,0x01,0)
+            rospy.sleep(0.1)
             self.send_rogilink_b(HardId.X_FEINT.value,0x02,3)
             self.send_rogilink(HardId.X_FEINT.value,0x06,0.1,0)
 

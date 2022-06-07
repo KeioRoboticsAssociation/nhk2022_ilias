@@ -63,8 +63,10 @@ class Rosconnector():
             "send_serial", RogiLink, queue_size=100)
         self.emergency_stop_pub = rospy.Publisher(
             '/emergency_stop_flag', Empty, queue_size=1)
-        self.teleop_flag_pub = rospy.Publisher("teleop_flag",Bool,queue_size=1)
-        self.hardinit_flag_pub = rospy.Publisher("hard_init",Empty,queue_size=1)
+        self.teleop_flag_pub = rospy.Publisher(
+            "teleop_flag", Bool, queue_size=1)
+        self.hardinit_flag_pub = rospy.Publisher(
+            "hard_init", Empty, queue_size=1)
 
     def send_rogilink(self, hardid, commandid, data_0, data_1):
         self.publish_command.id = int(hardid) << 6 | commandid
@@ -78,7 +80,7 @@ class Rosconnector():
         if msg.buttons != self.prev_msg.buttons:
             self.prev_msg = msg  # saving prev message
 
-            if msg.buttons[0]:  # X
+            if msg.buttons[3]:  # X
                 self.send_rogilink(HardId.SHOT_SERVO.value, 0x04, 0, 0)
                 rospy.loginfo("reload")
 
@@ -91,7 +93,7 @@ class Rosconnector():
                 # self.controler_id=3
                 rospy.loginfo("lagori catcher changed")
 
-            if msg.buttons[3]:  # <>
+            if msg.buttons[0]:  # <>
                 self.send_rogilink(HardId.SHOT_SERVO.value, 0x08, 0, 0)
                 rospy.loginfo("shoot")
 
@@ -107,7 +109,7 @@ class Rosconnector():
 
                 rospy.loginfo("move ball elevator")
 
-            if msg.buttons[6]: # L2
+            if msg.buttons[6]:  # L2
                 rospy.loginfo("lagori catcher changed")
 
             if msg.buttons[7]:  # R2
@@ -125,18 +127,16 @@ class Rosconnector():
                 self.hardinit_flag_pub.publish()
                 rospy.logwarn("HARDINIT")
 
-
-            if msg.buttons[10]:#Leftpush
+            if msg.buttons[10]:  # Leftpush
                 # self.teleop_flag = not self.teleop_flag
                 # self.teleop_flag_pub.publish(self.teleop_flag)
                 # rospy.loginfo("teleop flag %s",self.teleop_flag)
                 rospy.loginfo("lagori catcher changed")
 
-            if msg.buttons[12]:#Rightpush
+            if msg.buttons[12]:  # Rightpush
                 self.teleop_flag = not self.teleop_flag
                 self.teleop_flag_pub.publish(self.teleop_flag)
-                rospy.logwarn("teleop_flag changed %s",self.teleop_flag)
-
+                rospy.logwarn("teleop_flag changed %s", self.teleop_flag)
 
     def msg_gen(self, msg):
         # if msg.axes[5]:
@@ -203,8 +203,10 @@ class Rosconnector():
             if self.command_roller_speed < -self.max_roller_speed:
                 self.command_roller_speed = -self.max_roller_speed
         self.old_roller_speed = self.command_roller_speed
-        self.send_rogilink(HardId.R_BALL.value, 0x06,-self.command_roller_speed, 0)
-        self.send_rogilink(HardId.L_BALL.value, 0x06,--self.command_roller_speed, 0)
+        self.send_rogilink(HardId.R_BALL.value, 0x06, -
+                           self.command_roller_speed, 0)
+        self.send_rogilink(HardId.L_BALL.value, 0x06, --
+                           self.command_roller_speed, 0)
         rospy.loginfo("%f", self.command_roller_speed)
 
 

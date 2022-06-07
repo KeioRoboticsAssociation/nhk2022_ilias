@@ -47,7 +47,7 @@ class Rosconnector():
         self.serial_pub = rospy.Publisher("send_serial", RogiLink, queue_size=100)
         self.init_sub = rospy.Subscriber("hard_init", Empty, self.hardinit_callback)
         self.limit_pub = rospy.Subscriber("rcv_serial_11", Float32MultiArray, self.limit_switch_callback)
-        self.current_sub = rospy.Subscriber("current_command", Float32MultiArray, self.current_sub_callback)
+        self.current_sub = rospy.Subscriber("current_cmd", Float32MultiArray, self.current_sub_callback)
         # self.connection_sub = rospy.Subscriber("connection_status", Bool ,self.connection_sub_callback)
         # self.emergency_stop_pub = rospy.Publisher('/emergency_stop_flag', Empty, queue_size=1)
 
@@ -57,6 +57,7 @@ class Rosconnector():
     def current_sub_callback(self,msg):
         for i in range(2):
             self.current_command_position[i] = msg.data[i]
+        # rospy.logwarn("wei%f,%f",msg.data[0],msg.data[1])
 
     def send_rogilink(self, hardid, commandid, data_0, data_1):
         self.publish_command.id = int(hardid) << 6 | commandid
@@ -95,14 +96,13 @@ class Rosconnector():
                 self.send_rogilink_b(HardId.TURN_ANGLE.value,0x01,0)
                 rospy.sleep(0.1)
                 self.send_rogilink_b(HardId.TURN_ANGLE.value,0x02,0)
-                self.send_rogilink(HardId.TURN_ANGLE.value,0x09,self.current_command_position[0],0)
+                self.send_rogilink(HardId.TURN_ANGLE.value,0x09,0,0)
                 rospy.logerr("angle limit")
             elif msg.data[1] == 3:
                 self.send_rogilink_b(HardId.TURN_ANGLE.value,0x01,0)
                 rospy.sleep(0.1)
                 self.send_rogilink_b(HardId.TURN_ANGLE.value,0x02,0)
-                # self.send_rogilink(HardId.TURN_ANGLE.value,0x09,0,0)
-                rospy.logerr("angle limit")
+                self.send_rogilink(HardId.TURN_ANGLE.value,0x09,self.current_command_position[0],0)
             elif msg.data[1] == 4:
                 self.send_rogilink_b(HardId.BALL_E_MOTOR.value,0x01,0)
                 rospy.sleep(0.1)
@@ -125,13 +125,15 @@ class Rosconnector():
             rospy.sleep(0.1)
             self.send_rogilink_b(HardId.ELEVATION_ANGLE.value,0x02,3)
             self.send_rogilink(HardId.ELEVATION_ANGLE.value,0x06,-0.3,0)
+            rospy.logwarn("hard init command")
 
-        if self.limit_switch_array[2]==1 and self.limit_switch_array[3]==1:
+        if self.limit_switch_array[2]==1:
             rospy.logwarn("turn")
             self.send_rogilink_b(HardId.TURN_ANGLE.value,0x01,0)
             rospy.sleep(0.1)
             self.send_rogilink_b(HardId.TURN_ANGLE.value,0x02,3)
             self.send_rogilink(HardId.TURN_ANGLE.value,0x06,-0.1,0)
+            rospy.logwarn("hard init command")
 
         if self.limit_switch_array[4]==1:
             rospy.logwarn("ball elevator")
@@ -139,6 +141,7 @@ class Rosconnector():
             rospy.sleep(0.1)
             self.send_rogilink_b(HardId.BALL_E_MOTOR.value,0x02,3)
             self.send_rogilink(HardId.BALL_E_MOTOR.value,0x06,0.3,0)
+            rospy.logwarn("hard init command")
 
 
 if __name__ == '__main__':

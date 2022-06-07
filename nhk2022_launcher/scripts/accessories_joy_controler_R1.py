@@ -49,7 +49,7 @@ class Rosconnector():
     old_roller_speed: float = 0
     controller_roller_speed: float = 0
     command_roller_speed: float = 0
-    max_roller_speed: float = 0.4
+    max_roller_speed: float = 0.375
     acc_lim = max_roller_speed / 3
     joy_msg = Joy()
     joy_msg.axes = {0}
@@ -137,11 +137,10 @@ class Rosconnector():
                 # self.controler_id=3
                 # rospy.loginfo("lagori catcher changed")
 
-            # if msg.buttons[11]:#Rightpush
-            #     # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
-            #     # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
-            #     # self.controler_id=3
-                # rospy.loginfo("lagori catcher changed")
+            if msg.buttons[11]:#Rightpush
+                self.teleop_flag = not self.teleop_flag
+                self.teleop_flag_pub.publish(self.teleop_flag)
+                rospy.logwarn("teleop_flag changed %s",self.teleop_flag)
 
 
     def msg_gen(self, msg):

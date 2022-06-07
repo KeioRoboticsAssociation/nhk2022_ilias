@@ -4,7 +4,7 @@
 
     <arg name="loopRate" default="30" />
     <arg name="maxRange" default="3" />
-    <arg name="limitAngle" default="0.523333" />
+    <arg name="limitAngle" default="0.7" />
 
     <!-- bringup -->
     <include file="$(find nhk2022_launcher)/launch/R1/bringup/bringup_R1.launch">

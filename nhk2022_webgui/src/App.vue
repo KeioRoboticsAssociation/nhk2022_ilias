@@ -74,6 +74,6 @@ const sendEmergency = () => {
   font-size: 12px;
 }
 * {
-  touch-action: manipulation;
+  touch-action: pan-y;
 }
 </style>

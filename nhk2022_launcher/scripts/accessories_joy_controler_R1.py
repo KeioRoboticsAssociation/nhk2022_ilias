@@ -129,9 +129,9 @@ class Rosconnector():
                 self.hardinit_flag_pub.publish()
                 rospy.logwarn("HARDINIT")
 
-            # if msg.buttons[10]:#PS
-                # self.seeker_mode_pub.publish(True)
-                # rospy.loginfo("seeker_mode")
+            if msg.buttons[10]:  # PS
+                self.seeker_mode_pub.publish(True)
+                rospy.loginfo("seeker_mode")
 
             # if msg.buttons[11]:  # Leftpush
                 # self.teleop_flag = not self.teleop_flag
@@ -139,8 +139,7 @@ class Rosconnector():
                 # rospy.loginfo("teleop flag %s",self.teleop_flag)
                 # rospy.loginfo("lagori catcher changed")
 
-
-            if msg.buttons[10]:  # Rightpush
+            if msg.buttons[12]:  # Rightpush
                 self.teleop_flag = not self.teleop_flag
                 self.teleop_flag_pub.publish(self.teleop_flag)
                 rospy.logwarn("teleop_flag changed %s", self.teleop_flag)

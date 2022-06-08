@@ -16,8 +16,8 @@
 
 const char ELV_MT = 0x0F;
 const char TRN_MT = 0x10;
-const int ELV_btn = 5;
-const int TRN_btn = 4;
+const int ELV_btn = 7;
+const int TRN_btn = 6;
 
 const float GEAR_PROPORTION = 10;
 const float ELV_GAIN = 0;
@@ -75,7 +75,7 @@ class Auto_Aimer {
   bool emergency_stop_flag;  //緊急停止
   bool connection_flag;      //接続
   bool teleop_flag;          // trueで手動
-  bool mode_flag;           // true:seeker_mode, false:hitter_mode
+  bool mode_flag;            // true:seeker_mode, false:hitter_mode
 
   // methods
   // initializers

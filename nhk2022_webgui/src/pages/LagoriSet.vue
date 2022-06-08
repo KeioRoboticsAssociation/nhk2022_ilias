@@ -73,12 +73,14 @@ const bohSend = (value: number | null) => {
   <q-page padding class="items-stretch row">
     <div class="col q-pa-sm">
       <p class="text-subtitle1">BoH位置</p>
-      <div class="row justify-center">
+      <div class="row justify-center" style="min-height: 50%">
         <q-slider
           v-model="bohPosition"
           :min="-6.85"
           :max="0"
           :step="0.05"
+          thumb-size="70px"
+          track-size="20px"
           vertical
           reverse
           label-always
@@ -119,4 +121,8 @@ const bohSend = (value: number | null) => {
   </q-page>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss">
+.q-slider--v {
+  height: 300px !important;
+}
+</style>

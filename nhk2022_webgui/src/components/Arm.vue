@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
-import { createTopic } from "../script/rosHook";
+import { createTopic, useSubscriber } from "../script/rosHook";
 
 import Card from "./Card.vue";
 
@@ -20,6 +20,15 @@ const setArm = () => {
     data: lagoriSize.value,
   });
 };
+
+const lagoriServoTopic = createTopic<{
+  data: number;
+}>({
+  name: "/lagori_servo",
+  messageType: "std_msgs/Float32",
+});
+const lagoriServoMode = useSubscriber(lagoriServoTopic);
+const lagoriServoAngle = computed(() => Number(lagoriServoMode.value?.data));
 </script>
 
 <template>
@@ -52,6 +61,9 @@ const setArm = () => {
       >
         Reset
       </q-btn>
+    </div>
+    <div>
+      <p class="text-subtitle1">サーボ角:{{ lagoriServoAngle }}</p>
     </div>
   </Card>
 </template>

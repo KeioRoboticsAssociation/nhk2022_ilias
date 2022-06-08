@@ -13,14 +13,18 @@ createApp(App).use(Quasar, quasarUserOptions).use(router).mount("#app");
 document.body.addEventListener(
   "touchstart",
   (e: TouchEvent) => {
-    e.preventDefault();
+    if (e.touches && e.touches.length > 1) {
+      e.preventDefault();
+    }
   },
   { passive: false }
 );
 document.body.addEventListener(
   "touchmove",
   (e: TouchEvent) => {
-    e.preventDefault();
+    if (e.touches && e.touches.length > 1) {
+      e.preventDefault();
+    }
   },
   { passive: false }
 );

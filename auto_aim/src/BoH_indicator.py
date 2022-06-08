@@ -12,7 +12,7 @@ class BohIndicator:
         rospy.logwarn([loop_rate, max_range, limit_angle])
         rospy.logwarn("enter init")
         rospy.init_node("BoH_Indicator")
-        self.Boh_pub = rospy.Publisher("Boh_location", Float32MultiArray, queue_size=100)
+        self.Boh_pub = rospy.Publisher("/BoH_location", Float32MultiArray, queue_size=100)
         rospy.Subscriber("/scan",LaserScan,self.LiDARCallback,queue_size=100)
         # rospy.logwarn("nya")
 

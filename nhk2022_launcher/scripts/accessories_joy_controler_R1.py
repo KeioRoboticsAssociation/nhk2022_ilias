@@ -49,7 +49,7 @@ class Rosconnector():
     old_roller_speed: float = 0
     controller_roller_speed: float = 0
     command_roller_speed: float = 0
-    max_roller_speed: float = 0.4
+    max_roller_speed: float = 0.375
     acc_lim = max_roller_speed / 3
     joy_msg = Joy()
     joy_msg.axes = {0}
@@ -63,8 +63,10 @@ class Rosconnector():
             "send_serial", RogiLink, queue_size=100)
         self.emergency_stop_pub = rospy.Publisher(
             '/emergency_stop_flag', Empty, queue_size=1)
-        self.teleop_flag_pub = rospy.Publisher("teleop_flag",Bool,queue_size=1)
-        self.hardinit_flag_pub = rospy.Publisher("hard_init",Empty,queue_size=1)
+        self.teleop_flag_pub = rospy.Publisher(
+            "teleop_flag", Bool, queue_size=1)
+        self.hardinit_flag_pub = rospy.Publisher(
+            "hard_init", Empty, queue_size=1)
 
     def send_rogilink(self, hardid, commandid, data_0, data_1):
         self.publish_command.id = int(hardid) << 6 | commandid
@@ -78,25 +80,22 @@ class Rosconnector():
         if msg.buttons != self.prev_msg.buttons:
             self.prev_msg = msg  # saving prev message
 
-            if msg.buttons[0]:  # X
+            if msg.buttons[3]:  # X
                 self.send_rogilink(HardId.SHOT_SERVO.value, 0x04, 0, 0)
                 rospy.loginfo("reload")
 
-            if msg.buttons[1]:  # A
+            if msg.buttons[1]:  # 0
+                rospy.loginfo("lagori catcher changed")
+
+            if msg.buttons[2]:  # <|
+                # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
+                # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
+                # self.controler_id=3
+                rospy.loginfo("lagori catcher changed")
+
+            if msg.buttons[0]:  # <>
                 self.send_rogilink(HardId.SHOT_SERVO.value, 0x08, 0, 0)
                 rospy.loginfo("shoot")
-
-            if msg.buttons[2]:  # B
-                # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
-                # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
-                # self.controler_id=3
-                rospy.loginfo("lagori catcher changed")
-
-            if msg.buttons[3]:  # Y
-                # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
-                # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
-                # self.controler_id=3
-                rospy.loginfo("lagori catcher changed")
 
             if msg.buttons[4]:  # l1
                 # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
@@ -110,17 +109,15 @@ class Rosconnector():
 
                 rospy.loginfo("move ball elevator")
 
-            if msg.buttons[6]: # L2
-                self.teleop_flag = not self.teleop_flag
-                self.teleop_flag_pub.publish(self.teleop_flag)
-                rospy.loginfo("teleop flag %s",self.teleop_flag)
+            if msg.buttons[6]:  # L2
+                rospy.loginfo("lagori catcher changed")
 
             if msg.buttons[7]:  # R2
                 self.send_rogilink(HardId.BALL_E_MOTOR.value, 0x03, 0, 0)
 
                 rospy.loginfo("move ball elevator")
 
-            if msg.buttons[8]:  # back
+            if msg.buttons[8]:  # share
                 emergency_msg = Empty()
                 self.emergency_stop_pub.publish(emergency_msg)
                 rospy.logwarn("EMERGENCY STOP")
@@ -130,19 +127,16 @@ class Rosconnector():
                 self.hardinit_flag_pub.publish()
                 rospy.logwarn("HARDINIT")
 
+            if msg.buttons[10]:  # Leftpush
+                # self.teleop_flag = not self.teleop_flag
+                # self.teleop_flag_pub.publish(self.teleop_flag)
+                # rospy.loginfo("teleop flag %s",self.teleop_flag)
+                rospy.loginfo("lagori catcher changed")
 
-            # if msg.buttons[10]:#Leftpush
-                # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
-                # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
-                # self.controler_id=3
-                # rospy.loginfo("lagori catcher changed")
-
-            # if msg.buttons[11]:#Rightpush
-            #     # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
-            #     # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
-            #     # self.controler_id=3
-                # rospy.loginfo("lagori catcher changed")
-
+            if msg.buttons[12]:  # Rightpush
+                self.teleop_flag = not self.teleop_flag
+                self.teleop_flag_pub.publish(self.teleop_flag)
+                rospy.logwarn("teleop_flag changed %s", self.teleop_flag)
 
     def msg_gen(self, msg):
         # if msg.axes[5]:
@@ -209,8 +203,10 @@ class Rosconnector():
             if self.command_roller_speed < -self.max_roller_speed:
                 self.command_roller_speed = -self.max_roller_speed
         self.old_roller_speed = self.command_roller_speed
-        self.send_rogilink(HardId.R_BALL.value, 0x06,-self.command_roller_speed, 0)
-        self.send_rogilink(HardId.L_BALL.value, 0x06,--self.command_roller_speed, 0)
+        self.send_rogilink(HardId.R_BALL.value, 0x06, -
+                           self.command_roller_speed, 0)
+        self.send_rogilink(HardId.L_BALL.value, 0x06, --
+                           self.command_roller_speed, 0)
         rospy.loginfo("%f", self.command_roller_speed)
 
 

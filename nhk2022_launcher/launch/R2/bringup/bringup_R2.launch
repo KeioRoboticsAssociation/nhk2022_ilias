@@ -31,9 +31,9 @@
         <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
 
         <!-- hardware boot -->
-        <include file="$(find nhk2022_launcher)/launch/R2/bringup/sensor_activate_R2.launch"/>
+        <!-- <include file="$(find nhk2022_launcher)/launch/R2/bringup/sensor_activate_R2.launch"/> -->
+
         <node pkg="serial_ros" name="rogi_link" type="rogi_link_node" respawn="true">
-            <!-- <param name="looprate" value="$(arg  control_frequency)"/> -->
             <param name="control_frequency" value="200"/>
             <param name="port" value="/dev/ttyUSB0"/>
         </node>

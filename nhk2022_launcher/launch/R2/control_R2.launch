@@ -32,7 +32,7 @@
     </include>
 
     <!-- bezier_path_planning_and_pursuit-->
-    <include file="$(find bezier_path_planning_pursuit)/launch/bezier_path_planning_pursuit.launch">
+    <!-- <include file="$(find bezier_path_planning_pursuit)/launch/bezier_path_planning_pursuit.launch">
         <arg name="control_frequency" value="$(arg control_frequency)" />
         <arg name="use_tf" value="true" />
         <arg name="angle_source" value="odom" />
@@ -49,7 +49,7 @@
         <arg name="yaw_goal_tolerance" value="$(arg yaw_goal_tolerance)" />
         <arg name="fix_angle_gain" value="2.0" />
         <arg name="path_granularity" value="0.001" />
-    </include>
+    </include> -->
 
 
     <!-- ekf -->

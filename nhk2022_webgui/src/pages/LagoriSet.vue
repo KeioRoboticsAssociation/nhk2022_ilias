@@ -73,7 +73,7 @@ const bohSend = (value: number | null) => {
   <q-page padding class="items-stretch row">
     <div class="col q-pa-sm">
       <p class="text-subtitle1">BoH位置</p>
-      <div class="row justify-center" style="min-height: 50%">
+      <div class="row justify-start q-mt-xl q-pl-xl" style="min-height: 50%">
         <q-slider
           v-model="bohPosition"
           :min="-6.85"

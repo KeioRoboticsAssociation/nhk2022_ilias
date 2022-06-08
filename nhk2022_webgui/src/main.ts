@@ -9,3 +9,18 @@ import App from "./App.vue";
 import quasarUserOptions from "./quasar-user-options";
 
 createApp(App).use(Quasar, quasarUserOptions).use(router).mount("#app");
+
+document.body.addEventListener(
+  "touchstart",
+  (e: TouchEvent) => {
+    e.preventDefault();
+  },
+  { passive: false }
+);
+document.body.addEventListener(
+  "touchmove",
+  (e: TouchEvent) => {
+    e.preventDefault();
+  },
+  { passive: false }
+);

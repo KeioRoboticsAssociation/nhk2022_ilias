@@ -67,6 +67,8 @@ class Rosconnector():
             "teleop_flag", Bool, queue_size=1)
         self.hardinit_flag_pub = rospy.Publisher(
             "hard_init", Empty, queue_size=1)
+        self.seeker_mode_pub = rospy.Publisher(
+            "seeker_mode", Bool, queue_size=1)
 
     def send_rogilink(self, hardid, commandid, data_0, data_1):
         self.publish_command.id = int(hardid) << 6 | commandid
@@ -127,13 +129,18 @@ class Rosconnector():
                 self.hardinit_flag_pub.publish()
                 rospy.logwarn("HARDINIT")
 
-            if msg.buttons[10]:  # Leftpush
+            # if msg.buttons[10]:#PS
+                # self.seeker_mode_pub.publish(True)
+                # rospy.loginfo("seeker_mode")
+
+            # if msg.buttons[11]:  # Leftpush
                 # self.teleop_flag = not self.teleop_flag
                 # self.teleop_flag_pub.publish(self.teleop_flag)
                 # rospy.loginfo("teleop flag %s",self.teleop_flag)
-                rospy.loginfo("lagori catcher changed")
+                # rospy.loginfo("lagori catcher changed")
 
-            if msg.buttons[12]:  # Rightpush
+
+            if msg.buttons[10]:  # Rightpush
                 self.teleop_flag = not self.teleop_flag
                 self.teleop_flag_pub.publish(self.teleop_flag)
                 rospy.logwarn("teleop_flag changed %s", self.teleop_flag)

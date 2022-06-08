@@ -16,11 +16,17 @@
 
 const char ELV_MT = 0x0F;
 const char TRN_MT = 0x10;
+const int ELV_btn = 5;
+const int TRN_btn = 4;
 
 const float GEAR_PROPORTION = 10;
 const float ELV_GAIN = 0;
 const float misalignment = -0.08333;
-const float offset = -0.5;
+const float offset = 0;
+
+const float LAGORI_ELV = 0.5;
+const float LAGORI_TRN = 0.08333;
+
 float MAX_ELV = 20;    //仰角最大値
 float MAX_TRN = 0.13;  //振り角最大値
 
@@ -43,6 +49,7 @@ class Auto_Aimer {
   ros::Subscriber sub_emergence;   // emergency_flag
   ros::Subscriber sub_connection;  // connection_flag
   ros::Subscriber sub_teleop;      // teleop_flag
+  ros::Subscriber sub_mode;        // seeker_mode
 
   ros::Subscriber sub_target;  // LIDARでの敵座標
   ros::Subscriber sub_joy;     // joyの指示
@@ -68,6 +75,7 @@ class Auto_Aimer {
   bool emergency_stop_flag;  //緊急停止
   bool connection_flag;      //接続
   bool teleop_flag;          // trueで手動
+  bool mode_flag;           // true:seeker_mode, false:hitter_mode
 
   // methods
   // initializers
@@ -79,6 +87,7 @@ class Auto_Aimer {
   void teleop_callback(const std_msgs::Bool::ConstPtr &msg);
   void target_callback(const std_msgs::Float32MultiArray &msg);
   void joy_callback(const sensor_msgs::Joy::ConstPtr &msg);
+  void mode_callback(const std_msgs::Bool::ConstPtr &msg);
 
   // others
   void publishMsg();

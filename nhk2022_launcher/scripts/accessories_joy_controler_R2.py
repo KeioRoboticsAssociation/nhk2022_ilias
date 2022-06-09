@@ -38,7 +38,7 @@ class HardId(IntEnum):
     BALL_E_MOTOR = 0x12
 
 
-FLAT_POSITION = 0.05
+FLAT_POSITION = 0.1
 
 
 class Rosconnector():
@@ -275,10 +275,10 @@ class Rosconnector():
                     self.pile_send[0] = 5.06
 
                 elif self.pile_status[self.lagori_number-1]==1:#angle
-                    self.pile_send[0]=5.06
+                    self.pile_send[0]=8
 
                 elif self.pile_status[self.lagori_number-1]==2:#perpendicular
-                    self.pile_send[0]=5.06
+                    self.pile_send[0]=9
 
                 else:
                     self.pile_send[0] = FLAT_POSITION

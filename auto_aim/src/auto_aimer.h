@@ -27,8 +27,9 @@ const float offset = 0;
 const float LAGORI_ELV = 0.5;
 const float LAGORI_TRN = 0.08333;
 
-float MAX_ELV = 20;    //仰角最大値
-float MAX_TRN = 0.13;  //振り角最大値
+const float MAX_ELV = 20;     //仰角最大値
+const float MAX_TRN = 0.13;   //振り角最大値
+const float MIN_TRN = 0.005;  // 振り角最低値
 
 class Auto_Aimer {
  public:

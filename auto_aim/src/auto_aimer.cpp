@@ -38,7 +38,7 @@ Auto_Aimer::Auto_Aimer(ros::NodeHandle &_nh, int &_loop_rate,
   sub_target =
       nh.subscribe("/BoH_location", 1, &Auto_Aimer::target_callback, this);
   sub_joy = nh.subscribe("joy", 1, &Auto_Aimer::joy_callback, this);
-  sub_mode = nh.subscribe("seeker_mode",1,&Auto_Aimer::mode_callback,this);
+  sub_mode = nh.subscribe("seeker_mode", 1, &Auto_Aimer::mode_callback, this);
   last_sub_vel_time = std::chrono::system_clock::now();
 
   init();
@@ -76,8 +76,8 @@ void Auto_Aimer::target_callback(const std_msgs::Float32MultiArray &msg) {
   ROS_INFO("dist:%f,theta:%f", target_distance, target_theta);
   last_sub_vel_time = std::chrono::system_clock::now();
 }
-void Auto_Aimer::mode_callback(const std_msgs::Bool::ConstPtr &msg){
-    mode_flag = msg->data;
+void Auto_Aimer::mode_callback(const std_msgs::Bool::ConstPtr &msg) {
+  mode_flag = msg->data;
 }
 
 void Auto_Aimer::joy_callback(const sensor_msgs::Joy::ConstPtr &msg) {
@@ -108,7 +108,7 @@ void Auto_Aimer::autoAimer() {
   cmd_ELV =
       1.5543 * pow(target_distance, 6) - 25.755 * pow(target_distance, 5) +
       174.74 * pow(target_distance, 4) - 620.42 * pow(target_distance, 3) +
-      1214.0 * pow(target_distance, 2) - 1237.8 * target_distance +517.81 +
+      1214.0 * pow(target_distance, 2) - 1237.8 * target_distance + 517.81 +
       offset;
   cmd_TRN = target_theta / 6.28318530718 - misalignment;
   if (cmd_ELV < 0)
@@ -116,30 +116,30 @@ void Auto_Aimer::autoAimer() {
   else if (cmd_ELV > MAX_ELV)
     cmd_ELV = MAX_ELV;
 
-  if (cmd_TRN < 0)
-    cmd_TRN = 0;
+  if (cmd_TRN < MIN_TRN)
+    cmd_TRN = MIN_TRN;
   else if (cmd_TRN > MAX_TRN)
     cmd_TRN = MAX_TRN;
 }
 void Auto_Aimer::handAimer() {
-    if(mode_flag) {
-        ROS_WARN("nyan");
-        mode_flag = false;
-        cmd_ELV = LAGORI_ELV;
-        cmd_TRN = LAGORI_TRN;
-    }else {
-        if (cmd_ELV < 0) {
-            cmd_ELV = 0;
-        } else if (cmd_ELV > MAX_ELV) {
-            cmd_ELV = MAX_ELV;
-        }
-
-        if (cmd_TRN < 0) {
-            cmd_TRN = 0;
-        } else if (cmd_TRN > MAX_TRN) {
-            cmd_TRN = MAX_TRN;
-        }
+  if (mode_flag) {
+    ROS_WARN("nyan");
+    mode_flag = false;
+    cmd_ELV = LAGORI_ELV;
+    cmd_TRN = LAGORI_TRN;
+  } else {
+    if (cmd_ELV < 0) {
+      cmd_ELV = 0;
+    } else if (cmd_ELV > MAX_ELV) {
+      cmd_ELV = MAX_ELV;
     }
+
+    if (cmd_TRN < MIN_TRN) {
+      cmd_TRN = MIN_TRN;
+    } else if (cmd_TRN > MAX_TRN) {
+      cmd_TRN = MAX_TRN;
+    }
+  }
 }
 
 void Auto_Aimer::update() {

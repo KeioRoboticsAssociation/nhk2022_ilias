@@ -58,7 +58,8 @@ class Rosconnector():
     pile_send = [0]*2  # 0:hight 1:grab
 
     def __init__(self):
-        self.current_pub = rospy.Publisher("current_command", Float32MultiArray, queue_size=1)
+        self.current_pub = rospy.Publisher(
+            "current_command", Float32MultiArray, queue_size=1)
         self.joy_sub = rospy.Subscriber("joy", Joy, self.Joycallback)
         self.serial_pub = rospy.Publisher(
             "send_serial", RogiLink, queue_size=1)
@@ -222,11 +223,11 @@ class Rosconnector():
                 if self.pile_status[self.lagori_number-1] == 0:  # flat
                     self.pile_send[0] = 5.06
 
-                elif self.pile_status[self.lagori_number-1]==1:#angle
-                    self.pile_send[0]=5.06
+                elif self.pile_status[self.lagori_number-1] == 1:  # angle
+                    self.pile_send[0] = 5.06
 
-                elif self.pile_status[self.lagori_number-1]==2:#perpendicular
-                    self.pile_send[0]=5.06
+                elif self.pile_status[self.lagori_number-1] == 2:  # perpendicular
+                    self.pile_send[0] = 5.06
 
                 else:
                     self.pile_send[0] = FLAT_POSITION
@@ -235,11 +236,11 @@ class Rosconnector():
                 if self.pile_status[self.lagori_number-1] == 0:  # flat
                     self.pile_send[0] = 17.54
 
-                elif self.pile_status[self.lagori_number-1]==1:#angle
-                    self.pile_send[0]=17.54
+                elif self.pile_status[self.lagori_number-1] == 1:  # angle
+                    self.pile_send[0] = 17.54
 
-                elif self.pile_status[self.lagori_number-1]==2:#perpendicular
-                    self.pile_send[0]=17.54
+                elif self.pile_status[self.lagori_number-1] == 2:  # perpendicular
+                    self.pile_send[0] = 17.54
 
                 else:
                     self.pile_send[0] = FLAT_POSITION
@@ -248,11 +249,11 @@ class Rosconnector():
                 if self.pile_status[self.lagori_number-1] == 0:  # flat
                     self.pile_send[0] = 13.46
 
-                elif self.pile_status[self.lagori_number-1]==1:#angle
-                    self.pile_send[0]=13.46
+                elif self.pile_status[self.lagori_number-1] == 1:  # angle
+                    self.pile_send[0] = 13.46
 
-                elif self.pile_status[self.lagori_number-1]==2:#perpendicular
-                    self.pile_send[0]=13.46
+                elif self.pile_status[self.lagori_number-1] == 2:  # perpendicular
+                    self.pile_send[0] = 13.46
 
                 else:
                     self.pile_send[0] = FLAT_POSITION
@@ -261,11 +262,11 @@ class Rosconnector():
                 if self.pile_status[self.lagori_number-1] == 0:  # flat
                     self.pile_send[0] = 9.72
 
-                elif self.pile_status[self.lagori_number-1]==1:#angle
-                    self.pile_send[0]=9.72
+                elif self.pile_status[self.lagori_number-1] == 1:  # angle
+                    self.pile_send[0] = 9.72
 
-                elif self.pile_status[self.lagori_number-1]==2:#perpendicular
-                    self.pile_send[0]=9.72
+                elif self.pile_status[self.lagori_number-1] == 2:  # perpendicular
+                    self.pile_send[0] = 9.72
 
                 else:
                     self.pile_send[0] = FLAT_POSITION
@@ -274,11 +275,11 @@ class Rosconnector():
                 if self.pile_status[self.lagori_number-1] == 0:  # flat
                     self.pile_send[0] = 5.06
 
-                elif self.pile_status[self.lagori_number-1]==1:#angle
-                    self.pile_send[0]=8
+                elif self.pile_status[self.lagori_number-1] == 1:  # angle
+                    self.pile_send[0] = 8
 
-                elif self.pile_status[self.lagori_number-1]==2:#perpendicular
-                    self.pile_send[0]=9
+                elif self.pile_status[self.lagori_number-1] == 2:  # perpendicular
+                    self.pile_send[0] = 9
 
                 else:
                     self.pile_send[0] = FLAT_POSITION
@@ -372,7 +373,7 @@ class Rosconnector():
                 self.hardinit_flag_pub.publish()
                 rospy.logwarn("hard init")
 
-            if msg.buttons[10]:#PS
+            if msg.buttons[10]:  # PS
                 self.coordinate_angle.data = pi
                 self.joy_angle_sub.publish(self.coordinate_angle)
                 rospy.loginfo("coordinate angle pi")
@@ -387,12 +388,13 @@ class Rosconnector():
                 self.joy_angle_sub.publish(self.coordinate_angle)
                 rospy.loginfo("coordinate angle pi/4")
 
+        elevation_min = 0.2
         if msg.axes[7]:
-            if(self.elevator_position >= 0):
+            if(self.elevator_position >= elevation_min):
                 self.elevator_position = self.elevator_position + \
                     msg.axes[7] / 50
             else:
-                self.elevator_position = 0
+                self.elevator_position = elevation_min
                 rospy.loginfo("elevator too low")
             self.send_rogilink(HardId.LAGORI_E_MOTOR.value,
                                0x03, self.elevator_position, 0)

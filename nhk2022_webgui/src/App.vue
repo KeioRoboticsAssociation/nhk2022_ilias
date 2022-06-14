@@ -5,7 +5,7 @@ import { useRosStatus, connectRos, createTopic } from "./script/rosHook";
 
 const router = useRouter();
 
-const { isConnected } = useRosStatus();
+const { isConnected, isError } = useRosStatus();
 
 const url = ref<string>(`ws://${window.location.hostname}:9090`);
 
@@ -58,6 +58,16 @@ const sendEmergency = () => {
       <router-view v-else />
     </q-page-container>
   </q-layout>
+  <q-dialog v-model="isError">
+    <q-card>
+      <q-card-section>
+        <p class="text-h6">ROS connection Error</p>
+      </q-card-section>
+      <q-card-section align="right">
+        <q-btn v-close-popup flat label="OK" />
+      </q-card-section>
+    </q-card>
+  </q-dialog>
 </template>
 
 <style lang="scss">

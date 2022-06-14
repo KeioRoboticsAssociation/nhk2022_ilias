@@ -3,7 +3,7 @@
     <arg name="use_laser_filter" default="false"/>
 
     <arg name="loopRate" default="30" />
-    <arg name="maxRange" default="4" />
+    <arg name="maxRange" default="5" />
     <arg name="limitAngle" default="0.7" />
 
     <!-- bringup -->

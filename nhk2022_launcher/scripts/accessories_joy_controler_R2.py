@@ -81,6 +81,11 @@ class Rosconnector():
         self.publish_command.data = pack('ff', data_0, data_1)
         self.serial_pub.publish(self.publish_command)
 
+    def send_rogilink_b(self,hardid,commandid,data_0):
+        self.publish_command.id=int(hardid) << 6 | commandid
+        self.publish_command.data=pack('b',data_0)
+        self.serial_pub.publish(self.publish_command)
+
     def send_rogilink_servo(self, hardid, commandid, data_0, data_1, data_2):
         self.publish_command.id = int(hardid) << 6 | commandid
         self.publish_command.data = pack('bbbbb', 0, 0, data_0, data_1, data_2)
@@ -338,10 +343,8 @@ class Rosconnector():
                 rospy.loginfo("lagori catcher angle changed")
 
             if msg.buttons[3]:  # <>
-                # self.lagori_gripper_catch_flag = not self.lagori_gripper_catch_flag
-                # self.accessories_pub_commands.data = [float(3), float(self.lagori_gripper_catch_flag)]
-                # self.controler_id=3
-                rospy.loginfo("lagori catcher changed")
+
+                rospy.loginfo("wheel reset")
 
             if msg.buttons[4]:  # L1
                 # self.pile_commander("high")
@@ -360,9 +363,20 @@ class Rosconnector():
                 rospy.loginfo("lagori low")
 
             if msg.buttons[8]:  # Share back
-                emergency_msg = Empty()
-                self.emergency_stop_pub.publish(emergency_msg)
-                rospy.logwarn("EMERGENCY STOP")
+                # emergency_msg = Empty()
+                # self.emergency_stop_pub.publish(emergency_msg)
+                # rospy.logwarn("EMERGENCY STOP")
+                self.send_rogilink_b(HardId.RFMD.value,0x01,0)
+                self.send_rogilink_b(HardId.LFMD.value,0x01,0)
+                self.send_rogilink_b(HardId.LBMD.value,0x01,0)
+                self.send_rogilink_b(HardId.RBMD.value,0x01,0)
+                rospy.sleep(0.1)
+                self.send_rogilink_b(HardId.RFMD.value,0x02,1)
+                self.send_rogilink_b(HardId.LFMD.value,0x02,1)
+                self.send_rogilink_b(HardId.LBMD.value,0x02,1)
+                self.send_rogilink_b(HardId.RBMD.value,0x02,1)
+                rospy.logwarn("wheel reset")
+
 
             if msg.buttons[9]:  # Options
                 # rospy.loginfo("teleop_mode")

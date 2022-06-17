@@ -87,9 +87,15 @@ class Rosconnector():
             if msg.data[1] == 0:
                 rospy.logerr("lagori elevator 0 pushed")
                 self.send_rogilink_b(HardId.LAGORI_E_MOTOR.value,0x01,0)
-                rospy.sleep(0.1)
+                rospy.sleep(0.1) #なんか初期化した直後に反応しないので待ってみます。
+                self.send_rogilink_b(HardId.LAGORI_E_MOTOR.value,0x02,3)
+                self.send_rogilink(HardId.LAGORI_E_MOTOR.value,0x06,0.1,0)
+                #無理やりちょっと上げてバグ修正
+                rospy.sleep(0.5)
+                self.send_rogilink_b(HardId.LAGORI_E_MOTOR.value,0x01,0)
+                rospy.sleep(0.2)
                 self.send_rogilink_b(HardId.LAGORI_E_MOTOR.value,0x02,0)
-                self.send_rogilink(HardId.LAGORI_E_MOTOR.value,0x09,0,0)
+                # self.send_rogilink(HardId.LAGORI_E_MOTOR.value,0x09,0,0)
             elif msg.data[1] == 1:
                 rospy.logerr("lagori elevator high pushed")
                 self.send_rogilink_b(HardId.LAGORI_E_MOTOR.value,0x01,0)
@@ -126,6 +132,16 @@ class Rosconnector():
 
         rospy.logwarn("hard init command")
         rospy.loginfo("%d,%d,%d,%d,%d,%d,%d,%d",self.limit_switch_array[0],self.limit_switch_array[1],self.limit_switch_array[2],self.limit_switch_array[3],self.limit_switch_array[4],self.limit_switch_array[5],self.limit_switch_array[6],self.limit_switch_array[7])
+
+        self.send_rogilink_b(HardId.RFMD.value,0x01,0)
+        self.send_rogilink_b(HardId.LFMD.value,0x01,0)
+        self.send_rogilink_b(HardId.LBMD.value,0x01,0)
+        self.send_rogilink_b(HardId.RBMD.value,0x01,0)
+        rospy.sleep(0.1)
+        self.send_rogilink_b(HardId.RFMD.value,0x02,1)
+        self.send_rogilink_b(HardId.LFMD.value,0x02,1)
+        self.send_rogilink_b(HardId.LBMD.value,0x02,1)
+        self.send_rogilink_b(HardId.RBMD.value,0x02,1)
 
         if self.limit_switch_array[0]==1 and self.limit_switch_array[1]==1:
             rospy.logwarn("elevation")

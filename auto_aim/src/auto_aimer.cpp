@@ -71,7 +71,11 @@ void Auto_Aimer::target_callback(const std_msgs::Float32MultiArray &msg) {
   target_y = msg.data[1];
 
   target_distance = sqrt(target_x * target_x + target_y * target_y);
+
   target_theta = atan(target_y / target_x);
+  if (target_x == 0) {
+    target_theta = 0;
+  }
 
   ROS_INFO("dist:%f,theta:%f", target_distance, target_theta);
   last_sub_vel_time = std::chrono::system_clock::now();
@@ -90,7 +94,8 @@ void Auto_Aimer::publishMsg() {
   rogi_link_msgs::RogiLink cmd_msg;
   std_msgs::Float32MultiArray crt_cmd;
   crt_cmd.data.resize(2);
-  ROS_INFO("auto_aimer : %f, %f", cmd_ELV, cmd_TRN * GEAR_PROPORTION);
+  ROS_INFO("auto_aimer : elev->%f, trn->%f dist->%f", cmd_ELV,
+           cmd_TRN * GEAR_PROPORTION, target_distance);
 
   cmd_msg.id = ELV_MT << 6 | 0x03;
   *(float *)(&cmd_msg.data[0]) = cmd_ELV;
@@ -106,9 +111,9 @@ void Auto_Aimer::publishMsg() {
 }
 void Auto_Aimer::autoAimer() {
   cmd_ELV =
-      1.5543 * pow(target_distance, 6) - 25.755 * pow(target_distance, 5) +
-      174.74 * pow(target_distance, 4) - 620.42 * pow(target_distance, 3) +
-      1214.0 * pow(target_distance, 2) - 1237.8 * target_distance + 517.81 +
+      0.1695 * pow(target_distance, 6) - 3.3053 * pow(target_distance, 5) +
+      25.949 * pow(target_distance, 4) - 104.67 * pow(target_distance, 3) +
+      228.32 * pow(target_distance, 2) - 253.43 * target_distance + 116.48 +
       offset;
   cmd_TRN = target_theta / 6.28318530718 - misalignment;
   if (cmd_ELV < 0)
@@ -120,6 +125,9 @@ void Auto_Aimer::autoAimer() {
     cmd_TRN = MIN_TRN;
   else if (cmd_TRN > MAX_TRN)
     cmd_TRN = MAX_TRN;
+  else if (std::isnan(cmd_TRN)) {
+    cmd_TRN = MIN_TRN;
+  }
 }
 void Auto_Aimer::handAimer() {
   if (mode_flag) {
